@@ -138,6 +138,17 @@ export async function closeSession(sessionId) {
   return data;
 }
 
+export async function openSession() {
+  const { data, error } = await supabase
+    .from('daily_sessions')
+    .insert([{ status: 'open', opening_balance: 0 }])
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
 export async function insertProduct(productData) {
   const { data, error } = await supabase
     .from('products')

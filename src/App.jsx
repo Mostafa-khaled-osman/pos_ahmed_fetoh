@@ -5,6 +5,7 @@ import TreasuryPage from './features/treasury/TreasuryPage';
 import InventoryPage from './features/inventory/InventoryPage';
 import CustomersPage from './features/crm/CustomersPage';
 import EntityLedgerPage from './features/crm/EntityLedgerPage';
+import AddInvoicePage from './features/invoicing/AddInvoicePage';
 import NotFound from './shared/components/layout/NotFound';
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
           <Route path="/inventory" element={<InventoryPage />} />
           <Route path="/customers" element={<CustomersPage />} />
           <Route path="/customers/:id" element={<EntityLedgerPage />} />
+          <Route path="/add-invoice" element={<AddInvoicePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

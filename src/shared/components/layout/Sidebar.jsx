@@ -24,6 +24,17 @@ export default function Sidebar({ activePath = '/treasury' }) {
         </div>
       </div>
 
+
+      <div className="px-4 mb-stack-lg">
+        <a 
+          href="/add-invoice"
+          className="w-full bg-primary-container text-on-primary-container rounded-lg py-3 px-4 flex items-center justify-center gap-2 font-headline-md text-headline-md font-bold hover:bg-primary transition-all shadow-md ambient-glow"
+        >
+          <Icon name="add" className="text-[20px]" />
+          إضافة فاتورة
+        </a>
+      </div>
+
       {/* Navigation Tabs */}
       <nav className="flex-1 flex flex-col gap-1 px-4">
         {DASHBOARD_NAV_ITEMS.map((item) => {

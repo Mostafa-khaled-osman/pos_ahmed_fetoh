@@ -10,7 +10,7 @@ import { useTreasuryBalance, useActiveSession, useTodayExpenses } from './hooks/
 
 export default function TreasuryPage() {
   const { treasury, loading: treasuryLoading } = useTreasuryBalance();
-  const { session, loading: sessionLoading, endSession } = useActiveSession();
+  const { session, loading: sessionLoading, endSession, startSession } = useActiveSession();
   const { expenses, totalExpenses, loading: expensesLoading, addExpense } = useTodayExpenses(session?.id);
 
   return (
@@ -25,6 +25,7 @@ export default function TreasuryPage() {
           session={session}
           loading={sessionLoading}
           onEndSession={endSession}
+          onStartSession={startSession}
         />
         <ExpensesCard
           expenses={expenses}

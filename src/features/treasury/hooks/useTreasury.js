@@ -6,6 +6,7 @@ import {
   fetchTodayExpenses,
   insertExpense,
   closeSession,
+  openSession,
 } from '../../../core/supabase/api';
 
 /**
@@ -35,7 +36,18 @@ export function useActiveSession() {
     }
   }, [data, refetch]);
 
-  return { session: data, loading, error, refetch, endSession };
+  const startSession = useCallback(async () => {
+    if (data?.id) return; // Already open
+    try {
+      await openSession();
+      await refetch();
+    } catch (err) {
+      console.error('Failed to open session:', err);
+      throw err;
+    }
+  }, [data, refetch]);
+
+  return { session: data, loading, error, refetch, endSession, startSession };
 }
 
 /**

@@ -3,7 +3,7 @@
  */
 import Icon from '../../../shared/components/ui/Icon';
 
-export default function DailySessionCard({ session, loading = false, onEndSession }) {
+export default function DailySessionCard({ session, loading = false, onEndSession, onStartSession }) {
   if (loading) {
     return (
       <section className="lg:col-span-5 glass-panel rounded-xl p-stack-md flex flex-col animate-pulse">
@@ -72,18 +72,27 @@ export default function DailySessionCard({ session, loading = false, onEndSessio
       </div>
 
       <div className="mt-6 pt-4">
-        <button
-          onClick={() => {
-            if (window.confirm('هل أنت متأكد من إنهاء وإغلاق الوردية؟ لا يمكن التراجع عن هذا الإجراء.')) {
-              onEndSession();
-            }
-          }}
-          disabled={!isOpen}
-          className="w-full bg-surface-container border border-error/30 hover:bg-error/10 hover:border-error/50 text-error px-6 py-4 rounded-lg font-body-lg text-body-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 active:scale-[0.98] group disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <Icon name="power_settings_new" className="group-hover:rotate-90 transition-transform duration-300" />
-          إنهاء وإغلاق الوردية
-        </button>
+        {isOpen ? (
+          <button
+            onClick={() => {
+              if (window.confirm('هل أنت متأكد من إنهاء وإغلاق الوردية؟ لا يمكن التراجع عن هذا الإجراء.')) {
+                onEndSession();
+              }
+            }}
+            className="w-full bg-surface-container border border-error/30 hover:bg-error/10 hover:border-error/50 text-error px-6 py-4 rounded-lg font-body-lg text-body-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 active:scale-[0.98] group"
+          >
+            <Icon name="power_settings_new" className="group-hover:rotate-90 transition-transform duration-300" />
+            إنهاء وإغلاق الوردية
+          </button>
+        ) : (
+          <button
+            onClick={onStartSession}
+            className="w-full bg-primary text-[#1A1D23] px-6 py-4 rounded-lg font-body-lg text-body-lg font-bold transition-all duration-300 flex items-center justify-center gap-2 hover:bg-primary-fixed shadow-lg ambient-glow active:scale-[0.98]"
+          >
+            <Icon name="play_arrow" />
+            بدء الجلسة
+          </button>
+        )}
       </div>
     </section>
   );
