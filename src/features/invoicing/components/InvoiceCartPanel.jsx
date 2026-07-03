@@ -12,6 +12,7 @@ export default function InvoiceCartPanel({
   onConfirm,
   onCancel,
   isSubmitting,
+  invoiceType,
   paymentType,
   paidAmount,
   setPaidAmount
@@ -37,6 +38,7 @@ export default function InvoiceCartPanel({
           product_id: product.id,
           name: product.name,
           sku: product.sku,
+          stock_quantity: Number(product.stock_quantity) || 0,
           quantity: 1,
           unit_price: Number(product.sale_price) || 0,
           total_price: Number(product.sale_price) || 0
@@ -80,6 +82,8 @@ export default function InvoiceCartPanel({
   const handleRemoveItem = (index) => {
     setCart(cart.filter((_, i) => i !== index));
   };
+
+  const hasAnyStockError = invoiceType === 'sale' && cart.some(item => item.quantity > item.stock_quantity);
 
   return (
     <div className="w-full lg:w-2/3 flex flex-col gap-stack-md h-full relative z-10">
@@ -147,50 +151,58 @@ export default function InvoiceCartPanel({
                   <td colSpan="6" className="py-12 text-center text-on-surface-variant">السلة فارغة. ابحث عن أصناف لإضافتها.</td>
                 </tr>
               ) : (
-                cart.map((item, index) => (
-                  <tr key={index} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
-                    <td className="py-3 px-4 font-data-mono text-data-mono text-on-surface-variant">{index + 1}</td>
-                    <td className="py-3 px-4">
-                      <div className="font-body-md text-body-md font-medium text-on-surface">{item.name}</div>
-                      <div className="font-data-mono text-data-mono text-on-surface-variant/70 text-[11px]">SKU: {item.sku}</div>
-                    </td>
-                    <td className="py-3 px-4">
-                      <div className="flex items-center justify-center gap-2 bg-[#0A0B0D] rounded-md border border-white/10 p-1">
-                        <button onClick={() => handleUpdateQuantity(index, 1)} className="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-white/10 hover:text-white transition-colors">
-                          <Icon name="add" className="text-[16px]" />
-                        </button>
+                cart.map((item, index) => {
+                  const hasError = invoiceType === 'sale' && item.quantity > item.stock_quantity;
+                  return (
+                    <tr key={index} className={`border-b border-white/5 transition-colors group ${hasError ? 'bg-error/10' : 'hover:bg-white/[0.02]'}`}>
+                      <td className="py-3 px-4 font-data-mono text-data-mono text-on-surface-variant">{index + 1}</td>
+                      <td className="py-3 px-4">
+                        <div className="font-body-md text-body-md font-medium text-on-surface">{item.name}</div>
+                        <div className="font-data-mono text-data-mono text-on-surface-variant/70 text-[11px]">SKU: {item.sku}</div>
+                        {hasError && (
+                          <div className="text-error text-xs font-bold mt-1">
+                            الكمية المطلوبة ({item.quantity}) غير متوفرة (المتاح: {item.stock_quantity})
+                          </div>
+                        )}
+                      </td>
+                      <td className="py-3 px-4">
+                        <div className={`flex items-center justify-center gap-2 rounded-md border p-1 ${hasError ? 'bg-error/5 border-error/20' : 'bg-[#0A0B0D] border-white/10'}`}>
+                          <button onClick={() => handleUpdateQuantity(index, 1)} className="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-white/10 hover:text-white transition-colors">
+                            <Icon name="add" className="text-[16px]" />
+                          </button>
+                          <input 
+                            type="number"
+                            min="1"
+                            value={item.quantity}
+                            onChange={(e) => handleSetQuantity(index, e.target.value)}
+                            className="font-data-mono text-data-mono w-16 text-center bg-transparent border-none focus:ring-0 p-0 text-on-surface [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                          />
+                          <button onClick={() => handleUpdateQuantity(index, -1)} className="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-white/10 hover:text-white transition-colors">
+                            <Icon name="remove" className="text-[16px]" />
+                          </button>
+                        </div>
+                      </td>
+                      <td className="py-3 px-4">
                         <input 
                           type="number"
-                          min="1"
-                          value={item.quantity}
-                          onChange={(e) => handleSetQuantity(index, e.target.value)}
-                          className="font-data-mono text-data-mono w-16 text-center bg-transparent border-none focus:ring-0 p-0 text-on-surface [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                          min="0"
+                          step="0.01"
+                          value={item.unit_price}
+                          onChange={(e) => handleUpdatePrice(index, e.target.value)}
+                          className="w-full bg-surface-container border border-outline-variant text-on-surface rounded-md py-1.5 px-2 font-data-mono text-data-mono text-right focus:outline-none focus:border-primary transition-all"
                         />
-                        <button onClick={() => handleUpdateQuantity(index, -1)} className="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-white/10 hover:text-white transition-colors">
-                          <Icon name="remove" className="text-[16px]" />
+                      </td>
+                      <td className="py-3 px-4 font-data-mono text-data-mono font-medium text-primary text-right">
+                        {item.total_price.toFixed(2)}
+                      </td>
+                      <td className="py-3 px-4">
+                        <button onClick={() => handleRemoveItem(index)} className="text-error/70 hover:text-error opacity-0 group-hover:opacity-100 transition-all">
+                          <Icon name="delete" />
                         </button>
-                      </div>
-                    </td>
-                    <td className="py-3 px-4">
-                      <input 
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        value={item.unit_price}
-                        onChange={(e) => handleUpdatePrice(index, e.target.value)}
-                        className="w-full bg-surface-container border border-outline-variant text-on-surface rounded-md py-1.5 px-2 font-data-mono text-data-mono text-right focus:outline-none focus:border-primary transition-all"
-                      />
-                    </td>
-                    <td className="py-3 px-4 font-data-mono text-data-mono font-medium text-primary text-right">
-                      {item.total_price.toFixed(2)}
-                    </td>
-                    <td className="py-3 px-4">
-                      <button onClick={() => handleRemoveItem(index)} className="text-error/70 hover:text-error opacity-0 group-hover:opacity-100 transition-all">
-                        <Icon name="delete" />
-                      </button>
-                    </td>
-                  </tr>
-                ))
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>
@@ -244,9 +256,9 @@ export default function InvoiceCartPanel({
           </button>
           <button 
             onClick={onConfirm}
-            disabled={isSubmitting || cart.length === 0}
+            disabled={isSubmitting || cart.length === 0 || hasAnyStockError}
             className={`flex-1 md:flex-none px-12 py-4 rounded-lg font-headline-md text-headline-md font-bold transition-colors shadow-lg ambient-glow flex items-center justify-center gap-2 ${
-              isSubmitting || cart.length === 0 
+              isSubmitting || cart.length === 0 || hasAnyStockError
                 ? 'bg-surface-variant text-on-surface-variant cursor-not-allowed' 
                 : 'bg-primary text-[#1A1D23] hover:bg-primary-fixed'
             }`}

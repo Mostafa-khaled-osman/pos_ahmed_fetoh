@@ -61,6 +61,7 @@ export default function AddInvoicePage() {
         customer_id: selectedEntityId || null,
         total_amount: grandTotal,
         payment_type: paymentType,
+        invoice_type: invoiceType,
       };
 
       const invoiceItems = cart.map(item => ({
@@ -153,6 +154,7 @@ export default function AddInvoicePage() {
             onConfirm={handleConfirm}
             onCancel={handleCancel}
             isSubmitting={isSubmitting}
+            invoiceType={invoiceType}
             paymentType={paymentType}
             paidAmount={paidAmount}
             setPaidAmount={setPaidAmount}
