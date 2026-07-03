@@ -159,6 +159,29 @@
     border: 1px solid rgba(255, 180, 171, 0.1);
   }
 
+  .glass-panel-glow {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(26, 29, 35, 0.6) 100%);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    box-shadow: 0 8px 32px 0 rgba(212, 175, 55, 0.05);
+  }
+
+  .glass-panel-error {
+    background: linear-gradient(135deg, rgba(255, 180, 171, 0.05) 0%, rgba(26, 29, 35, 0.6) 100%);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 180, 171, 0.15);
+    box-shadow: 0 8px 32px 0 rgba(255, 180, 171, 0.05);
+  }
+
+  /* Chart placeholder styling */
+  .chart-glow-line {
+    stroke: #d4af37;
+    stroke-width: 3;
+    filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6));
+  }
+
   .ambient-glow {
     box-shadow: 0 0 20px rgba(212, 175, 55, 0.05);
   }

@@ -1,365 +1,801 @@
-<!DOCTYPE html><html class="dark" dir="rtl" lang="ar" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&amp;display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
-  tailwind.config = {
-    darkMode: "class",
-    theme: {
-      extend: {
-        "colors": {
-                "surface-dim": "#111317",
-                "error-container": "#93000a",
-                "primary": "#f2ca50",
-                "inverse-on-surface": "#2f3035",
-                "primary-container": "#d4af37",
-                "surface-container-low": "#1a1c20",
-                "secondary-fixed": "#6ffbbe",
-                "on-secondary-fixed": "#002113",
-                "surface-container": "#1e2024",
-                "on-error-container": "#ffdad6",
-                "outline": "#99907c",
-                "outline-variant": "#4d4635",
-                "background": "#111317",
-                "on-background": "#e2e2e8",
-                "on-secondary-container": "#00311f",
-                "on-surface-variant": "#d0c5af",
-                "tertiary-fixed-dim": "#ffb3ad",
-                "on-tertiary-fixed-variant": "#930013",
-                "on-secondary-fixed-variant": "#005236",
-                "error": "#ffb4ab",
-                "surface-bright": "#37393e",
-                "on-primary": "#3c2f00",
-                "inverse-surface": "#e2e2e8",
-                "inverse-primary": "#735c00",
-                "on-tertiary": "#68000a",
-                "primary-fixed-dim": "#e9c349",
-                "secondary": "#4edea3",
-                "surface-variant": "#333539",
-                "secondary-fixed-dim": "#4edea3",
-                "surface": "#111317",
-                "on-tertiary-container": "#900013",
-                "tertiary-fixed": "#ffdad7",
-                "on-tertiary-fixed": "#410004",
-                "on-secondary": "#003824",
-                "surface-tint": "#e9c349",
-                "on-primary-fixed": "#241a00",
-                "primary-fixed": "#ffe088",
-                "on-primary-fixed-variant": "#574500",
-                "on-primary-container": "#554300",
-                "on-error": "#690005",
-                "tertiary-container": "#ff968f",
-                "tertiary": "#ffbfba",
-                "secondary-container": "#00a572",
-                "surface-container-highest": "#333539",
-                "surface-container-high": "#282a2e",
-                "surface-container-lowest": "#0c0e12",
-                "on-surface": "#e2e2e8"
-        },
-        "borderRadius": {
-                "DEFAULT": "0.125rem",
-                "lg": "0.25rem",
-                "xl": "0.5rem",
-                "full": "0.75rem"
-        },
-        "spacing": {
-                "stack-lg": "32px",
-                "stack-sm": "8px",
-                "stack-md": "16px",
-                "gutter": "24px",
-                "container-max": "1440px",
-                "unit": "4px",
-                "margin-edge": "32px"
-        },
-        "fontFamily": {
-                "headline-lg": [
-                        "Tajawal", "Inter"
-                ],
-                "body-md": [
-                        "Tajawal", "Inter"
-                ],
-                "body-lg": [
-                        "Tajawal", "Inter"
-                ],
-                "data-mono": [
-                        "JetBrains Mono"
-                ],
-                "headline-md": [
-                        "Tajawal", "Inter"
-                ],
-                "label-caps": [
-                        "Tajawal", "Inter"
-                ],
-                "headline-lg-mobile": [
-                        "Tajawal", "Inter"
-                ]
-        },
-        "fontSize": {
-                "headline-lg": [
-                        "32px",
-                        {
-                                "lineHeight": "40px",
-                                "letterSpacing": "-0.02em",
-                                "fontWeight": "700"
-                        }
-                ],
-                "body-md": [
-                        "14px",
-                        {
-                                "lineHeight": "20px",
-                                "fontWeight": "400"
-                        }
-                ],
-                "body-lg": [
-                        "16px",
-                        {
-                                "lineHeight": "24px",
-                                "fontWeight": "400"
-                        }
-                ],
-                "data-mono": [
-                        "14px",
-                        {
-                                "lineHeight": "20px",
-                                "fontWeight": "500"
-                        }
-                ],
-                "headline-md": [
-                        "20px",
-                        {
-                                "lineHeight": "28px",
-                                "fontWeight": "600"
-                        }
-                ],
-                "label-caps": [
-                        "12px",
-                        {
-                                "lineHeight": "16px",
-                                "letterSpacing": "0.05em",
-                                "fontWeight": "600"
-                        }
-                ],
-                "headline-lg-mobile": [
-                        "24px",
-                        {
-                                "lineHeight": "32px",
-                                "letterSpacing": "-0.01em",
-                                "fontWeight": "700"
-                        }
-                ]
-        }
-},
-    },
-  }
-}catch(_e){}</script></head><body class="bg-background text-on-surface antialiased min-h-screen flex flex-col md:flex-row rtl overflow-hidden">
-<!-- TopNavBar (Mobile) -->
-<nav class="md:hidden flex justify-between items-center px-margin-edge h-16 w-full fixed top-0 right-0 z-40 bg-surface/80 backdrop-blur-xl border-b border-white/5 shadow-sm">
-<div class="font-headline-md text-headline-md font-bold text-primary">بيضة الذهب</div>
-<div class="flex gap-4">
-<span class="material-symbols-outlined text-on-surface-variant cursor-pointer active:scale-95 duration-200" data-original-icon="notifications">circle</span>
-<span class="material-symbols-outlined text-on-surface-variant cursor-pointer active:scale-95 duration-200">settings</span>
-</div>
-</nav>
-<!-- SideNavBar (Desktop) -->
-<aside class="hidden md:flex flex-col h-full py-stack-lg px-gutter rtl fixed right-0 top-0 w-[280px] z-50 bg-surface-container-lowest border-l border-white/5 shadow-2xl">
-<div class="mb-stack-lg">
-<h1 class="font-headline-md text-headline-md font-bold text-primary">بيضة الذهب</h1>
-<p class="font-label-caps text-label-caps text-on-surface-variant mt-1">إدارة التوزيع الفاخرة</p>
-</div>
-<button class="w-full bg-primary-container text-on-primary-container rounded-lg py-3 px-4 flex items-center justify-center gap-2 font-headline-md text-headline-md font-bold mb-stack-lg hover:bg-white/5 transition-all shadow-md ambient-glow">
-<span class="material-symbols-outlined">add</span>
-            إضافة فاتورة
-        </button>
-<nav class="flex-1 flex flex-col gap-2">
-<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-white/5 hover:text-primary transition-all duration-300 ease-in-out" href="#">
-<span class="material-symbols-outlined" data-original-icon="dashboard">circle</span>
-<span class="font-body-md text-body-md">لوحة القيادة</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-white/5 hover:text-primary transition-all duration-300 ease-in-out" href="#">
-<span class="material-symbols-outlined" data-original-icon="inventory_2">circle</span>
-<span class="font-body-md text-body-md">المخزون</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-white/5 hover:text-primary transition-all duration-300 ease-in-out" href="#">
-<span class="material-symbols-outlined" data-original-icon="account_balance_wallet">circle</span>
-<span class="font-body-md text-body-md">الخزينة</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-white/5 hover:text-primary transition-all duration-300 ease-in-out" href="#">
-<span class="material-symbols-outlined" data-original-icon="account_balance">circle</span>
-<span class="font-body-md text-body-md">الحسابات</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-lg font-bold transition-all duration-300 ease-in-out" href="#">
-<span class="material-symbols-outlined" data-original-icon="point_of_sale">circle</span>
-<span class="font-body-md text-body-md">نقطة البيع</span>
-</a>
-</nav>
-<div class="mt-auto flex flex-col gap-2 pt-stack-md border-t border-white/5">
+<!DOCTYPE html>
+<html class="dark" dir="rtl" lang="ar">
 
+<head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>بيضة الذهب - لوحة القيادة</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap"
+                rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+                rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+                rel="stylesheet">
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <script id="tailwind-config">
+                tailwind.config = {
+                        darkMode: "class",
+                        theme: {
+                                extend: {
+                                        "colors": {
+                                                "outline-variant": "#4d4635",
+                                                "surface-container-lowest": "#0c0e12",
+                                                "primary-fixed-dim": "#e9c349",
+                                                "primary": "#f2ca50",
+                                                "on-tertiary-fixed": "#410004",
+                                                "surface-tint": "#e9c349",
+                                                "surface-container": "#1e2024",
+                                                "error": "#ffb4ab",
+                                                "surface": "#111317",
+                                                "on-secondary-fixed-variant": "#005236",
+                                                "surface-container-low": "#1a1c20",
+                                                "on-error": "#690005",
+                                                "surface-dim": "#111317",
+                                                "on-primary-fixed-variant": "#574500",
+                                                "tertiary-fixed-dim": "#ffb3ad",
+                                                "on-surface": "#e2e2e8",
+                                                "primary-fixed": "#ffe088",
+                                                "inverse-primary": "#735c00",
+                                                "surface-bright": "#37393e",
+                                                "tertiary": "#ffbfba",
+                                                "on-tertiary": "#68000a",
+                                                "tertiary-fixed": "#ffdad7",
+                                                "primary-container": "#d4af37",
+                                                "outline": "#99907c",
+                                                "on-secondary": "#003824",
+                                                "on-error-container": "#ffdad6",
+                                                "surface-container-highest": "#333539",
+                                                "surface-container-high": "#282a2e",
+                                                "on-background": "#e2e2e8",
+                                                "error-container": "#93000a",
+                                                "on-tertiary-fixed-variant": "#930013",
+                                                "on-tertiary-container": "#900013",
+                                                "on-secondary-fixed": "#002113",
+                                                "background": "#111317",
+                                                "secondary-fixed": "#6ffbbe",
+                                                "on-primary": "#3c2f00",
+                                                "inverse-surface": "#e2e2e8",
+                                                "tertiary-container": "#ff968f",
+                                                "secondary-fixed-dim": "#4edea3",
+                                                "secondary": "#4edea3",
+                                                "on-primary-fixed": "#241a00",
+                                                "on-primary-container": "#554300",
+                                                "secondary-container": "#00a572",
+                                                "on-surface-variant": "#d0c5af",
+                                                "surface-variant": "#333539",
+                                                "inverse-on-surface": "#2f3035",
+                                                "on-secondary-container": "#00311f"
+                                        },
+                                        "borderRadius": {
+                                                "DEFAULT": "0.125rem",
+                                                "lg": "0.25rem",
+                                                "xl": "0.5rem",
+                                                "full": "0.75rem"
+                                        },
+                                        "spacing": {
+                                                "stack-lg": "32px",
+                                                "gutter": "24px",
+                                                "stack-sm": "8px",
+                                                "margin-edge": "32px",
+                                                "unit": "4px",
+                                                "container-max": "1440px",
+                                                "stack-md": "16px"
+                                        },
+                                        "fontFamily": {
+                                                "label-caps": [
+                                                        "Inter"
+                                                ],
+                                                "body-lg": [
+                                                        "Inter"
+                                                ],
+                                                "body-md": [
+                                                        "Inter"
+                                                ],
+                                                "headline-md": [
+                                                        "Inter"
+                                                ],
+                                                "headline-lg-mobile": [
+                                                        "Inter"
+                                                ],
+                                                "headline-lg": [
+                                                        "Inter"
+                                                ],
+                                                "data-mono": [
+                                                        "JetBrains Mono"
+                                                ]
+                                        },
+                                        "fontSize": {
+                                                "label-caps": [
+                                                        "12px",
+                                                        {
+                                                                "lineHeight": "16px",
+                                                                "letterSpacing": "0.05em",
+                                                                "fontWeight": "600"
+                                                        }
+                                                ],
+                                                "body-lg": [
+                                                        "16px",
+                                                        {
+                                                                "lineHeight": "24px",
+                                                                "fontWeight": "400"
+                                                        }
+                                                ],
+                                                "body-md": [
+                                                        "14px",
+                                                        {
+                                                                "lineHeight": "20px",
+                                                                "fontWeight": "400"
+                                                        }
+                                                ],
+                                                "headline-md": [
+                                                        "20px",
+                                                        {
+                                                                "lineHeight": "28px",
+                                                                "fontWeight": "600"
+                                                        }
+                                                ],
+                                                "headline-lg-mobile": [
+                                                        "24px",
+                                                        {
+                                                                "lineHeight": "32px",
+                                                                "letterSpacing": "-0.01em",
+                                                                "fontWeight": "700"
+                                                        }
+                                                ],
+                                                "headline-lg": [
+                                                        "32px",
+                                                        {
+                                                                "lineHeight": "40px",
+                                                                "letterSpacing": "-0.02em",
+                                                                "fontWeight": "700"
+                                                        }
+                                                ],
+                                                "data-mono": [
+                                                        "14px",
+                                                        {
+                                                                "lineHeight": "20px",
+                                                                "fontWeight": "500"
+                                                        }
+                                                ]
+                                        }
+                                },
+                        },
+                }
+        </script>
+        <style>
+                .material-symbols-outlined {
+                        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+                }
 
-</div>
-</aside>
-<!-- Main Content Area -->
-<main class="flex-1 flex flex-col h-screen md:mr-[280px] pt-16 md:pt-0 bg-[#0A0B0D] relative z-10">
-<!-- TopAppBar (Desktop) -->
-<header class="hidden md:flex justify-between items-center px-margin-edge h-16 w-full bg-surface/80 backdrop-blur-xl border-b border-white/5 shadow-sm sticky top-0 z-40">
-<div class="flex-1 flex items-center">
-<div class="relative w-96">
-<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
-<input class="w-full bg-surface-container-low border border-white/5 rounded-full py-2 pr-10 pl-4 text-on-surface focus:outline-none focus:border-primary transition-colors font-body-md text-body-md placeholder-on-surface-variant/50" placeholder="البحث عن منتج، عميل، أو فاتورة..." type="text">
-</div>
-</div>
-<div class="flex items-center gap-4">
-<button class="p-2 rounded-full hover:bg-white/5 transition-colors text-on-surface-variant">
+                .material-symbols-outlined.fill {
+                        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+                }
 
-</button>
-<div class="w-8 h-8 rounded-full bg-surface-container-high border border-white/10 overflow-hidden flex items-center justify-center">
+                /* Glassmorphism utilities */
+                .glass-panel {
+                        background: rgba(26, 29, 35, 0.4);
+                        backdrop-filter: blur(24px);
+                        -webkit-backdrop-filter: blur(24px);
+                        border: 1px solid rgba(255, 255, 255, 0.05);
+                        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+                }
 
-</div>
-</div>
-</header>
-<!-- POS Canvas -->
-<div class="flex-1 p-gutter overflow-hidden flex flex-col lg:flex-row gap-gutter">
-<!-- Right Panel: Invoice Details -->
-<div class="w-full lg:w-1/3 glass-panel rounded-xl flex flex-col h-full overflow-y-auto">
-<div class="p-stack-md border-b border-white/5 flex justify-between items-center bg-surface-container-low/30">
-<h2 class="font-headline-md text-headline-md font-bold text-primary">تفاصيل الفاتورة</h2>
-<span class="font-data-mono text-data-mono text-on-surface-variant">#INV-2023-089</span>
-</div>
-<div class="p-stack-md flex-1 flex flex-col gap-stack-md">
-<!-- Invoice Type Toggle -->
-<div class="flex bg-surface-container-low rounded-lg p-1 border border-white/5">
-<button class="flex-1 py-2 text-center rounded-md bg-primary-container text-on-primary-container font-body-md text-body-md font-bold transition-all shadow-sm">فاتورة بيع</button>
-<button class="flex-1 py-2 text-center rounded-md text-on-surface-variant hover:text-on-surface transition-all font-body-md text-body-md">فاتورة شراء</button>
-</div>
-<!-- Payment Type Toggle -->
-<div class="flex gap-4">
-<label class="flex items-center gap-2 cursor-pointer">
-<input checked="" class="text-primary focus:ring-primary bg-[#0A0B0D] border-outline-variant" name="payment_type" type="radio">
-<span class="font-body-md text-body-md text-on-surface">نقدي (فوري)</span>
-</label>
-<label class="flex items-center gap-2 cursor-pointer">
-<input class="text-primary focus:ring-primary bg-[#0A0B0D] border-outline-variant" name="payment_type" type="radio">
-<span class="font-body-md text-body-md text-on-surface">آجل (ذمم)</span>
-</label>
-</div>
-<!-- Entity Selection -->
-<div class="flex flex-col gap-2">
-<label class="font-label-caps text-label-caps text-on-surface-variant">العميل</label>
-<div class="relative">
-<select class="w-full input-obsidian text-on-surface rounded-lg py-2.5 px-3 font-body-md text-body-md appearance-none">
-<option>عميل نقدي عام</option>
-<option>مؤسسة الرمال الذهبية</option>
-<option>شركة الأفق الفاخر</option>
-</select>
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none" data-original-icon="expand_more">circle</span>
-</div>
-</div>
-<!-- Date & Ref -->
-<div class="grid grid-cols-2 gap-4">
-<div class="flex flex-col gap-2">
-<label class="font-label-caps text-label-caps text-on-surface-variant">التاريخ</label>
-<input class="w-full input-obsidian text-on-surface rounded-lg py-2 px-3 font-data-mono text-data-mono" type="date" value="2023-10-27">
-</div>
-<div class="flex flex-col gap-2">
-<label class="font-label-caps text-label-caps text-on-surface-variant">المرجع</label>
-<input class="w-full input-obsidian text-on-surface rounded-lg py-2 px-3 font-body-md text-body-md" placeholder="اختياري" type="text">
-</div>
-</div>
-<div class="flex flex-col gap-2 flex-1">
-<label class="font-label-caps text-label-caps text-on-surface-variant">ملاحظات</label>
-<textarea class="w-full input-obsidian text-on-surface rounded-lg py-2 px-3 font-body-md text-body-md flex-1 resize-none" placeholder="أضف ملاحظات الفاتورة هنا..."></textarea>
-</div>
-</div>
-</div>
-<!-- Left Panel: Cart & Products -->
-<div class="w-full lg:w-2/3 flex flex-col gap-stack-md h-full">
-<!-- Search & Quick Add -->
+                .glass-panel-glow {
+                        background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(26, 29, 35, 0.6) 100%);
+                        backdrop-filter: blur(24px);
+                        -webkit-backdrop-filter: blur(24px);
+                        border: 1px solid rgba(212, 175, 55, 0.15);
+                        box-shadow: 0 8px 32px 0 rgba(212, 175, 55, 0.05);
+                }
 
-<!-- Cart Table -->
-<div class="glass-panel rounded-xl flex-1 overflow-hidden flex flex-col">
-<div class="overflow-x-auto flex-1">
-<table class="w-full text-right border-collapse">
-<thead>
-<tr class="bg-surface-container-low/50 border-b border-white/5">
-<th class="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant font-medium w-12">#</th>
-<th class="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant font-medium text-right">الصنف</th>
-<th class="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant font-medium text-center w-32">الكمية</th>
-<th class="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant font-medium text-right w-32">السعر (ر.س)</th>
-<th class="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant font-medium text-right w-32">الإجمالي</th>
-<th class="py-3 px-4 w-12"></th>
-</tr>
-</thead>
-<tbody id="cart-body">
-<!-- Row 1 -->
-<tr class="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
-<td class="py-3 px-4 font-data-mono text-data-mono text-on-surface-variant">1</td>
-<td class="py-3 px-4">
-<div class="font-body-md text-body-md font-medium text-on-surface">عطر عود ملكي - 100 مل</div>
-<div class="font-data-mono text-data-mono text-on-surface-variant/70 text-[11px]">SKU: PRF-092-OU</div>
-</td>
-<td class="py-3 px-4">
-<div class="flex items-center justify-center gap-2 bg-[#0A0B0D] rounded-md border border-white/10 p-1">
-<button class="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-white/10 hover:text-white transition-colors"><span class="material-symbols-outlined text-[16px]">add</span></button>
-<span class="font-data-mono text-data-mono w-6 text-center">2</span>
-<button class="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-white/10 hover:text-white transition-colors"><span class="material-symbols-outlined text-[16px]">remove</span></button>
-</div>
-</td>
-<td class="py-3 px-4">
-<input class="w-full input-obsidian text-on-surface rounded-md py-1.5 px-2 font-data-mono text-data-mono text-right" onchange="updateRowTotal(this, 2)" type="number" value="450.00">
-</td>
-<td class="py-3 px-4 font-data-mono text-data-mono font-medium text-primary text-right row-total">900.00</td>
-<td class="py-3 px-4">
-<button class="text-error/70 hover:text-error opacity-0 group-hover:opacity-100 transition-all"><span class="material-symbols-outlined">delete</span></button>
-</td>
-</tr>
-<!-- Row 2 -->
-<tr class="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
-<td class="py-3 px-4 font-data-mono text-data-mono text-on-surface-variant">2</td>
-<td class="py-3 px-4">
-<div class="font-body-md text-body-md font-medium text-on-surface">مجموعة العناية الفاخرة</div>
-<div class="font-data-mono text-data-mono text-on-surface-variant/70 text-[11px]">SKU: SET-104-LX</div>
-</td>
-<td class="py-3 px-4">
-<div class="flex items-center justify-center gap-2 bg-[#0A0B0D] rounded-md border border-white/10 p-1">
-<button class="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-white/10 hover:text-white transition-colors"><span class="material-symbols-outlined text-[16px]">add</span></button>
-<span class="font-data-mono text-data-mono w-6 text-center">1</span>
-<button class="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-white/10 hover:text-white transition-colors"><span class="material-symbols-outlined text-[16px]">remove</span></button>
-</div>
-</td>
-<td class="py-3 px-4">
-<input class="w-full input-obsidian text-on-surface rounded-md py-1.5 px-2 font-data-mono text-data-mono text-right" onchange="updateRowTotal(this, 1)" type="number" value="1250.00">
-</td>
-<td class="py-3 px-4 font-data-mono text-data-mono font-medium text-primary text-right row-total">1250.00</td>
-<td class="py-3 px-4">
-<button class="text-error/70 hover:text-error opacity-0 group-hover:opacity-100 transition-all"><span class="material-symbols-outlined">delete</span></button>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<!-- Totals & Action Bar -->
-<div class="glass-panel rounded-xl p-stack-md flex flex-col md:flex-row justify-between items-end gap-stack-lg border-t-2 border-primary/20">
-<div class="w-full md:w-1/2 flex flex-col gap-2">
-<div class="flex justify-between items-center text-on-surface-variant">
-<span class="font-body-md text-body-md">المجموع الفرعي:</span>
-<span class="font-data-mono text-data-mono" id="subtotal">2,150.00 ر.س</span>
-</div>
-<div class="flex justify-between items-center text-on-surface-variant">
-<span class="font-body-md text-body-md">ضريبة القيمة المضافة (15%):</span>
-<span class="font-data-mono text-data-mono" id="tax">322.50 ر.س</span>
-</div>
-<div class="h-px bg-white/10 my-1 w-full"></div>
-<div class="flex justify-between items-center text-primary">
-<span class="font-headline-md text-headline-md font-bold">الإجمالي الكلي:</span>
-<span class="font-headline-lg-mobile text-headline-lg-mobile font-bold font-data-mono" id="grand-total">2,472.50 ر.س</span>
-</div>
-</div>
-<div class="w-full md:w-auto mt-auto flex gap-4">
-<button class="px-6 py-4 rounded-lg border border-white/10 text-on-surface hover:bg-white/5 transition-colors font-body-md text-body-md font-medium">
-                            إلغاء
+                .glass-panel-error {
+                        background: linear-gradient(135deg, rgba(255, 180, 171, 0.05) 0%, rgba(26, 29, 35, 0.6) 100%);
+                        backdrop-filter: blur(24px);
+                        -webkit-backdrop-filter: blur(24px);
+                        border: 1px solid rgba(255, 180, 171, 0.15);
+                        box-shadow: 0 8px 32px 0 rgba(255, 180, 171, 0.05);
+                }
+
+                /* Chart placeholder styling */
+                .chart-glow-line {
+                        stroke: #d4af37;
+                        stroke-width: 3;
+                        filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6));
+                }
+
+                .table-row-hover {
+                        transition: background-color 0.2s ease;
+                }
+
+                .table-row-hover:hover {
+                        background-color: rgba(37, 41, 48, 0.6);
+                }
+        </style>
+</head>
+
+<body class="bg-background text-on-surface font-body-md min-h-screen overflow-x-hidden antialiased">
+        <!-- TopAppBar -->
+        <header
+                class="fixed top-0 left-0 right-0 z-50 flex flex-row-reverse justify-between items-center px-margin-edge h-20 bg-surface/80 backdrop-blur-2xl border-b border-surface-variant/10 shadow-sm transition-all">
+                <!-- Brand / Search -->
+                <div class="flex flex-row-reverse items-center gap-stack-lg">
+                        <!-- Brand Logo Space (SideNavBar handles primary branding, but we keep structure) -->
+                        <div class="hidden">
+                                <span class="font-headline-lg text-headline-lg text-primary tracking-tight">بيضة
+                                        الذهب</span>
+                        </div>
+                        <!-- Search -->
+                        <div class="relative hidden md:flex items-center">
+                                <span
+                                        class="material-symbols-outlined absolute right-4 text-on-surface-variant">search</span>
+                                <input class="w-80 h-10 bg-surface-container-low border border-surface-variant rounded-full pr-12 pl-4 text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder-on-surface-variant/50"
+                                        placeholder="البحث في النظام..." type="text">
+                        </div>
+                </div>
+                <!-- Trailing Actions -->
+                <div class="flex flex-row-reverse items-center gap-stack-md">
+                        <button
+                                class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high/50 transition-colors cursor-pointer active:scale-95 duration-200 relative group">
+                                <span class="material-symbols-outlined">notifications</span>
+                                <span
+                                        class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full ring-2 ring-surface"></span>
                         </button>
-<button class="flex-1 md:flex-none px-12 py-4 rounded-lg bg-primary text-[#1A1D23] font-headline-md text-headline-md font-bold hover:bg-primary-fixed transition-colors shadow-lg ambient-glow flex items-center justify-center gap-2">
-<span class="material-symbols-outlined font-bold" data-original-icon="check_circle">circle</span>
-                            تأكيد الفاتورة
+                        <button
+                                class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high/50 transition-colors cursor-pointer active:scale-95 duration-200">
+                                <span class="material-symbols-outlined">settings</span>
                         </button>
-</div>
-</div>
-</div>
-</div>
-</main>
+                        <div class="w-px h-6 bg-surface-variant mx-2"></div>
+                        <div class="flex items-center gap-3 cursor-pointer">
+                                <div class="text-right hidden sm:block">
+                                        <div class="font-body-md text-body-md text-on-surface font-medium">المدير
+                                                التنفيذي</div>
+                                        <div class="font-label-caps text-label-caps text-on-surface-variant">الإدارة
+                                                العليا</div>
+                                </div>
+                                <img class="w-10 h-10 rounded-full border-2 border-surface-variant object-cover"
+                                        data-alt="A highly detailed close-up portrait of a professional executive in a dark, moody corporate office setting, illuminated by soft golden ambient light. High contrast, sharp focus, capturing a confident demeanor in a luxury atelier environment."
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4ot4g4s3GC37-4bvfHkCJpMzW7pSVwzk48liFykuEr86lSyJuT_A7SPsvr8pJRl8Gbmb4MCE5xM5avA_XVuTFnxzeIBvm7zeKzORq-d6cOvzS2UzrVHZR0qRI2qd-pYwrYo4_LXcIXwDfmivGFzSP10DD1cAzEkeYyyLgdcZoj2n-W2QAGvxhCKVOAtYWTGMBidnbXprxUYojZuNU5wDUlxE3VT2WPpbcXdAgWT2LXNlBi_WM6_zj">
+                        </div>
+                </div>
+        </header>
+        <!-- SideNavBar -->
+        <nav
+                class="fixed right-0 top-0 bottom-0 z-40 flex flex-col pt-24 pb-8 px-stack-md rtl bg-surface-container/60 backdrop-blur-2xl border-l border-surface-variant/10 shadow-xl docked right-0 h-full w-72">
+                <!-- Brand Area -->
+                <div class="flex flex-col items-start px-4 mb-10 gap-2">
+                        <div class="flex items-center gap-3">
+                                <div
+                                        class="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-primary fill">egg_alt</span>
+                                </div>
+                                <span class="font-headline-md text-headline-md text-primary">بيضة الذهب</span>
+                        </div>
+                        <span
+                                class="font-label-caps text-label-caps text-on-surface-variant pr-14 tracking-widest uppercase">نظام
+                                الإدارة التنفيذي</span>
+                </div>
+                <!-- Main Navigation -->
+                <div class="flex flex-col gap-2 flex-grow">
+                        <!-- Active Item -->
+                        <a class="flex flex-row-reverse items-center gap-stack-md text-on-primary bg-primary rounded-xl px-4 py-3 group-hover:translate-x-1 duration-300 font-body-md text-body-md font-medium shadow-[0_0_15px_rgba(212,175,55,0.15)]"
+                                href="#">
+                                <span class="material-symbols-outlined fill">dashboard</span>
+                                <span class="">لوحة القيادة</span>
+                        </a>
+                        <a class="flex flex-row-reverse items-center gap-stack-md text-on-surface-variant hover:text-on-surface px-4 py-3 hover:bg-surface-container-highest/40 transition-all rounded-xl group-hover:translate-x-1 duration-300 font-body-md text-body-md"
+                                href="#">
+                                <span class="material-symbols-outlined">point_of_sale</span>
+                                <span class="">نقطة البيع</span>
+                        </a>
+                        <a class="flex flex-row-reverse items-center gap-stack-md text-on-surface-variant hover:text-on-surface px-4 py-3 hover:bg-surface-container-highest/40 transition-all rounded-xl group-hover:translate-x-1 duration-300 font-body-md text-body-md"
+                                href="#">
+                                <span class="material-symbols-outlined">account_balance_wallet</span>
+                                <span class="">الخزينة</span>
+                        </a>
+                        <a class="flex flex-row-reverse items-center gap-stack-md text-on-surface-variant hover:text-on-surface px-4 py-3 hover:bg-surface-container-highest/40 transition-all rounded-xl group-hover:translate-x-1 duration-300 font-body-md text-body-md"
+                                href="#">
+                                <span class="material-symbols-outlined">inventory_2</span>
+                                <span class="">المخزن</span>
+                        </a>
+                        <a class="flex flex-row-reverse items-center gap-stack-md text-on-surface-variant hover:text-on-surface px-4 py-3 hover:bg-surface-container-highest/40 transition-all rounded-xl group-hover:translate-x-1 duration-300 font-body-md text-body-md"
+                                href="#">
+                                <span class="material-symbols-outlined">assessment</span>
+                                <span class="">التقارير</span>
+                        </a>
+                </div>
+                <!-- Footer Navigation -->
+                <div class="flex flex-col gap-2 mt-auto pt-6 border-t border-surface-variant/20">
+                        <a class="flex flex-row-reverse items-center gap-stack-md text-on-surface-variant hover:text-on-surface px-4 py-3 hover:bg-surface-container-highest/40 transition-all rounded-xl group-hover:translate-x-1 duration-300 font-body-md text-body-md"
+                                href="#">
+                                <span class="material-symbols-outlined">settings</span>
+                                <span class="">الإعدادات</span>
+                        </a>
+                        <a class="flex flex-row-reverse items-center gap-stack-md text-on-surface-variant hover:text-error px-4 py-3 hover:bg-surface-container-highest/40 transition-all rounded-xl group-hover:translate-x-1 duration-300 font-body-md text-body-md"
+                                href="#">
+                                <span class="material-symbols-outlined">logout</span>
+                                <span class="">تسجيل الخروج</span>
+                        </a>
+                </div>
+        </nav>
+        <!-- Main Content Canvas -->
+        <main class="pr-72 pt-28 pb-12 pl-margin-edge min-h-screen">
+                <div class="max-w-[1440px] mx-auto flex flex-col gap-gutter">
+                        <!-- Header Section -->
+                        <div class="flex justify-between items-end mb-4">
+                                <div>
+                                        <h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">نظرة عامة
+                                        </h1>
+                                        <p class="font-body-md text-body-md text-on-surface-variant">ملخص الأداء المالي
+                                                والتشغيلي لليوم</p>
+                                </div>
+                                <div class="flex gap-4">
+
+                                        <button
+                                                class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-body-md text-body-md font-medium hover:bg-primary-fixed transition-colors shadow-[0_4px_20px_rgba(212,175,55,0.2)] flex items-center gap-2">
+                                                <span class="material-symbols-outlined text-lg">download</span>
+                                                تصدير التقرير
+                                        </button>
+                                </div>
+                        </div>
+                        <!-- Top Row: KPI Cards (Bento Grid Style) -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+                                <!-- Card 1: Treasury -->
+                                <div
+                                        class="glass-panel-glow rounded-2xl p-6 flex flex-col gap-4 relative overflow-hidden group">
+                                        <div
+                                                class="absolute -right-8 -top-8 w-32 h-32 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors duration-500">
+                                        </div>
+                                        <div class="flex justify-between items-start relative z-10">
+                                                <div
+                                                        class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center border border-surface-variant">
+                                                        <span
+                                                                class="material-symbols-outlined text-primary text-2xl">account_balance</span>
+                                                </div>
+                                                <span
+                                                        class="flex items-center gap-1 text-secondary font-data-mono text-sm bg-secondary/10 px-2 py-1 rounded-md">
+                                                        <span
+                                                                class="material-symbols-outlined text-sm">trending_up</span>
+                                                        +2.4%
+                                                </span>
+                                        </div>
+                                        <div class="flex flex-col gap-1 relative z-10 mt-2">
+                                                <h3 class="font-body-md text-body-md text-on-surface-variant">رصيد
+                                                        الخزينة</h3>
+                                                <div
+                                                        class="font-headline-lg text-headline-lg text-on-surface font-data-mono tracking-tight flex items-baseline gap-1">
+                                                        1,250,400 <span
+                                                                class="text-sm text-on-surface-variant font-body-md">ج.م</span>
+                                                </div>
+                                        </div>
+                                </div>
+                                <!-- Card 2: Sales -->
+                                <div
+                                        class="glass-panel rounded-2xl p-6 flex flex-col gap-4 relative overflow-hidden group">
+                                        <div
+                                                class="absolute -right-8 -top-8 w-32 h-32 bg-surface-variant/20 rounded-full blur-2xl group-hover:bg-surface-variant/30 transition-colors duration-500">
+                                        </div>
+                                        <div class="flex justify-between items-start relative z-10">
+                                                <div
+                                                        class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center border border-surface-variant">
+                                                        <span
+                                                                class="material-symbols-outlined text-on-surface text-2xl">point_of_sale</span>
+                                                </div>
+                                                <span
+                                                        class="flex items-center gap-1 text-secondary font-data-mono text-sm bg-secondary/10 px-2 py-1 rounded-md">
+                                                        <span
+                                                                class="material-symbols-outlined text-sm">trending_up</span>
+                                                        +12.1%
+                                                </span>
+                                        </div>
+                                        <div class="flex flex-col gap-1 relative z-10 mt-2">
+                                                <h3 class="font-body-md text-body-md text-on-surface-variant">مبيعات
+                                                        اليوم</h3>
+                                                <div
+                                                        class="font-headline-lg text-headline-lg text-on-surface font-data-mono tracking-tight flex items-baseline gap-1">
+                                                        45,800 <span
+                                                                class="text-sm text-on-surface-variant font-body-md">ج.م</span>
+                                                </div>
+                                        </div>
+                                </div>
+                                <!-- Card 3: Net Profit -->
+                                <div
+                                        class="glass-panel rounded-2xl p-6 flex flex-col gap-4 relative overflow-hidden group">
+                                        <div
+                                                class="absolute -right-8 -top-8 w-32 h-32 bg-surface-variant/20 rounded-full blur-2xl group-hover:bg-surface-variant/30 transition-colors duration-500">
+                                        </div>
+                                        <div class="flex justify-between items-start relative z-10">
+                                                <div
+                                                        class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center border border-surface-variant">
+                                                        <span
+                                                                class="material-symbols-outlined text-on-surface text-2xl">monitoring</span>
+                                                </div>
+                                                <span
+                                                        class="flex items-center gap-1 text-secondary font-data-mono text-sm bg-secondary/10 px-2 py-1 rounded-md">
+                                                        <span
+                                                                class="material-symbols-outlined text-sm">trending_up</span>
+                                                        +8.5%
+                                                </span>
+                                        </div>
+                                        <div class="flex flex-col gap-1 relative z-10 mt-2">
+                                                <h3 class="font-body-md text-body-md text-on-surface-variant">صافي أرباح
+                                                        اليوم</h3>
+                                                <div
+                                                        class="font-headline-lg text-headline-lg text-on-surface font-data-mono tracking-tight flex items-baseline gap-1">
+                                                        12,450 <span
+                                                                class="text-sm text-on-surface-variant font-body-md">ج.م</span>
+                                                </div>
+                                        </div>
+                                </div>
+                                <!-- Card 4: Spoilage Loss (Error State) -->
+                                <div
+                                        class="glass-panel-error rounded-2xl p-6 flex flex-col gap-4 relative overflow-hidden group">
+                                        <div
+                                                class="absolute -right-8 -top-8 w-32 h-32 bg-error/10 rounded-full blur-2xl group-hover:bg-error/20 transition-colors duration-500">
+                                        </div>
+                                        <div class="flex justify-between items-start relative z-10">
+                                                <div
+                                                        class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center border border-error/20">
+                                                        <span
+                                                                class="material-symbols-outlined text-error text-2xl">broken_image</span>
+                                                </div>
+                                                <span
+                                                        class="flex items-center gap-1 text-error font-data-mono text-sm bg-error/10 px-2 py-1 rounded-md">
+                                                        <span
+                                                                class="material-symbols-outlined text-sm">trending_down</span>
+                                                        -1.2%
+                                                </span>
+                                        </div>
+                                        <div class="flex flex-col gap-1 relative z-10 mt-2">
+                                                <h3 class="font-body-md text-body-md text-error/80">خسائر الهالك</h3>
+                                                <div
+                                                        class="font-headline-lg text-headline-lg text-error font-data-mono tracking-tight flex items-baseline gap-1">
+                                                        1,200 <span
+                                                                class="text-sm text-error/80 font-body-md">ج.م</span>
+                                                </div>
+                                        </div>
+                                </div>
+                        </div>
+                        <!-- Middle Section: Charts -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter mt-4">
+                                <!-- Right Chart: Monthly Profit Trends -->
+                                <div class="glass-panel rounded-2xl p-6 flex flex-col gap-6">
+                                        <div class="flex justify-between items-center">
+                                                <h2 class="font-headline-md text-headline-md text-on-surface">اتجاهات
+                                                        الأرباح الشهرية</h2>
+                                                <button
+                                                        class="p-2 rounded-lg hover:bg-surface-variant/50 transition-colors text-on-surface-variant">
+                                                        <span class="material-symbols-outlined">more_vert</span>
+                                                </button>
+                                        </div>
+                                        <div class="h-64 w-full relative">
+                                                <!-- Abstracted Line Chart Representation using SVG for layout stability -->
+                                                <svg class="w-full h-full" preserveAspectRatio="none"
+                                                        viewBox="0 0 500 200">
+                                                        <!-- Grid Lines -->
+                                                        <line stroke="rgba(255,255,255,0.05)" stroke-width="1" x1="0"
+                                                                x2="500" y1="150" y2="150"></line>
+                                                        <line stroke="rgba(255,255,255,0.05)" stroke-width="1" x1="0"
+                                                                x2="500" y1="100" y2="100"></line>
+                                                        <line stroke="rgba(255,255,255,0.05)" stroke-width="1" x1="0"
+                                                                x2="500" y1="50" y2="50"></line>
+                                                        <!-- Glowing Area Under Line -->
+                                                        <path d="M0,180 L100,120 L200,140 L300,80 L400,90 L500,40 L500,200 L0,200 Z"
+                                                                fill="url(#goldGradient)" opacity="0.1"></path>
+                                                        <!-- Golden Glowing Line -->
+                                                        <path class="chart-glow-line"
+                                                                d="M0,180 L100,120 L200,140 L300,80 L400,90 L500,40"
+                                                                fill="none"></path>
+                                                        <!-- Data Points -->
+                                                        <circle cx="100" cy="120" fill="#d4af37" r="4"></circle>
+                                                        <circle cx="200" cy="140" fill="#d4af37" r="4"></circle>
+                                                        <circle cx="300" cy="80" fill="#d4af37" r="4"></circle>
+                                                        <circle cx="400" cy="90" fill="#d4af37" r="4"></circle>
+                                                        <circle cx="500" cy="40" fill="#111317" r="6" stroke="#d4af37"
+                                                                stroke-width="2"></circle>
+                                                        <defs>
+                                                                <linearGradient id="goldGradient" x1="0" x2="0" y1="0"
+                                                                        y2="1">
+                                                                        <stop offset="0%" stop-color="#d4af37"
+                                                                                stop-opacity="1"></stop>
+                                                                        <stop offset="100%" stop-color="#d4af37"
+                                                                                stop-opacity="0"></stop>
+                                                                </linearGradient>
+                                                        </defs>
+                                                </svg>
+                                                <!-- Axis Labels -->
+                                                <div
+                                                        class="absolute bottom-0 left-0 w-full flex justify-between text-xs font-data-mono text-on-surface-variant pt-2 mt-2 border-t border-surface-variant/20">
+                                                        <span class="">يناير</span>
+                                                        <span class="">فبراير</span>
+                                                        <span class="">مارس</span>
+                                                        <span class="">أبريل</span>
+                                                        <span class="">مايو</span>
+                                                        <span class="">يونيو</span>
+                                                </div>
+                                        </div>
+                                </div>
+                                <!-- Left Chart: Sales by Product -->
+                                <div class="glass-panel rounded-2xl p-6 flex flex-col gap-6">
+                                        <div class="flex justify-between items-center">
+                                                <h2 class="font-headline-md text-headline-md text-on-surface">المبيعات
+                                                        حسب المنتج</h2>
+                                                <div class="flex gap-2">
+                                                        <span
+                                                                class="flex items-center gap-1 text-xs font-body-md text-on-surface-variant">
+                                                                <div class="w-2 h-2 rounded-full bg-primary"></div> بلدي
+                                                        </span>
+                                                        <span
+                                                                class="flex items-center gap-1 text-xs font-body-md text-on-surface-variant">
+                                                                <div class="w-2 h-2 rounded-full bg-surface-variant">
+                                                                </div> أبيض
+                                                        </span>
+                                                        <span
+                                                                class="flex items-center gap-1 text-xs font-body-md text-on-surface-variant">
+                                                                <div class="w-2 h-2 rounded-full bg-outline"></div> أحمر
+                                                        </span>
+                                                </div>
+                                        </div>
+                                        <div class="h-64 w-full relative flex items-end justify-around pb-6">
+                                                <!-- Background Grid -->
+                                                <div
+                                                        class="absolute inset-0 flex flex-col justify-between pb-6 pointer-events-none">
+                                                        <div class="w-full h-px bg-surface-variant/20"></div>
+                                                        <div class="w-full h-px bg-surface-variant/20"></div>
+                                                        <div class="w-full h-px bg-surface-variant/20"></div>
+                                                        <div class="w-full h-px bg-surface-variant/20"></div>
+                                                </div>
+                                                <!-- Bar Groups -->
+                                                <div class="flex flex-col items-center gap-2 z-10 w-16">
+                                                        <div class="flex items-end gap-1 h-48 w-full justify-center">
+                                                                <div
+                                                                        class="w-3 bg-primary rounded-t-sm h-[80%] hover:brightness-125 transition-all">
+                                                                </div>
+                                                                <div
+                                                                        class="w-3 bg-surface-variant rounded-t-sm h-[40%] hover:brightness-125 transition-all">
+                                                                </div>
+                                                                <div
+                                                                        class="w-3 bg-outline rounded-t-sm h-[60%] hover:brightness-125 transition-all">
+                                                                </div>
+                                                        </div>
+                                                        <span
+                                                                class="font-data-mono text-xs text-on-surface-variant">السبت</span>
+                                                </div>
+                                                <div class="flex flex-col items-center gap-2 z-10 w-16">
+                                                        <div class="flex items-end gap-1 h-48 w-full justify-center">
+                                                                <div
+                                                                        class="w-3 bg-primary rounded-t-sm h-[60%] hover:brightness-125 transition-all">
+                                                                </div>
+                                                                <div
+                                                                        class="w-3 bg-surface-variant rounded-t-sm h-[50%] hover:brightness-125 transition-all">
+                                                                </div>
+                                                                <div
+                                                                        class="w-3 bg-outline rounded-t-sm h-[45%] hover:brightness-125 transition-all">
+                                                                </div>
+                                                        </div>
+                                                        <span
+                                                                class="font-data-mono text-xs text-on-surface-variant">الأحد</span>
+                                                </div>
+                                                <div class="flex flex-col items-center gap-2 z-10 w-16">
+                                                        <div class="flex items-end gap-1 h-48 w-full justify-center">
+                                                                <div
+                                                                        class="w-3 bg-primary rounded-t-sm h-[90%] hover:brightness-125 transition-all relative">
+                                                                        <div
+                                                                                class="absolute -top-8 left-1/2 -translate-x-1/2 bg-surface-container border border-primary/30 text-primary text-xs font-data-mono py-1 px-2 rounded opacity-0 hover:opacity-100 transition-opacity">
+                                                                                90%</div>
+                                                                </div>
+                                                                <div
+                                                                        class="w-3 bg-surface-variant rounded-t-sm h-[30%] hover:brightness-125 transition-all">
+                                                                </div>
+                                                                <div
+                                                                        class="w-3 bg-outline rounded-t-sm h-[55%] hover:brightness-125 transition-all">
+                                                                </div>
+                                                        </div>
+                                                        <span
+                                                                class="font-data-mono text-xs text-on-surface-variant">الإثنين</span>
+                                                </div>
+                                                <div class="flex flex-col items-center gap-2 z-10 w-16">
+                                                        <div class="flex items-end gap-1 h-48 w-full justify-center">
+                                                                <div
+                                                                        class="w-3 bg-primary rounded-t-sm h-[70%] hover:brightness-125 transition-all">
+                                                                </div>
+                                                                <div
+                                                                        class="w-3 bg-surface-variant rounded-t-sm h-[65%] hover:brightness-125 transition-all">
+                                                                </div>
+                                                                <div
+                                                                        class="w-3 bg-outline rounded-t-sm h-[40%] hover:brightness-125 transition-all">
+                                                                </div>
+                                                        </div>
+                                                        <span
+                                                                class="font-data-mono text-xs text-on-surface-variant">الثلاثاء</span>
+                                                </div>
+                                                <div class="flex flex-col items-center gap-2 z-10 w-16">
+                                                        <div class="flex items-end gap-1 h-48 w-full justify-center">
+                                                                <div
+                                                                        class="w-3 bg-primary rounded-t-sm h-[85%] hover:brightness-125 transition-all">
+                                                                </div>
+                                                                <div
+                                                                        class="w-3 bg-surface-variant rounded-t-sm h-[45%] hover:brightness-125 transition-all">
+                                                                </div>
+                                                                <div
+                                                                        class="w-3 bg-outline rounded-t-sm h-[75%] hover:brightness-125 transition-all">
+                                                                </div>
+                                                        </div>
+                                                        <span
+                                                                class="font-data-mono text-xs text-on-surface-variant">الأربعاء</span>
+                                                </div>
+                                        </div>
+                                </div>
+                        </div>
+                        <!-- Bottom Section: Recent Activity Table -->
+                        <div class="glass-panel rounded-2xl overflow-hidden mt-4 flex flex-col">
+                                <div
+                                        class="p-6 border-b border-surface-variant/20 flex justify-between items-center bg-surface-container-low/30">
+                                        <h2 class="font-headline-md text-headline-md text-on-surface">آخر العمليات</h2>
+                                        <button
+                                                class="text-primary hover:text-primary-fixed-dim font-body-md text-sm transition-colors flex items-center gap-1">
+                                                عرض الكل
+                                                <span class="material-symbols-outlined text-sm">arrow_back</span>
+                                        </button>
+                                </div>
+                                <div class="overflow-x-auto">
+                                        <table class="w-full text-right border-collapse">
+                                                <thead>
+                                                        <tr
+                                                                class="bg-surface-container-highest/20 font-label-caps text-label-caps text-on-surface-variant border-b border-surface-variant/20">
+                                                                <th class="py-4 px-6 font-medium">العميل / الجهة</th>
+                                                                <th class="py-4 px-6 font-medium">نوع العملية</th>
+                                                                <th class="py-4 px-6 font-medium">المبلغ</th>
+                                                                <th class="py-4 px-6 font-medium">الوقت</th>
+                                                                <th class="py-4 px-6 font-medium">الحالة</th>
+                                                        </tr>
+                                                </thead>
+                                                <tbody class="font-body-md text-body-md">
+                                                        <!-- Row 1 -->
+                                                        <tr class="table-row-hover border-b border-white/[0.02]">
+                                                                <td class="py-4 px-6">
+                                                                        <div class="flex items-center gap-3">
+                                                                                <div
+                                                                                        class="w-8 h-8 rounded-full bg-surface-container border border-surface-variant flex items-center justify-center text-xs font-bold text-on-surface">
+                                                                                        م.س</div>
+                                                                                <span
+                                                                                        class="text-on-surface font-medium">مخبز
+                                                                                        السلام</span>
+                                                                        </div>
+                                                                </td>
+                                                                <td class="py-4 px-6 text-on-surface-variant">مبيعات -
+                                                                        جملة</td>
+                                                                <td class="py-4 px-6 font-data-mono text-on-surface">
+                                                                        15,400 <span
+                                                                                class="text-xs text-on-surface-variant">ج.م</span>
+                                                                </td>
+                                                                <td
+                                                                        class="py-4 px-6 font-data-mono text-on-surface-variant">
+                                                                        10:45 ص</td>
+                                                                <td class="py-4 px-6">
+                                                                        <span
+                                                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary/10 text-secondary border border-secondary/20">
+                                                                                مكتمل
+                                                                        </span>
+                                                                </td>
+                                                        </tr>
+                                                        <!-- Row 2 -->
+                                                        <tr class="table-row-hover border-b border-white/[0.02]">
+                                                                <td class="py-4 px-6">
+                                                                        <div class="flex items-center gap-3">
+                                                                                <div
+                                                                                        class="w-8 h-8 rounded-full bg-surface-container border border-surface-variant flex items-center justify-center text-xs font-bold text-on-surface">
+                                                                                        ش.أ</div>
+                                                                                <span
+                                                                                        class="text-on-surface font-medium">شركة
+                                                                                        الأمل للدواجن</span>
+                                                                        </div>
+                                                                </td>
+                                                                <td class="py-4 px-6 text-on-surface-variant">مدفوعات -
+                                                                        موردين</td>
+                                                                <td class="py-4 px-6 font-data-mono text-error">-8,200
+                                                                        <span class="text-xs text-error/70">ج.م</span>
+                                                                </td>
+                                                                <td
+                                                                        class="py-4 px-6 font-data-mono text-on-surface-variant">
+                                                                        09:30 ص</td>
+                                                                <td class="py-4 px-6">
+                                                                        <span
+                                                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary/10 text-secondary border border-secondary/20">
+                                                                                مكتمل
+                                                                        </span>
+                                                                </td>
+                                                        </tr>
+                                                        <!-- Row 3 -->
+                                                        <tr class="table-row-hover border-b border-white/[0.02]">
+                                                                <td class="py-4 px-6">
+                                                                        <div class="flex items-center gap-3">
+                                                                                <div
+                                                                                        class="w-8 h-8 rounded-full bg-surface-container border border-surface-variant flex items-center justify-center text-xs font-bold text-on-surface">
+                                                                                        س.م</div>
+                                                                                <span
+                                                                                        class="text-on-surface font-medium">سوبر
+                                                                                        ماركت النور</span>
+                                                                        </div>
+                                                                </td>
+                                                                <td class="py-4 px-6 text-on-surface-variant">مبيعات -
+                                                                        تجزئة</td>
+                                                                <td class="py-4 px-6 font-data-mono text-on-surface">
+                                                                        3,150 <span
+                                                                                class="text-xs text-on-surface-variant">ج.م</span>
+                                                                </td>
+                                                                <td
+                                                                        class="py-4 px-6 font-data-mono text-on-surface-variant">
+                                                                        09:15 ص</td>
+                                                                <td class="py-4 px-6">
+                                                                        <span
+                                                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
+                                                                                قيد المعالجة
+                                                                        </span>
+                                                                </td>
+                                                        </tr>
+                                                        <!-- Row 4 -->
+                                                        <tr class="table-row-hover border-b border-white/[0.02]">
+                                                                <td class="py-4 px-6">
+                                                                        <div class="flex items-center gap-3">
+                                                                                <div
+                                                                                        class="w-8 h-8 rounded-full bg-surface-container border border-surface-variant flex items-center justify-center text-xs font-bold text-on-surface">
+                                                                                        ن.ق</div>
+                                                                                <span
+                                                                                        class="text-on-surface font-medium">نقطة
+                                                                                        بيع - الفرع الرئيسي</span>
+                                                                        </div>
+                                                                </td>
+                                                                <td class="py-4 px-6 text-on-surface-variant">إيداع نقدي
+                                                                </td>
+                                                                <td class="py-4 px-6 font-data-mono text-on-surface">
+                                                                        12,000 <span
+                                                                                class="text-xs text-on-surface-variant">ج.م</span>
+                                                                </td>
+                                                                <td
+                                                                        class="py-4 px-6 font-data-mono text-on-surface-variant">
+                                                                        08:00 ص</td>
+                                                                <td class="py-4 px-6">
+                                                                        <span
+                                                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary/10 text-secondary border border-secondary/20">
+                                                                                مكتمل
+                                                                        </span>
+                                                                </td>
+                                                        </tr>
+                                                        <!-- Row 5 -->
+                                                        <tr class="table-row-hover">
+                                                                <td class="py-4 px-6">
+                                                                        <div class="flex items-center gap-3">
+                                                                                <div
+                                                                                        class="w-8 h-8 rounded-full bg-error/10 border border-error/20 flex items-center justify-center text-xs font-bold text-error">
+                                                                                        هـ.م</div>
+                                                                                <span
+                                                                                        class="text-on-surface font-medium">تسجيل
+                                                                                        هالك</span>
+                                                                        </div>
+                                                                </td>
+                                                                <td class="py-4 px-6 text-on-surface-variant">خسائر
+                                                                        تشغيل</td>
+                                                                <td class="py-4 px-6 font-data-mono text-error">-1,200
+                                                                        <span class="text-xs text-error/70">ج.م</span>
+                                                                </td>
+                                                                <td
+                                                                        class="py-4 px-6 font-data-mono text-on-surface-variant">
+                                                                        أمس</td>
+                                                                <td class="py-4 px-6">
+                                                                        <span
+                                                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-error/10 text-error border border-error/20">
+                                                                                مرحل
+                                                                        </span>
+                                                                </td>
+                                                        </tr>
+                                                </tbody>
+                                        </table>
+                                </div>
+                        </div>
+                </div>
+        </main>
+
+
+</body>
+
+</html>

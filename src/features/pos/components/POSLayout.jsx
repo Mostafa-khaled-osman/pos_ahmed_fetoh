@@ -1,6 +1,5 @@
 import React from 'react';
 import Sidebar from '../../../shared/components/layout/Sidebar';
-import CartSidebar from './CartSidebar';
 import Icon from '../../../shared/components/ui/Icon';
 
 export default function POSLayout({ children, cart }) {
@@ -34,8 +33,6 @@ export default function POSLayout({ children, cart }) {
           {children}
         </section>
 
-        {/* Left Side: Checkout Sidebar */}
-        <CartSidebar cart={cart} />
       </main>
     </>
   );

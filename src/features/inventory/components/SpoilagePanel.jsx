@@ -81,7 +81,7 @@ export default function SpoilagePanel({ products = [], onLogSpoilage, loading = 
               <h4 className="font-label-caps text-label-caps font-bold">تنبيه حرج</h4>
             </div>
             <p className="font-body-md text-sm text-error/90 leading-relaxed">
-              هذا الإجراء سيقوم بخصم الكمية المحددة من المخزون النشط وتسجيل خسارة مالية فورية في الحسابات.
+              هذا الإجراء سيقوم بخصم الكميه وتسجيل خسارة في الحسابات.
             </p>
           </div>
           <button

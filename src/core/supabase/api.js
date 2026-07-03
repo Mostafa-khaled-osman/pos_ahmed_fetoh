@@ -263,3 +263,47 @@ export async function fetchEntityTransactions(entityId) {
   if (error) throw error;
   return data;
 }
+
+// ==========================================
+// Dashboard Queries
+// ==========================================
+
+export async function fetchRecentInvoices(limit = 5) {
+  const { data, error } = await supabase
+    .from('invoices')
+    .select(`
+      *,
+      customers_suppliers(name)
+    `)
+    .order('created_at', { ascending: false })
+    .limit(limit);
+
+  if (error) throw error;
+  return data;
+}
+
+export async function fetchRecentTransactions(limit = 5) {
+  const { data, error } = await supabase
+    .from('financial_transactions')
+    .select(`
+      *,
+      customers_suppliers(name)
+    `)
+    .order('created_at', { ascending: false })
+    .limit(limit);
+
+  if (error) throw error;
+  return data;
+}
+
+export async function fetchLowStockProducts(threshold = 10, limit = 5) {
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .lte('stock_quantity', threshold)
+    .order('stock_quantity', { ascending: true })
+    .limit(limit);
+
+  if (error) throw error;
+  return data;
+}
