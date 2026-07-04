@@ -115,6 +115,62 @@ export async function insertInvoice(invoiceData, invoiceItems) {
   return invoice;
 }
 
+export async function updateInvoice(invoiceId, invoiceData, oldItems, newItems) {
+  // 1. Update the main invoice record
+  const { data: invoice, error: invoiceError } = await supabase
+    .from('invoices')
+    .update(invoiceData)
+    .eq('id', invoiceId)
+    .select()
+    .single();
+
+  if (invoiceError) throw invoiceError;
+
+  // 2. Identify which items to DELETE, UPDATE, or INSERT
+  const newItemIds = newItems.filter(item => item.id).map(item => item.id);
+  const itemsToDelete = oldItems.filter(oldItem => !newItemIds.includes(oldItem.id));
+  
+  const itemsToInsert = newItems.filter(item => !item.id).map(item => ({
+    ...item,
+    invoice_id: invoiceId
+  }));
+  
+  const itemsToUpdate = newItems.filter(item => item.id);
+
+  // Execute Deletes
+  if (itemsToDelete.length > 0) {
+    const idsToDelete = itemsToDelete.map(item => item.id);
+    const { error: deleteError } = await supabase
+      .from('invoice_items')
+      .delete()
+      .in('id', idsToDelete);
+    if (deleteError) throw deleteError;
+  }
+
+  // Execute Inserts
+  if (itemsToInsert.length > 0) {
+    const { error: insertError } = await supabase
+      .from('invoice_items')
+      .insert(itemsToInsert);
+    if (insertError) throw insertError;
+  }
+
+  // Execute Updates (one by one for simplicity and safety with triggers)
+  if (itemsToUpdate.length > 0) {
+    const updatePromises = itemsToUpdate.map(async (item) => {
+      const { id, product_id, quantity, unit_price, total_price } = item;
+      return supabase
+        .from('invoice_items')
+        .update({ quantity, unit_price, total_price })
+        .eq('id', id);
+    });
+    
+    await Promise.all(updatePromises);
+  }
+
+  return invoice;
+}
+
 export async function insertExpense(expenseData) {
   const { data, error } = await supabase
     .from('financial_transactions')
@@ -239,6 +295,18 @@ export async function insertFinancialTransaction(transactionData) {
   return data;
 }
 
+export async function updateFinancialTransaction(id, updates) {
+  const { data, error } = await supabase
+    .from('financial_transactions')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
 export async function fetchEntityById(id) {
   const { data, error } = await supabase
     .from('customers_suppliers')
@@ -303,6 +371,55 @@ export async function fetchLowStockProducts(threshold = 10, limit = 5) {
     .lte('stock_quantity', threshold)
     .order('stock_quantity', { ascending: true })
     .limit(limit);
+
+  if (error) throw error;
+  return data;
+}
+
+export async function fetchAllInvoices() {
+  const { data, error } = await supabase
+    .from('invoices')
+    .select(`
+      *,
+      customers_suppliers(name)
+    `)
+    .order('created_at', { ascending: false });
+
+  if (error) throw error;
+  return data;
+}
+
+export async function fetchInvoiceDetails(invoiceId) {
+  const { data: invoice, error: invoiceError } = await supabase
+    .from('invoices')
+    .select(`
+      *,
+      customers_suppliers(name)
+    `)
+    .eq('id', invoiceId)
+    .single();
+
+  if (invoiceError) throw invoiceError;
+
+  const { data: items, error: itemsError } = await supabase
+    .from('invoice_items')
+    .select(`
+      *,
+      products(name, sku)
+    `)
+    .eq('invoice_id', invoiceId);
+
+  if (itemsError) throw itemsError;
+
+  return { ...invoice, items };
+}
+
+export async function fetchEntityInvoices(entityId) {
+  const { data, error } = await supabase
+    .from('invoices')
+    .select('*')
+    .eq('customer_id', entityId)
+    .order('created_at', { ascending: false });
 
   if (error) throw error;
   return data;

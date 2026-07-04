@@ -7,7 +7,6 @@ export default function InvoiceCartPanel({
   products,
   productsLoading,
   subtotal,
-  tax,
   grandTotal,
   onConfirm,
   onCancel,

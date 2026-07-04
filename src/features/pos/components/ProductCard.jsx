@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import Icon from '../../../shared/components/ui/Icon';
 
-const ProductCard = memo(({ product, onAddToCart }) => {
+const ProductCard = memo(({ product, onAddToCart, onEditProduct }) => {
   return (
     <div className="glass-panel rounded-xl overflow-hidden flex flex-col ambient-glow group hover:-translate-y-1 transition-transform duration-300">
       <div className="h-48 relative overflow-hidden bg-surface-container-lowest flex items-center justify-center">
@@ -33,13 +33,27 @@ const ProductCard = memo(({ product, onAddToCart }) => {
           <div className="font-data-mono text-xl text-primary-container">
             {Number(product.sale_price || 0).toFixed(2)} <span className="text-sm text-on-surface-variant">ج.م</span>
           </div>
-          <button
-            onClick={() => onAddToCart(product)}
-            className="w-12 h-12 bg-[#1A1D23] border border-[#d4af37]/30 rounded-lg flex items-center justify-center hover:bg-[#d4af37]/10 transition-colors text-primary-container group/btn"
-            aria-label={`Add ${product.name} to cart`}
-          >
-            <Icon name="add_shopping_cart" className="group-hover/btn:scale-110 transition-transform" />
-          </button>
+          <div className="flex gap-2">
+            {onEditProduct && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEditProduct(product);
+                }}
+                className="w-12 h-12 bg-surface-container border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/5 transition-colors text-on-surface-variant group/edit"
+                aria-label={`Edit ${product.name}`}
+              >
+                <Icon name="edit" className="group-hover/edit:scale-110 transition-transform" />
+              </button>
+            )}
+            <button
+              onClick={() => onAddToCart(product)}
+              className="w-12 h-12 bg-[#1A1D23] border border-[#d4af37]/30 rounded-lg flex items-center justify-center hover:bg-[#d4af37]/10 transition-colors text-primary-container group/btn"
+              aria-label={`Add ${product.name} to cart`}
+            >
+              <Icon name="add_shopping_cart" className="group-hover/btn:scale-110 transition-transform" />
+            </button>
+          </div>
         </div>
       </div>
     </div>

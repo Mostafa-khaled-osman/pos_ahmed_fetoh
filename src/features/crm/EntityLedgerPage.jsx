@@ -1,22 +1,29 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useEntityLedger } from './hooks/useCRM';
+import { useGetStatement } from './hooks/useStatement';
 import Sidebar from '../../shared/components/layout/Sidebar';
 import Icon from '../../shared/components/ui/Icon';
 import LedgerTable from './components/LedgerTable';
+import { useReactToPrint } from 'react-to-print';
 
 export default function EntityLedgerPage() {
   const { id } = useParams();
-  const { entity, transactions, loading, error, refetchAll } = useEntityLedger(id);
+  const { entity, ledger, loading, error, refetch, finalBalance } = useGetStatement(id);
+  const componentRef = useRef();
+
+  const handlePrint = useReactToPrint({
+    contentRef: componentRef,
+    documentTitle: `كشف_الجهات_${entity?.name || id}`,
+  });
 
   const stats = useMemo(() => {
-    if (!transactions) return { payments: 0, receipts: 0 };
-    return transactions.reduce((acc, tx) => {
-      if (tx.type === 'payment') acc.payments += Number(tx.amount);
-      if (tx.type === 'receipt') acc.receipts += Number(tx.amount);
+    if (!ledger) return { payments: 0, receipts: 0 };
+    return ledger.reduce((acc, item) => {
+      if (item.type === 'transaction' && item.originalData.type === 'payment') acc.payments += item.debit;
+      if (item.type === 'transaction' && item.originalData.type === 'receipt') acc.receipts += item.credit;
       return acc;
     }, { payments: 0, receipts: 0 });
-  }, [transactions]);
+  }, [ledger]);
 
   if (error) {
     return (
@@ -37,10 +44,10 @@ export default function EntityLedgerPage() {
       {/* Atmospheric Background Element */}
       <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none -z-10 opacity-50"></div>
       <div className="fixed bottom-0 left-0 w-[400px] h-[400px] bg-secondary/5 rounded-full blur-[100px] pointer-events-none -z-10 opacity-30"></div>
-      
+
       <main className="flex-1 overflow-y-auto pt-8 px-gutter pb-stack-lg relative z-10">
         <div className="max-w-container-max mx-auto space-y-stack-lg">
-          
+
           {/* Header Actions */}
           <div className="flex justify-between items-end">
             <Link to="/customers" className="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors">
@@ -48,11 +55,11 @@ export default function EntityLedgerPage() {
               العودة للجهات
             </Link>
             <div className="flex gap-stack-sm">
-              <button onClick={refetchAll} className="flex items-center gap-2 px-4 py-2 bg-surface-container border border-white/10 rounded-lg hover:bg-white/5 transition-all text-on-surface-variant">
+              <button onClick={refetch} className="flex items-center gap-2 px-4 py-2 bg-surface-container border border-white/10 rounded-lg hover:bg-white/5 transition-all text-on-surface-variant">
                 <Icon name="refresh" />
                 تحديث
               </button>
-              <button className="flex items-center gap-2 px-6 py-2 bg-primary text-on-primary rounded-lg font-bold hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-primary/10">
+              <button onClick={() => handlePrint()} className="flex items-center gap-2 px-6 py-2 bg-primary text-on-primary rounded-lg font-bold hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-primary/10">
                 <Icon name="print" className="text-[18px]" />
                 طباعة الكشف
               </button>
@@ -66,7 +73,11 @@ export default function EntityLedgerPage() {
               <div className="h-40 bg-surface-variant/20 rounded-xl" />
             </div>
           ) : (
-            <>
+            <div ref={componentRef} className="print:bg-white print:text-black print:p-8 print:w-full">
+              <div className="hidden print:block mb-8 border-b pb-4 border-gray-300">
+                <h1 className="text-2xl font-bold mb-1">Executive Atelier</h1>
+                <p className="text-gray-600 text-sm">نظام الإدارة الفاخرة ونقاط البيع - كشف حساب مالي</p>
+              </div>
               {/* Supplier/Customer Header Summary (Glassmorphism Bento) */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter">
                 {/* Main Entity Info */}
@@ -77,11 +88,10 @@ export default function EntityLedgerPage() {
                   <div>
                     <div className="flex items-center gap-3">
                       <h3 className="font-headline-md text-headline-md text-on-surface">{entity?.name}</h3>
-                      <span className={`px-3 py-1 text-[10px] font-bold rounded-full border ${
-                        entity?.type === 'supplier' 
-                          ? 'bg-secondary/10 text-secondary border-secondary/20' 
+                      <span className={`px-3 py-1 text-[10px] font-bold rounded-full border ${entity?.type === 'supplier'
+                          ? 'bg-secondary/10 text-secondary border-secondary/20'
                           : 'bg-primary/10 text-primary border-primary/20'
-                      }`}>
+                        }`}>
                         {entity?.type === 'supplier' ? 'مورد' : 'عميل'}
                       </span>
                     </div>
@@ -129,17 +139,17 @@ export default function EntityLedgerPage() {
                     </div>
                   </div>
                   <div className="flex flex-col items-end">
-                    <span className="text-xs text-on-surface-variant mb-1 text-left">تاريخ آخر معاملة</span>
+                    <span className="text-xs text-on-surface-variant mb-1 text-left">تاريخ آخر حركة</span>
                     <span className="text-on-surface font-medium font-data-mono">
-                      {transactions?.length > 0 ? new Date(transactions[0].created_at).toLocaleDateString('ar-EG') : '—'}
+                      {ledger?.length > 0 ? new Date(ledger[ledger.length - 1].date).toLocaleDateString('ar-EG') : '—'}
                     </span>
                   </div>
                 </div>
               </div>
 
-              {/* Transactions Table */}
-              <LedgerTable transactions={transactions} loading={loading} />
-            </>
+              {/* Ledger Table (Unified) */}
+              <LedgerTable ledger={ledger} loading={loading} refetch={refetch} />
+            </div>
           )}
         </div>
       </main>

@@ -24,6 +24,7 @@ export const DASHBOARD_NAV_ITEMS = [
   { id: 'pos', label: 'نقطة البيع', icon: 'point_of_sale', path: '/', description: 'واجهة نقطة البيع' },
   { id: 'treasury', label: 'إدارة الخزينة', icon: 'account_balance_wallet', path: '/treasury', description: 'إدارة الجلسات المالية' },
   { id: 'inventory', label: 'المخزون', icon: 'inventory_2', path: '/inventory', description: 'إدارة المنتجات والمخزون' },
+  { id: 'invoices', label: 'سجل الفواتير', icon: 'receipt_long', path: '/invoices', description: 'سجل جميع فواتير البيع والشراء' },
   { id: 'customers', label: 'العملاء والموردين', icon: 'group', path: '/customers', description: 'إدارة العملاء' },
   { id: 'reports', label: 'التقارير', icon: 'analytics', path: '/reports', description: 'التقارير والإحصائيات' },
 ];
