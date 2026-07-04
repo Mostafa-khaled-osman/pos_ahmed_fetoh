@@ -1,5 +1,6 @@
 import React from 'react';
 import Icon from '../../../shared/components/ui/Icon';
+import { formatStock, EGGS_PER_CARTON } from '../../../shared/utils/stockUtils';
 
 export default function ProductsTable({ products = [], loading = false, onEditProduct }) {
   if (loading) {
@@ -46,7 +47,7 @@ export default function ProductsTable({ products = [], loading = false, onEditPr
               </tr>
             ) : (
               products.map((product) => {
-                const isLowStock = product.stock_quantity <= 20;
+                const isLowStock = product.stock_quantity <= (20 * EGGS_PER_CARTON); // 20 Cartons threshold
                 return (
                   <tr key={product.id} className={`border-b border-white/5 hover:bg-white/5 transition-colors ${isLowStock ? 'bg-error-container/10' : ''}`}>
                     <td className="p-4 font-medium text-on-surface">{product.name}</td>
@@ -58,7 +59,7 @@ export default function ProductsTable({ products = [], loading = false, onEditPr
                       {isLowStock ? (
                         <div className="flex flex-col gap-1 items-start">
                           <span className="inline-flex items-center px-2 py-1 rounded-full bg-error-container/40 text-error border border-error/20 text-xs font-medium">
-                            {product.stock_quantity}
+                            {formatStock(product.stock_quantity)}
                           </span>
                           <span className="text-[10px] text-error font-bold flex items-center gap-1">
                             <Icon name="warning" className="text-[12px]" />
@@ -67,7 +68,7 @@ export default function ProductsTable({ products = [], loading = false, onEditPr
                         </div>
                       ) : (
                         <span className="inline-flex items-center px-2 py-1 rounded-full bg-secondary-container/20 text-secondary border border-secondary/20 text-xs font-medium">
-                          {product.stock_quantity}
+                          {formatStock(product.stock_quantity)}
                         </span>
                       )}
                     </td>

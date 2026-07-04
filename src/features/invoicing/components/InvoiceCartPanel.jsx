@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Icon from '../../../shared/components/ui/Icon';
+import { EGGS_PER_CARTON, formatStock } from '../../../shared/utils/stockUtils';
 
 export default function InvoiceCartPanel({
   cart,
@@ -38,7 +39,7 @@ export default function InvoiceCartPanel({
           name: product.name,
           sku: product.sku,
           stock_quantity: Number(product.stock_quantity) || 0,
-          quantity: 1,
+          quantity: EGGS_PER_CARTON, // Default to 1 Carton
           unit_price: Number(product.sale_price) || 0,
           total_price: Number(product.sale_price) || 0
         }
@@ -47,34 +48,59 @@ export default function InvoiceCartPanel({
     setSearchQuery('');
   };
 
-  const handleUpdateQuantity = (index, delta) => {
+  const handleUpdateUnits = (index, deltaCartons, deltaEggs) => {
     const newCart = [...cart];
-    const newQuantity = newCart[index].quantity + delta;
-    if (newQuantity <= 0) {
+    let currentQty = newCart[index].quantity;
+    const newQty = currentQty + (deltaCartons * EGGS_PER_CARTON) + deltaEggs;
+    
+    if (newQty <= 0) {
       handleRemoveItem(index);
       return;
     }
-    newCart[index].quantity = newQuantity;
-    newCart[index].total_price = newQuantity * newCart[index].unit_price;
+    
+    newCart[index].quantity = newQty;
+    const cartonPrice = newCart[index].unit_price;
+    const eggPrice = cartonPrice / EGGS_PER_CARTON;
+    const totalCartons = Math.floor(newQty / EGGS_PER_CARTON);
+    const totalEggs = newQty % EGGS_PER_CARTON;
+    newCart[index].total_price = (totalCartons * cartonPrice) + (totalEggs * eggPrice);
+    
     setCart(newCart);
   };
 
-  const handleSetQuantity = (index, newQuantity) => {
-    const qty = Number(newQuantity);
-    if (qty <= 0) {
+  const handleSetUnits = (index, inputCartons, inputEggs) => {
+    const c = Number(inputCartons) || 0;
+    const e = Number(inputEggs) || 0;
+    
+    // Smart formatting handles if user types 35 in eggs -> auto formats to 1 carton 5 eggs via absolute quantity logic
+    const absoluteQty = (c * EGGS_PER_CARTON) + e;
+    
+    if (absoluteQty <= 0) {
       handleRemoveItem(index);
       return;
     }
+    
     const newCart = [...cart];
-    newCart[index].quantity = qty;
-    newCart[index].total_price = qty * newCart[index].unit_price;
+    newCart[index].quantity = absoluteQty;
+    const cartonPrice = newCart[index].unit_price;
+    const eggPrice = cartonPrice / EGGS_PER_CARTON;
+    const totalCartons = Math.floor(absoluteQty / EGGS_PER_CARTON);
+    const totalEggs = absoluteQty % EGGS_PER_CARTON;
+    newCart[index].total_price = (totalCartons * cartonPrice) + (totalEggs * eggPrice);
+    
     setCart(newCart);
   };
 
   const handleUpdatePrice = (index, newPrice) => {
     const newCart = [...cart];
-    newCart[index].unit_price = Number(newPrice);
-    newCart[index].total_price = newCart[index].quantity * Number(newPrice);
+    const cartonPrice = Number(newPrice);
+    newCart[index].unit_price = cartonPrice;
+    
+    const eggPrice = cartonPrice / EGGS_PER_CARTON;
+    const totalCartons = Math.floor(newCart[index].quantity / EGGS_PER_CARTON);
+    const totalEggs = newCart[index].quantity % EGGS_PER_CARTON;
+    
+    newCart[index].total_price = (totalCartons * cartonPrice) + (totalEggs * eggPrice);
     setCart(newCart);
   };
 
@@ -138,8 +164,8 @@ export default function InvoiceCartPanel({
               <tr className="bg-surface-container-low/50 border-b border-white/5">
                 <th className="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant font-medium w-12">#</th>
                 <th className="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant font-medium text-right">الصنف</th>
-                <th className="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant font-medium text-center w-32">الكمية</th>
-                <th className="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant font-medium text-right w-32">السعر (ر.س)</th>
+                <th className="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant font-medium text-right w-32">الكمية (كرتونة / بيضة)</th>
+                <th className="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant font-medium text-right w-32">سعر الكرتونة (ر.س)</th>
                 <th className="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant font-medium text-right w-32">الإجمالي</th>
                 <th className="py-3 px-4 w-12"></th>
               </tr>
@@ -160,25 +186,49 @@ export default function InvoiceCartPanel({
                         <div className="font-data-mono text-data-mono text-on-surface-variant/70 text-[11px]">SKU: {item.sku}</div>
                         {hasError && (
                           <div className="text-error text-xs font-bold mt-1">
-                            الكمية المطلوبة ({item.quantity}) غير متوفرة (المتاح: {item.stock_quantity})
+                            الكمية المطلوبة ({formatStock(item.quantity)}) غير متوفرة (المتاح: {formatStock(item.stock_quantity)})
                           </div>
                         )}
                       </td>
                       <td className="py-3 px-4">
-                        <div className={`flex items-center justify-center gap-2 rounded-md border p-1 ${hasError ? 'bg-error/5 border-error/20' : 'bg-[#0A0B0D] border-white/10'}`}>
-                          <button onClick={() => handleUpdateQuantity(index, 1)} className="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-white/10 hover:text-white transition-colors">
-                            <Icon name="add" className="text-[16px]" />
-                          </button>
-                          <input 
-                            type="number"
-                            min="1"
-                            value={item.quantity}
-                            onChange={(e) => handleSetQuantity(index, e.target.value)}
-                            className="font-data-mono text-data-mono w-16 text-center bg-transparent border-none focus:ring-0 p-0 text-on-surface [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                          />
-                          <button onClick={() => handleUpdateQuantity(index, -1)} className="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-white/10 hover:text-white transition-colors">
-                            <Icon name="remove" className="text-[16px]" />
-                          </button>
+                        <div className={`flex flex-col gap-2 rounded-md border p-2 ${hasError ? 'bg-error/5 border-error/20' : 'bg-[#0A0B0D] border-white/10'}`}>
+                          
+                          {/* Cartons Input */}
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-xs text-on-surface-variant w-10">كرتونة:</span>
+                            <button onClick={() => handleUpdateUnits(index, 1, 0)} className="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-white/10 hover:text-white transition-colors">
+                              <Icon name="add" className="text-[16px]" />
+                            </button>
+                            <input 
+                              type="number"
+                              min="0"
+                              value={Math.floor(item.quantity / EGGS_PER_CARTON)}
+                              onChange={(e) => handleSetUnits(index, e.target.value, item.quantity % EGGS_PER_CARTON)}
+                              className="font-data-mono text-data-mono w-12 text-center bg-transparent border-b border-white/10 focus:border-primary focus:ring-0 p-0 text-on-surface [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                            />
+                            <button onClick={() => handleUpdateUnits(index, -1, 0)} className="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-white/10 hover:text-white transition-colors">
+                              <Icon name="remove" className="text-[16px]" />
+                            </button>
+                          </div>
+
+                          {/* Eggs Input */}
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-xs text-on-surface-variant w-10">بيضة:</span>
+                            <button onClick={() => handleUpdateUnits(index, 0, 1)} className="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-white/10 hover:text-white transition-colors">
+                              <Icon name="add" className="text-[16px]" />
+                            </button>
+                            <input 
+                              type="number"
+                              min="0"
+                              value={item.quantity % EGGS_PER_CARTON}
+                              onChange={(e) => handleSetUnits(index, Math.floor(item.quantity / EGGS_PER_CARTON), e.target.value)}
+                              className="font-data-mono text-data-mono w-12 text-center bg-transparent border-b border-white/10 focus:border-primary focus:ring-0 p-0 text-on-surface [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                            />
+                            <button onClick={() => handleUpdateUnits(index, 0, -1)} className="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-white/10 hover:text-white transition-colors">
+                              <Icon name="remove" className="text-[16px]" />
+                            </button>
+                          </div>
+
                         </div>
                       </td>
                       <td className="py-3 px-4">

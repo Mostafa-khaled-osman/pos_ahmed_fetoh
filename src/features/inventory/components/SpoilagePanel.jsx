@@ -1,28 +1,43 @@
 import React, { useState } from 'react';
 import Icon from '../../../shared/components/ui/Icon';
+import { EGGS_PER_CARTON } from '../../../shared/utils/stockUtils';
 
 export default function SpoilagePanel({ products = [], onLogSpoilage, loading = false }) {
   const [productId, setProductId] = useState('');
-  const [quantity, setQuantity] = useState('');
+  const [cartons, setCartons] = useState('');
+  const [eggs, setEggs] = useState('');
   const [notes, setNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!productId || !quantity || quantity <= 0) return;
+    const absoluteQty = (Number(cartons) || 0) * EGGS_PER_CARTON + (Number(eggs) || 0);
+    if (!productId || absoluteQty <= 0) return;
     
     setIsSubmitting(true);
     try {
       await onLogSpoilage({
         productId,
-        quantity: Number(quantity),
+        quantity: absoluteQty,
         notes
       });
       setProductId('');
-      setQuantity('');
+      setCartons('');
+      setEggs('');
       setNotes('');
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleUpdateQty = (c, e) => {
+    const total = (Number(c) || 0) * EGGS_PER_CARTON + (Number(e) || 0);
+    if (total === 0) {
+      setCartons('');
+      setEggs('');
+    } else {
+      setCartons(Math.floor(total / EGGS_PER_CARTON).toString());
+      setEggs((total % EGGS_PER_CARTON).toString());
     }
   };
 
@@ -55,16 +70,31 @@ export default function SpoilagePanel({ products = [], onLogSpoilage, loading = 
             </div>
           </div>
           <div className="space-y-2">
-            <label className="block font-label-caps text-label-caps text-on-surface-variant">الكمية</label>
-            <input
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-              required
-              min="1"
-              type="number"
-              className="w-full bg-surface-container-lowest border border-surface-variant rounded-lg py-3 px-4 text-on-surface font-data-mono focus:outline-none focus:border-error focus:ring-1 focus:ring-error/30 transition-all"
-              placeholder="0"
-            />
+            <label className="block font-label-caps text-label-caps text-on-surface-variant">الكمية المهلكة (كرتونة / بيضة)</label>
+            <div className="flex gap-4">
+              <div className="relative flex-1">
+                <input
+                  value={cartons}
+                  onChange={(e) => handleUpdateQty(e.target.value, eggs)}
+                  min="0"
+                  type="number"
+                  className="w-full bg-surface-container-lowest border border-surface-variant rounded-lg py-3 px-4 text-on-surface font-data-mono focus:outline-none focus:border-error focus:ring-1 focus:ring-error/30 transition-all text-center pr-16"
+                  placeholder="0"
+                />
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm pointer-events-none">كرتونة:</span>
+              </div>
+              <div className="relative flex-1">
+                <input
+                  value={eggs}
+                  onChange={(e) => handleUpdateQty(cartons, e.target.value)}
+                  min="0"
+                  type="number"
+                  className="w-full bg-surface-container-lowest border border-surface-variant rounded-lg py-3 px-4 text-on-surface font-data-mono focus:outline-none focus:border-error focus:ring-1 focus:ring-error/30 transition-all text-center pr-12"
+                  placeholder="0"
+                />
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm pointer-events-none">بيضة:</span>
+              </div>
+            </div>
           </div>
           <div className="space-y-2 flex-1 flex flex-col">
             <label className="block font-label-caps text-label-caps text-on-surface-variant">السبب / ملاحظات</label>
@@ -86,7 +116,7 @@ export default function SpoilagePanel({ products = [], onLogSpoilage, loading = 
           </div>
           <button
             type="submit"
-            disabled={isSubmitting || loading || !productId || !quantity}
+            disabled={isSubmitting || loading || !productId || (!cartons && !eggs)}
             className="w-full bg-error text-on-error hover:bg-error/90 py-3 rounded-lg font-body-md font-bold transition-all duration-300 shadow-[0_0_15px_rgba(255,180,171,0.2)] disabled:opacity-50 disabled:cursor-not-allowed mt-4"
           >
             {isSubmitting ? 'جارٍ التسجيل...' : 'تأكيد تسجيل الهالك'}

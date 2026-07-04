@@ -27,10 +27,11 @@ export default function RecentActivityTable({ invoices, transactions, loading })
     <div className="glass-panel rounded-2xl flex flex-col overflow-hidden lg:col-span-2">
       <div className="p-6 border-b border-surface-variant/20 flex justify-between items-center">
         <h2 className="font-headline-md text-headline-md text-on-surface">آخر العمليات</h2>
-        <button className="text-primary font-body-md text-body-md hover:underline flex items-center gap-1 group">
-          عرض الكل
-          <span className="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">arrow_back</span>
-        </button>
+        <a href="/invoices">
+          <button className="text-primary font-body-md text-body-md hover:underline flex items-center gap-1 group">
+            عرض الكل
+            <span className="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">arrow_back</span>
+          </button></a>
       </div>
       <div className="overflow-x-auto w-full no-scrollbar">
         <table className="w-full text-right">
@@ -74,13 +75,12 @@ export default function RecentActivityTable({ invoices, transactions, loading })
                     {activity.date.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}
                   </td>
                   <td className="py-4 px-6">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${
-                      activity.status === 'مكتمل' 
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${activity.status === 'مكتمل'
                         ? 'bg-secondary/10 text-secondary border-secondary/20'
                         : activity.status === 'مرحل'
-                        ? 'bg-error/10 text-error border-error/20'
-                        : 'bg-primary/10 text-primary border-primary/20'
-                    }`}>
+                          ? 'bg-error/10 text-error border-error/20'
+                          : 'bg-primary/10 text-primary border-primary/20'
+                      }`}>
                       {activity.status}
                     </span>
                   </td>

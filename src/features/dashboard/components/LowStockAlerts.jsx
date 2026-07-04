@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatStock } from '../../../shared/utils/stockUtils';
 
 export default function LowStockAlerts({ products, loading }) {
   return (
@@ -38,7 +39,7 @@ export default function LowStockAlerts({ products, loading }) {
                   <span className="font-data-mono text-[11px] text-on-surface-variant opacity-70">SKU: {product.sku}</span>
                 </div>
                 <div className="flex flex-col items-end gap-1">
-                  <div className="font-data-mono text-lg font-bold text-primary">{product.stock_quantity}</div>
+                  <div className="font-data-mono text-sm font-bold text-primary">{formatStock(product.stock_quantity)}</div>
                   <span className="font-label-caps text-[10px] text-on-surface-variant">متبقي</span>
                 </div>
               </div>
