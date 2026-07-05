@@ -23,61 +23,50 @@ export default function InvoiceSettingsPanel({
   }) || [];
 
   return (
-    <div className="w-full lg:w-1/3 glass-panel rounded-xl flex flex-col h-full overflow-y-auto border border-white/5 shadow-2xl">
-      <div className="p-stack-md border-b border-white/5 flex justify-between items-center bg-surface-container-low/30">
+    <div className="w-full glass-panel rounded-xl flex flex-col h-full overflow-y-auto border border-white/5 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]">
+      <div className="p-4 border-b border-white/5 flex justify-between items-center bg-surface-container-low/30 backdrop-blur-md">
         <h2 className="font-headline-md text-headline-md font-bold text-primary">تفاصيل الفاتورة</h2>
-        {/* We can show a temporary ID or 'جديدة' here */}
-        <span className="font-data-mono text-data-mono text-on-surface-variant">جديدة</span>
+        <span className="font-data-mono text-data-mono bg-primary/20 text-primary px-2 rounded-full">جديدة</span>
       </div>
-      
-      <div className="p-stack-md flex-1 flex flex-col gap-stack-md">
-        
+
+      <div className="p-6 flex-1 flex flex-col gap-6">
+
         {/* Invoice Type Toggle */}
-        <div className="flex bg-surface-container-low rounded-lg p-1 border border-white/5">
-          <button 
+        <div className="flex bg-surface-container-highest rounded-xl p-1 border border-white/5 relative shadow-inner">
+          <button
             onClick={() => {
               setInvoiceType('sale');
               setSelectedEntityId('');
             }}
-            className={`flex-1 py-2 text-center rounded-md font-body-md text-body-md font-bold transition-all shadow-sm ${invoiceType === 'sale' ? 'bg-primary-container text-on-primary-container' : 'text-on-surface-variant hover:text-on-surface'}`}
+            className={`flex-1 py-2 text-center rounded-lg font-body-md text-body-md font-bold transition-all z-10 ${invoiceType === 'sale' ? 'bg-primary text-on-primary shadow-md' : 'text-on-surface-variant hover:text-on-surface'}`}
           >
             فاتورة بيع
           </button>
-          <button 
+          <button
             onClick={() => {
               setInvoiceType('purchase');
               setSelectedEntityId('');
             }}
-            className={`flex-1 py-2 text-center rounded-md font-body-md text-body-md font-bold transition-all shadow-sm ${invoiceType === 'purchase' ? 'bg-primary-container text-on-primary-container' : 'text-on-surface-variant hover:text-on-surface'}`}
+            className={`flex-1 py-2 text-center rounded-lg font-body-md text-body-md font-bold transition-all z-10 ${invoiceType === 'purchase' ? 'bg-primary text-on-primary shadow-md' : 'text-on-surface-variant hover:text-on-surface'}`}
           >
             فاتورة شراء
           </button>
         </div>
 
-        {/* Payment Type Toggle */}
-        <div className="flex gap-4">
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input 
-              type="radio" 
-              name="payment_type" 
-              value="cash"
-              checked={paymentType === 'cash'}
-              onChange={(e) => setPaymentType(e.target.value)}
-              className="text-primary focus:ring-primary bg-[#0A0B0D] border-outline-variant" 
-            />
-            <span className="font-body-md text-body-md text-on-surface">نقدي (فوري)</span>
-          </label>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input 
-              type="radio" 
-              name="payment_type" 
-              value="credit"
-              checked={paymentType === 'credit'}
-              onChange={(e) => setPaymentType(e.target.value)}
-              className="text-primary focus:ring-primary bg-[#0A0B0D] border-outline-variant" 
-            />
-            <span className="font-body-md text-body-md text-on-surface">آجل (ذمم)</span>
-          </label>
+        {/* Payment Type Segmented Control */}
+        <div className="flex bg-surface-container-highest rounded-xl p-1 border border-white/5 relative shadow-inner">
+          <button
+            onClick={() => setPaymentType('cash')}
+            className={`flex-1 py-2 text-center rounded-lg font-body-md text-body-md font-bold transition-all z-10 ${paymentType === 'cash' ? 'bg-secondary text-on-secondary shadow-md' : 'text-on-surface-variant hover:text-on-surface'}`}
+          >
+            نقدي (فوري)
+          </button>
+          <button
+            onClick={() => setPaymentType('credit')}
+            className={`flex-1 py-2 text-center rounded-lg font-body-md text-body-md font-bold transition-all z-10 ${paymentType === 'credit' ? 'bg-secondary text-on-secondary shadow-md' : 'text-on-surface-variant hover:text-on-surface'}`}
+          >
+            آجل (ذمم)
+          </button>
         </div>
 
         {/* Entity Selection */}
@@ -87,10 +76,10 @@ export default function InvoiceSettingsPanel({
             {paymentType === 'credit' && <span className="text-error ml-1">*</span>}
           </label>
           <div className="relative">
-            <select 
+            <select
               value={selectedEntityId}
               onChange={(e) => setSelectedEntityId(e.target.value)}
-              className="w-full bg-surface-container border border-outline-variant text-on-surface rounded-lg py-2.5 px-3 font-body-md text-body-md appearance-none focus:outline-none focus:border-primary transition-all"
+              className="w-full bg-surface-container-low border border-white/5 text-on-surface rounded-xl py-3 px-4 font-body-md text-body-md appearance-none focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all hover:bg-surface-container/80"
             >
               <option value="">
                 {paymentType === 'cash' ? (invoiceType === 'sale' ? 'عميل نقدي عام' : 'مورد نقدي عام') : 'اختر جهة...'}
@@ -99,45 +88,55 @@ export default function InvoiceSettingsPanel({
                 <option disabled>جاري التحميل...</option>
               ) : (
                 filteredEntities.map(entity => (
-                  <option key={entity.id} value={entity.id}>{entity.name}</option>
+                  <option key={entity.id} value={entity.id}>
+                    {entity.name} {entity.phone ? `(${entity.phone})` : ''}
+                  </option>
                 ))
               )}
             </select>
+            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">
+              expand_more
+            </span>
           </div>
         </div>
 
-        {/* Date & Ref */}
+        {/* Date & Reference */}
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col gap-2">
-            <label className="font-label-caps text-label-caps text-on-surface-variant">التاريخ</label>
-            <input 
-              type="date" 
-              value={invoiceDate}
-              onChange={(e) => setInvoiceDate(e.target.value)}
-              className="w-full bg-surface-container border border-outline-variant text-on-surface rounded-lg py-2 px-3 font-data-mono text-data-mono focus:outline-none focus:border-primary transition-all" 
-            />
+            <label className="font-label-caps text-label-caps text-on-surface-variant">تاريخ الفاتورة</label>
+            <div className="relative">
+              <input
+                type="date"
+                value={invoiceDate}
+                onChange={(e) => setInvoiceDate(e.target.value)}
+                className="w-full bg-surface-container-low border border-white/5 text-on-surface rounded-xl py-3 px-4 font-data-mono text-data-mono focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all [color-scheme:dark]"
+              />
+            </div>
           </div>
           <div className="flex flex-col gap-2">
             <label className="font-label-caps text-label-caps text-on-surface-variant">المرجع</label>
-            <input 
-              type="text" 
-              placeholder="اختياري" 
+            <input
+              type="text"
+              placeholder="اختياري"
               value={reference}
               onChange={(e) => setReference(e.target.value)}
-              className="w-full bg-surface-container border border-outline-variant text-on-surface rounded-lg py-2 px-3 font-body-md text-body-md focus:outline-none focus:border-primary transition-all" 
+              className="w-full bg-surface-container-low border border-white/5 text-on-surface rounded-xl py-3 px-4 font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder-on-surface-variant/50"
             />
           </div>
         </div>
 
-        <div className="flex flex-col gap-2 flex-1">
+        {/* Notes */}
+        <div className="flex flex-col gap-2">
           <label className="font-label-caps text-label-caps text-on-surface-variant">ملاحظات</label>
-          <textarea 
-            placeholder="أضف ملاحظات الفاتورة هنا..." 
+          <textarea
+            rows="3"
+            placeholder="أضف ملاحظات الفاتورة هنا..."
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            className="w-full bg-surface-container border border-outline-variant text-on-surface rounded-lg py-2 px-3 font-body-md text-body-md flex-1 resize-none focus:outline-none focus:border-primary transition-all"
-          />
+            className="w-full bg-surface-container-low border border-white/5 text-on-surface rounded-xl py-3 px-4 font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder-on-surface-variant/50 resize-none"
+          ></textarea>
         </div>
+
       </div>
     </div>
   );

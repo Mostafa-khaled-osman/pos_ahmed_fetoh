@@ -6,16 +6,25 @@ import {
   fetchRecentInvoices,
   fetchRecentTransactions,
   fetchLowStockProducts,
+  fetchSessionSalesTotal,
 } from '../../../core/supabase/api';
 
 export function useDashboardMetrics() {
   const { data: treasury, loading: treasuryLoading } = useSupabaseQuery(fetchTreasuryBalance);
   const { data: session, loading: sessionLoading } = useSupabaseQuery(fetchActiveSession);
   
+  // Compute real sales from invoices table for the active session
+  const fetchSalesCb = useCallback(
+    () => fetchSessionSalesTotal(session?.id),
+    [session?.id]
+  );
+  const { data: salesData, loading: salesLoading } = useSupabaseQuery(fetchSalesCb, !!session?.id);
+
   return {
     treasury,
     session,
-    loading: treasuryLoading || sessionLoading,
+    salesData: salesData || { totalSales: 0, totalPurchases: 0, invoiceCount: 0 },
+    loading: treasuryLoading || sessionLoading || salesLoading,
   };
 }
 

@@ -6,11 +6,11 @@ export default function RecentActivityTable({ invoices, transactions, loading })
     ...(invoices || []).map(inv => ({
       id: inv.id,
       date: new Date(inv.created_at),
-      type: inv.type === 'sale' ? 'مبيعات - تجزئة' : 'مشتريات',
+      type: inv.invoice_type === 'sale' ? 'مبيعات - تجزئة' : 'مشتريات',
       entityName: inv.customers_suppliers?.name || 'عميل عام',
       amount: inv.total_amount,
       status: 'مكتمل',
-      isPositive: inv.type === 'sale'
+      isPositive: inv.invoice_type === 'sale'
     })),
     ...(transactions || []).map(trx => ({
       id: trx.id,

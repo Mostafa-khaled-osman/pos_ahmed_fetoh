@@ -4,15 +4,28 @@ import { Helmet } from 'react-helmet-async';
 import Sidebar from '../../shared/components/layout/Sidebar';
 import Icon from '../../shared/components/ui/Icon';
 import InvoiceRow from './components/InvoiceRow';
-import { useGetInvoices } from './hooks/useInvoices';
+import ConfirmDeleteModal from './components/ConfirmDeleteModal';
+import { useGetInvoices, useDeleteInvoice } from './hooks/useInvoices';
 
 export default function InvoicesListPage() {
   const navigate = useNavigate();
-  const { invoices, loading, error } = useGetInvoices();
+  const { invoices, loading, error, refetch } = useGetInvoices();
+  const { executeDelete, isDeleting } = useDeleteInvoice();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('all'); // 'all' | 'sale' | 'purchase'
   const [filterPayment, setFilterPayment] = useState('all'); // 'all' | 'cash' | 'credit'
+
+  // Delete modal state
+  const [deleteTarget, setDeleteTarget] = useState(null);
+
+  // Toast notification state
+  const [toast, setToast] = useState(null);
+
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 4000);
+  };
 
   // Client-side filtering logic using useMemo
   const filteredInvoices = useMemo(() => {
@@ -40,6 +53,30 @@ export default function InvoicesListPage() {
 
   const handleEditInvoice = (id) => {
     navigate(`/invoices/${id}/edit`);
+  };
+
+  const handleDeleteClick = (invoice) => {
+    setDeleteTarget(invoice);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!deleteTarget) return;
+
+    try {
+      await executeDelete(deleteTarget);
+      setDeleteTarget(null);
+      showToast('تم حذف الفاتورة واسترجاع المخزون بنجاح.', 'success');
+      refetch();
+    } catch (err) {
+      const errorMessage = err?.message || 'خطأ غير معروف';
+      showToast(`فشل حذف الفاتورة: ${errorMessage}`, 'error');
+    }
+  };
+
+  const handleCancelDelete = () => {
+    if (!isDeleting) {
+      setDeleteTarget(null);
+    }
   };
 
   return (
@@ -131,7 +168,7 @@ export default function InvoicesListPage() {
                         <td className="py-4 px-4"><div className="h-4 w-32 bg-white/10 rounded animate-pulse"></div></td>
                         <td className="py-4 px-4"><div className="h-5 w-12 bg-white/10 rounded-full animate-pulse"></div></td>
                         <td className="py-4 px-4"><div className="h-5 w-16 bg-white/10 rounded-full animate-pulse"></div></td>
-                        <td className="py-4 px-4"><div className="h-4 w-32 bg-white/10 rounded animate-pulse"></div></td>
+                        <td className="py-4 px-4"><div className="h-4 w-32 bg-white/10 rounded-full animate-pulse"></div></td>
                         <td className="py-4 px-4"><div className="h-4 w-20 bg-white/10 rounded animate-pulse mr-auto"></div></td>
                         <td className="py-4 px-4"><div className="h-8 w-8 bg-white/10 rounded-full animate-pulse"></div></td>
                       </tr>
@@ -157,6 +194,7 @@ export default function InvoicesListPage() {
                         invoice={invoice} 
                         onView={handleViewInvoice} 
                         onEdit={handleEditInvoice}
+                        onDelete={handleDeleteClick}
                       />
                     ))
                   )}
@@ -167,6 +205,30 @@ export default function InvoicesListPage() {
 
         </div>
       </main>
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmDeleteModal
+        isOpen={!!deleteTarget}
+        invoice={deleteTarget}
+        isDeleting={isDeleting}
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+      />
+
+      {/* Toast Notification */}
+      {toast && (
+        <div className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-[200] px-6 py-3 rounded-xl shadow-2xl border backdrop-blur-md flex items-center gap-3 animate-[slideUp_300ms_ease-out] ${
+          toast.type === 'success'
+            ? 'bg-primary/20 border-primary/30 text-primary'
+            : 'bg-error/20 border-error/30 text-error'
+        }`}>
+          <Icon
+            name={toast.type === 'success' ? 'check_circle' : 'error'}
+            className="text-xl"
+          />
+          <span className="font-body-md text-body-md font-medium">{toast.message}</span>
+        </div>
+      )}
     </>
   );
 }

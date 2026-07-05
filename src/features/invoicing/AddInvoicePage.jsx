@@ -23,7 +23,7 @@ export default function AddInvoicePage() {
   const [reference, setReference] = useState('');
   const [notes, setNotes] = useState('');
   const [paidAmount, setPaidAmount] = useState('');
-  
+
   // Cart State
   const [cart, setCart] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -53,9 +53,23 @@ export default function AddInvoicePage() {
       return;
     }
 
+    // Frontend Safety Net: Check stock availability for sales
+    if (invoiceType === 'sale') {
+      const outOfStockItem = cart.find(item => {
+        const product = products.find(p => p.id === item.product_id);
+        return product && item.quantity > product.stock_quantity;
+      });
+
+      if (outOfStockItem) {
+        const product = products.find(p => p.id === outOfStockItem.product_id);
+        alert(`لا يمكن إتمام البيع. الكمية المطلوبة من "${product?.name || 'الصنف'}" تتجاوز المخزون المتاح (${product?.stock_quantity || 0}).`);
+        return;
+      }
+    }
+
     try {
       setIsSubmitting(true);
-      
+
       const invoiceData = {
         session_id: session.id,
         customer_id: selectedEntityId || null,
@@ -72,7 +86,7 @@ export default function AddInvoicePage() {
       }));
 
       const invoice = await insertInvoice(invoiceData, invoiceItems);
-      
+
       // Handle upfront partial payment for credit invoices
       if (paymentType === 'credit' && Number(paidAmount) > 0 && selectedEntityId) {
         await insertFinancialTransaction({
@@ -84,22 +98,41 @@ export default function AddInvoicePage() {
         });
       }
 
-      // Update cost_price on purchase invoices if changed
-      if (invoiceType === 'purchase') {
-        const updatePromises = cart.map(async (item) => {
-          const originalProduct = products.find(p => p.id === item.product_id);
-          if (originalProduct && Number(originalProduct.cost_price) !== Number(item.unit_price)) {
-            return updateProduct(item.product_id, { cost_price: Number(item.unit_price) });
+      // -------------------------------------------------------------
+      // FRONTEND STOCK UPDATE (Fallback or Alternative to DB Trigger)
+      // -------------------------------------------------------------
+      const stockUpdatePromises = cart.map(async (item) => {
+        const originalProduct = products.find(p => p.id === item.product_id);
+        if (!originalProduct) return null;
+
+        const currentStock = Number(originalProduct.stock_quantity || 0);
+        const quantity = Number(item.quantity || 0);
+        
+        let newStock = currentStock;
+        let updates = {};
+
+        if (invoiceType === 'purchase') {
+          newStock = currentStock + quantity;
+          // Update cost price only if it changed during purchase
+          if (Number(originalProduct.cost_price) !== Number(item.unit_price)) {
+            updates.cost_price = Number(item.unit_price);
           }
-        });
-        await Promise.all(updatePromises.filter(Boolean));
-      }
+        } else if (invoiceType === 'sale') {
+          newStock = currentStock - quantity;
+        }
+
+        updates.stock_quantity = newStock;
+        return updateProduct(item.product_id, updates);
+      });
+
+      await Promise.all(stockUpdatePromises.filter(Boolean));
 
       alert("تم حفظ الفاتورة بنجاح!");
       navigate('/'); // Redirect to POS or Dashboard after success
     } catch (err) {
       console.error('Failed to insert invoice:', err);
-      alert("حدث خطأ أثناء حفظ الفاتورة. يرجى المحاولة مرة أخرى.");
+      const errorMessage = err?.message || err?.details || JSON.stringify(err);
+      alert(`حدث خطأ أثناء حفظ الفاتورة. التفاصيل: ${errorMessage}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -117,48 +150,54 @@ export default function AddInvoicePage() {
 
   return (
     <div className="flex-1 flex flex-col min-w-0 mr-0 md:mr-64 h-screen bg-background text-on-surface antialiased rtl overflow-hidden relative">
-      <Sidebar activePath="/add-invoice" />
+      <div className="fixed inset-y-0 right-0 z-50 hidden md:block">
+        <Sidebar activePath="/add-invoice" />
+      </div>
 
       {/* Atmospheric Background Element */}
       <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none -z-10 opacity-50"></div>
       <div className="fixed bottom-0 left-0 w-[400px] h-[400px] bg-secondary/5 rounded-full blur-[100px] pointer-events-none -z-10 opacity-30"></div>
 
-      <main className="flex-1 flex flex-col h-screen pt-4 md:pt-0 relative z-10">
-        <div className="flex-1 p-gutter overflow-hidden flex flex-col lg:flex-row gap-gutter">
-          
-          <InvoiceSettingsPanel 
-            invoiceType={invoiceType}
-            setInvoiceType={setInvoiceType}
-            paymentType={paymentType}
-            setPaymentType={setPaymentType}
-            selectedEntityId={selectedEntityId}
-            setSelectedEntityId={setSelectedEntityId}
-            reference={reference}
-            setReference={setReference}
-            notes={notes}
-            setNotes={setNotes}
-            entities={entities}
-            entitiesLoading={entitiesLoading}
-            invoiceDate={invoiceDate}
-            setInvoiceDate={setInvoiceDate}
-          />
+      <main className="flex-1 flex flex-col h-screen pt-4 md:pt-0 relative z-10 w-full">
+        <div className="flex-1 p-gutter overflow-y-auto lg:overflow-hidden flex flex-col lg:grid lg:grid-cols-12 gap-gutter w-full">
 
-          <InvoiceCartPanel 
-            cart={cart}
-            setCart={setCart}
-            products={products}
-            productsLoading={productsLoading}
-            subtotal={subtotal}
-            tax={tax}
-            grandTotal={grandTotal}
-            onConfirm={handleConfirm}
-            onCancel={handleCancel}
-            isSubmitting={isSubmitting}
-            invoiceType={invoiceType}
-            paymentType={paymentType}
-            paidAmount={paidAmount}
-            setPaidAmount={setPaidAmount}
-          />
+          <div className="w-full lg:col-span-4 flex flex-col">
+            <InvoiceSettingsPanel
+              invoiceType={invoiceType}
+              setInvoiceType={setInvoiceType}
+              paymentType={paymentType}
+              setPaymentType={setPaymentType}
+              selectedEntityId={selectedEntityId}
+              setSelectedEntityId={setSelectedEntityId}
+              reference={reference}
+              setReference={setReference}
+              notes={notes}
+              setNotes={setNotes}
+              entities={entities}
+              entitiesLoading={entitiesLoading}
+              invoiceDate={invoiceDate}
+              setInvoiceDate={setInvoiceDate}
+            />
+          </div>
+
+          <div className="w-full lg:col-span-8 flex flex-col h-full lg:overflow-hidden">
+            <InvoiceCartPanel
+              cart={cart}
+              setCart={setCart}
+              products={products}
+              productsLoading={productsLoading}
+              subtotal={subtotal}
+              tax={tax}
+              grandTotal={grandTotal}
+              onConfirm={handleConfirm}
+              onCancel={handleCancel}
+              isSubmitting={isSubmitting}
+              invoiceType={invoiceType}
+              paymentType={paymentType}
+              paidAmount={paidAmount}
+              setPaidAmount={setPaidAmount}
+            />
+          </div>
 
         </div>
       </main>

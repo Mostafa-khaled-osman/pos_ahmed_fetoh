@@ -164,7 +164,7 @@ export default function InvoiceDetailPage() {
                       <th className="py-3 px-2 font-label-caps text-label-caps text-on-surface-variant print:text-gray-600">#</th>
                       <th className="py-3 px-2 font-label-caps text-label-caps text-on-surface-variant print:text-gray-600">الصنف</th>
                       <th className="py-3 px-2 font-label-caps text-label-caps text-on-surface-variant print:text-gray-600 text-center">الكمية</th>
-                      <th className="py-3 px-2 font-label-caps text-label-caps text-on-surface-variant print:text-gray-600 text-left">السعر (ر.س)</th>
+                      <th className="py-3 px-2 font-label-caps text-label-caps text-on-surface-variant print:text-gray-600 text-left">السعر (ج.م)</th>
                       <th className="py-3 px-2 font-label-caps text-label-caps text-on-surface-variant print:text-gray-600 text-left">الإجمالي</th>
                     </tr>
                   </thead>
@@ -196,16 +196,16 @@ export default function InvoiceDetailPage() {
                 <div className="w-full max-w-[300px]">
                   <div className="flex justify-between items-center py-2 border-b border-white/5 print:border-gray-200">
                     <span className="font-body-md text-body-md text-on-surface-variant print:text-gray-600">المجموع الفرعي:</span>
-                    <span className="font-data-mono text-data-mono text-on-surface print:text-black">{Number(invoiceData.total_amount).toFixed(2)} ر.س</span>
+                    <span className="font-data-mono text-data-mono text-on-surface print:text-black">{Number(invoiceData.total_amount).toFixed(2)} ج.م</span>
                   </div>
                   <div className="flex justify-between items-center py-2 border-b border-white/5 print:border-gray-200">
                     <span className="font-body-md text-body-md text-on-surface-variant print:text-gray-600">الضريبة المضافة:</span>
-                    <span className="font-data-mono text-data-mono text-on-surface print:text-black">0.00 ر.س</span>
+                    <span className="font-data-mono text-data-mono text-on-surface print:text-black">0.00 ج.م</span>
                   </div>
                   <div className="flex justify-between items-center py-4 mt-2">
                     <span className="font-headline-md text-headline-md font-bold text-on-surface print:text-black">الإجمالي الكلي:</span>
                     <span className="font-headline-lg-mobile text-headline-lg-mobile font-bold font-data-mono text-primary print:text-black">
-                      {Number(invoiceData.total_amount).toFixed(2)} <span className="text-sm">ر.س</span>
+                      {Number(invoiceData.total_amount).toFixed(2)} <span className="text-sm">ج.م</span>
                     </span>
                   </div>
                 </div>

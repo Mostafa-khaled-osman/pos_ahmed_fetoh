@@ -61,7 +61,31 @@ export default function Sidebar({ activePath = '/treasury' }) {
       </nav>
 
       {/* Footer Tabs */}
-      <div className="mt-auto flex flex-col gap-1 px-4 border-t border-white/5 pt-stack-md">
+      <div className="mt-auto flex flex-col gap-1 px-4 border-t border-white/5 pt-4 text-center">
+        <p className="font-label-caps text-[9px] text-on-surface-variant/40 tracking-wider">DEVELOPED BY</p>
+        <span className="font-body-sm text-body-sm text-on-surface font-bold">Mostafa Khaled</span>
+        <span className="font-label-caps text-[10px] text-primary/90">Web Developer</span>
+        
+        <div className="flex justify-center gap-3 mt-2">
+          <a 
+            href="https://portifolio-mostafa-khaled.vercel.app/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 text-[11px]"
+          >
+            <Icon name="language" className="text-[14px]" />
+            الموقع
+          </a>
+          <a 
+            href="https://wa.me/+201551729506" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-on-surface-variant hover:text-secondary transition-colors flex items-center gap-1 text-[11px]"
+          >
+            <Icon name="chat" className="text-[14px]" />
+            واتساب
+          </a>
+        </div>
       </div>
     </aside>
   );

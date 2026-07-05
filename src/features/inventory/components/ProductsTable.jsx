@@ -53,8 +53,8 @@ export default function ProductsTable({ products = [], loading = false, onEditPr
                     <td className="p-4 font-medium text-on-surface">{product.name}</td>
                     <td className="p-4 font-data-mono text-data-mono text-on-surface-variant">{product.sku}</td>
                     <td className="p-4 text-on-surface-variant">{product.category}</td>
-                    <td className="p-4 font-data-mono text-data-mono text-primary">{Number(product.sale_price).toFixed(2)} ر.س</td>
-                    <td className="p-4 font-data-mono text-data-mono text-on-surface-variant">{Number(product.cost_price).toFixed(2)} ر.س</td>
+                    <td className="p-4 font-data-mono text-data-mono text-primary">{Number(product.sale_price).toFixed(2)} ج.م</td>
+                    <td className="p-4 font-data-mono text-data-mono text-on-surface-variant">{Number(product.cost_price).toFixed(2)} ج.م</td>
                     <td className="p-4">
                       {isLowStock ? (
                         <div className="flex flex-col gap-1 items-start">

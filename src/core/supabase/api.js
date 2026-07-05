@@ -74,6 +74,31 @@ export async function fetchTodayExpenses(sessionId) {
   return data;
 }
 
+export async function fetchSessionSalesTotal(sessionId) {
+  if (!sessionId) return { totalSales: 0, totalPurchases: 0, invoiceCount: 0 };
+  
+  const { data, error } = await supabase
+    .from('invoices')
+    .select('total_amount, invoice_type, payment_type')
+    .eq('session_id', sessionId);
+
+  if (error) throw error;
+
+  const totalSales = (data || [])
+    .filter(inv => inv.invoice_type === 'sale')
+    .reduce((sum, inv) => sum + Number(inv.total_amount || 0), 0);
+
+  const totalPurchases = (data || [])
+    .filter(inv => inv.invoice_type === 'purchase')
+    .reduce((sum, inv) => sum + Number(inv.total_amount || 0), 0);
+
+  return {
+    totalSales,
+    totalPurchases,
+    invoiceCount: (data || []).length,
+  };
+}
+
 /**
  * ==========================================
  * WRITE OPERATIONS (UPDATES / INSERTS)
@@ -423,4 +448,33 @@ export async function fetchEntityInvoices(entityId) {
 
   if (error) throw error;
   return data;
+}
+
+export async function fetchInvoiceItems(invoiceId) {
+  const { data, error } = await supabase
+    .from('invoice_items')
+    .select('*')
+    .eq('invoice_id', invoiceId);
+
+  if (error) throw error;
+  return data;
+}
+
+export async function deleteInvoice(invoiceId) {
+  // Delete invoice_items first (if no ON DELETE CASCADE), then the invoice
+  const { error: itemsError } = await supabase
+    .from('invoice_items')
+    .delete()
+    .eq('invoice_id', invoiceId);
+
+  if (itemsError) throw itemsError;
+
+  const { error: invoiceError } = await supabase
+    .from('invoices')
+    .delete()
+    .eq('id', invoiceId);
+
+  if (invoiceError) throw invoiceError;
+
+  return true;
 }
