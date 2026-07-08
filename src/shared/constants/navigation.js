@@ -28,6 +28,7 @@ export const DASHBOARD_NAV_ITEMS = [
   { id: 'customers', label: 'العملاء والموردين', icon: 'group', path: '/customers', description: 'إدارة العملاء' },
 ];
 
+
 /* ── Route Matching ──────────────────────────────────── */
 const POS_ROUTES = ['/', '/returns', '/catalog', '/employees', '/analytics', '/support'];
 

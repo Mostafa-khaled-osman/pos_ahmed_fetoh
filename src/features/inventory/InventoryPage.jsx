@@ -34,6 +34,21 @@ export default function InventoryPage() {
     }
   };
 
+  const handleDeleteProduct = async (product) => {
+    if (window.confirm(`هل أنت متأكد من حذف المنتج "${product.name}"؟`)) {
+      try {
+        await removeProduct(product.id);
+      } catch (err) {
+        console.error('Failed to delete product:', err);
+        if (err.code === '23503' || (err.message && err.message.includes('foreign key constraint'))) {
+          alert(`لا يمكن حذف المنتج "${product.name}" لأنه مرتبط بفواتير أو عمليات مسجلة في النظام. يمكنك تعديل بياناته بدلاً من الحذف.`);
+        } else {
+          alert(`فشل حذف المنتج: ${err.message || err}`);
+        }
+      }
+    }
+  };
+
   return (
     <div className="flex-1 flex flex-col min-w-0 mr-0 md:mr-64 h-screen">
       <Sidebar activePath="/inventory" />
@@ -77,6 +92,7 @@ export default function InventoryPage() {
               products={products}
               loading={productsLoading}
               onEditProduct={handleOpenEditModal}
+              onDeleteProduct={handleDeleteProduct}
             />
             <SpoilagePanel
               products={products}

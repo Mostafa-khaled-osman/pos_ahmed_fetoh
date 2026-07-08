@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import Icon from '../../../shared/components/ui/Icon';
 
-const ProductCard = memo(({ product, onAddToCart, onEditProduct }) => {
+const ProductCard = memo(({ product, onAddToCart, onEditProduct, onDeleteProduct }) => {
   return (
     <div className="glass-panel rounded-xl overflow-hidden flex flex-col ambient-glow group hover:-translate-y-1 transition-transform duration-300">
       <div className="h-48 relative overflow-hidden bg-surface-container-lowest flex items-center justify-center">
@@ -46,13 +46,23 @@ const ProductCard = memo(({ product, onAddToCart, onEditProduct }) => {
                 <Icon name="edit" className="group-hover/edit:scale-110 transition-transform" />
               </button>
             )}
-            <button
-              onClick={() => onAddToCart(product)}
+            {onDeleteProduct && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDeleteProduct(product);
+                }}
+                className="w-12 h-12 bg-surface-container border border-white/10 rounded-lg flex items-center justify-center hover:bg-error-container/20 hover:border-error/30 transition-colors text-error group/delete"
+                aria-label={`Delete ${product.name}`}
+              >
+                <Icon name="delete" className="group-hover/delete:scale-110 transition-transform" />
+              </button>
+            )}
+            <a href={"/add-invoice"} onClick={() => onAddToCart(product)}
               className="w-12 h-12 bg-[#1A1D23] border border-[#d4af37]/30 rounded-lg flex items-center justify-center hover:bg-[#d4af37]/10 transition-colors text-primary-container group/btn"
-              aria-label={`Add ${product.name} to cart`}
-            >
+              aria-label={`Add ${product.name} to cart`}>
               <Icon name="add_shopping_cart" className="group-hover/btn:scale-110 transition-transform" />
-            </button>
+            </a>
           </div>
         </div>
       </div>

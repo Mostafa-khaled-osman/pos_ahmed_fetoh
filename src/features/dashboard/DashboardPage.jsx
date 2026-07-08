@@ -8,7 +8,7 @@ import LowStockAlerts from './components/LowStockAlerts';
 import { useDashboardMetrics, useRecentActivity, useLowStockProducts } from './hooks/useDashboard';
 
 export default function DashboardPage() {
-  const { treasury, session, salesData, loading: metricsLoading } = useDashboardMetrics();
+  const { treasury, session, salesData, netProfit, loading: metricsLoading } = useDashboardMetrics();
   const { invoices, transactions, loading: activityLoading } = useRecentActivity(8);
   const { products: lowStockProducts, loading: stockLoading } = useLowStockProducts(20, 5);
 
@@ -80,7 +80,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Top Row: KPI Cards (Bento Grid Style) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-gutter">
             <KPICard
               title="رصيد الخزينة"
               value={treasuryBalance}
@@ -101,6 +101,14 @@ export default function DashboardPage() {
               value={salesData.totalPurchases}
               unit="ج.م"
               icon="shopping_cart"
+              loading={metricsLoading}
+            />
+            <KPICard
+              title="صافي الربح"
+              value={netProfit}
+              unit="ج.م"
+              icon={netProfit >= 0 ? "trending_up" : "trending_down"}
+              variant={netProfit >= 0 ? "glow" : "error"}
               loading={metricsLoading}
             />
             <KPICard

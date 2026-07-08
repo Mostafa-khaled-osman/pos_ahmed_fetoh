@@ -7,7 +7,7 @@ import { useInventory } from '../inventory/hooks/useInventory';
 import ProductActionModal from '../inventory/components/ProductActionModal';
 
 export default function POSPage() {
-  const { products, loading, error, editProduct, refetch } = useInventory();
+  const { products, loading, error, editProduct, removeProduct, refetch } = useInventory();
   const cart = usePOSCart();
   
   const [editingProduct, setEditingProduct] = useState(null);
@@ -16,6 +16,21 @@ export default function POSPage() {
     if (editingProduct) {
       await editProduct(editingProduct.id, data);
       setEditingProduct(null);
+    }
+  };
+
+  const handleDeleteProduct = async (product) => {
+    if (window.confirm(`هل أنت متأكد من حذف المنتج "${product.name}"؟`)) {
+      try {
+        await removeProduct(product.id);
+      } catch (err) {
+        console.error('Failed to delete product:', err);
+        if (err.code === '23503' || (err.message && err.message.includes('foreign key constraint'))) {
+          alert(`لا يمكن حذف المنتج "${product.name}" لأنه مرتبط بفواتير أو عمليات مسجلة في النظام. يمكنك تعديل بياناته بدلاً من الحذف.`);
+        } else {
+          alert(`فشل حذف المنتج: ${err.message || err}`);
+        }
+      }
     }
   };
   
@@ -52,6 +67,7 @@ export default function POSPage() {
           loading={loading} 
           onAddToCart={cart.addToCart} 
           onEditProduct={setEditingProduct}
+          onDeleteProduct={handleDeleteProduct}
         />
       )}
 

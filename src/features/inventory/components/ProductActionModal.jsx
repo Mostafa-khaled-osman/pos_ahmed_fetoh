@@ -64,7 +64,7 @@ export default function ProductActionModal({ isOpen, onClose, onSubmit, initialD
             <Icon name="close" />
           </button>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
@@ -80,11 +80,11 @@ export default function ProductActionModal({ isOpen, onClose, onSubmit, initialD
               <input name="category" value={formData.category} onChange={handleChange} required type="text" className="w-full bg-surface-container-lowest border border-surface-variant rounded-md px-3 py-2 text-on-surface font-body-md focus:border-primary focus:ring-1 focus:ring-primary transition-all" />
             </div>
             <div>
-              <label className="block font-label-caps text-label-caps text-on-surface-variant mb-1.5">سعر القطاعي</label>
+              <label className="block font-label-caps text-label-caps text-on-surface-variant mb-1.5">سعر البيع</label>
               <input name="sale_price" value={formData.sale_price} onChange={handleChange} required min="0" step="0.01" type="number" className="w-full bg-surface-container-lowest border border-surface-variant rounded-md px-3 py-2 text-on-surface font-data-mono focus:border-primary focus:ring-1 focus:ring-primary transition-all" />
             </div>
             <div>
-              <label className="block font-label-caps text-label-caps text-on-surface-variant mb-1.5">سعر الجملة</label>
+              <label className="block font-label-caps text-label-caps text-on-surface-variant mb-1.5">سعر الشراء</label>
               <input name="cost_price" value={formData.cost_price} onChange={handleChange} required min="0" step="0.01" type="number" className="w-full bg-surface-container-lowest border border-surface-variant rounded-md px-3 py-2 text-on-surface font-data-mono focus:border-primary focus:ring-1 focus:ring-primary transition-all" />
             </div>
             <div className="col-span-2">
@@ -92,7 +92,7 @@ export default function ProductActionModal({ isOpen, onClose, onSubmit, initialD
               <input name="stock_quantity" value={formData.stock_quantity} onChange={handleChange} required min="0" type="number" disabled={!!initialData} className="w-full bg-surface-container-lowest border border-surface-variant rounded-md px-3 py-2 text-on-surface font-data-mono focus:border-primary focus:ring-1 focus:ring-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed" />
             </div>
           </div>
-          
+
           <div className="pt-4 border-t border-white/5 flex gap-3">
             <button type="submit" disabled={isSubmitting} className="flex-1 bg-primary text-on-primary py-2.5 rounded-lg font-body-md font-bold hover:bg-primary-fixed transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
               <Icon name="save" className="text-[20px]" />

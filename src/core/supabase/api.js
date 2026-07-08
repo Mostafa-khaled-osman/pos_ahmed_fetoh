@@ -478,3 +478,38 @@ export async function deleteInvoice(invoiceId) {
 
   return true;
 }
+
+export async function fetchNetProfitMetrics() {
+  const { data: invoices, error: invoiceError } = await supabase
+    .from('invoices')
+    .select('total_amount, invoice_type');
+
+  if (invoiceError) throw invoiceError;
+
+  const { data: transactions, error: transactionError } = await supabase
+    .from('financial_transactions')
+    .select('amount')
+    .eq('type', 'expense');
+
+  if (transactionError) throw transactionError;
+
+  const totalSales = (invoices || [])
+    .filter(inv => inv.invoice_type === 'sale')
+    .reduce((sum, inv) => sum + Number(inv.total_amount || 0), 0);
+
+  const totalPurchases = (invoices || [])
+    .filter(inv => inv.invoice_type === 'purchase')
+    .reduce((sum, inv) => sum + Number(inv.total_amount || 0), 0);
+
+  const totalExpenses = (transactions || [])
+    .reduce((sum, tx) => sum + Number(tx.amount || 0), 0);
+
+  const netProfit = totalSales - (totalPurchases + totalExpenses);
+
+  return {
+    totalSales,
+    totalPurchases,
+    totalExpenses,
+    netProfit
+  };
+}

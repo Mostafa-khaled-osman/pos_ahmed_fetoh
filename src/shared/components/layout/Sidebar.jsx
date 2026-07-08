@@ -19,14 +19,14 @@ export default function Sidebar({ activePath = '/treasury' }) {
           <img alt="Profile" className="w-full h-full object-cover" src={PROFILE_IMG} />
         </div>
         <div>
-          <h1 className="font-headline-md text-headline-md font-bold text-primary">Ahmed fetoh</h1>
+          <h1 className="font-headline-md text-headline-md font-bold text-primary">بورصة الجعبيري</h1>
           <p className="font-label-caps text-label-caps text-on-surface-variant">إدارة التوزيع الفاخرة</p>
         </div>
       </div>
 
 
       <div className="px-4 mb-stack-lg">
-        <a 
+        <a
           href="/add-invoice"
           className="w-full bg-primary-container text-on-primary-container rounded-lg py-3 px-4 flex items-center justify-center gap-2 font-headline-md text-headline-md font-bold hover:bg-primary transition-all shadow-md ambient-glow"
         >
@@ -43,11 +43,10 @@ export default function Sidebar({ activePath = '/treasury' }) {
             <a
               key={item.id}
               href={item.path}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors duration-200 active:scale-95 transition-transform ${
-                isActive
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors duration-200 active:scale-95 transition-transform ${isActive
                   ? 'text-primary border-r-2 border-primary bg-primary/10'
                   : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 group'
-              }`}
+                }`}
             >
               <Icon
                 name={item.icon}
@@ -65,20 +64,20 @@ export default function Sidebar({ activePath = '/treasury' }) {
         <p className="font-label-caps text-[9px] text-on-surface-variant/40 tracking-wider">DEVELOPED BY</p>
         <span className="font-body-sm text-body-sm text-on-surface font-bold">Mostafa Khaled</span>
         <span className="font-label-caps text-[10px] text-primary/90">Web Developer</span>
-        
+
         <div className="flex justify-center gap-3 mt-2">
-          <a 
-            href="https://portifolio-mostafa-khaled.vercel.app/" 
-            target="_blank" 
+          <a
+            href="https://portifolio-mostafa-khaled.vercel.app/"
+            target="_blank"
             rel="noopener noreferrer"
             className="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 text-[11px]"
           >
             <Icon name="language" className="text-[14px]" />
             الموقع
           </a>
-          <a 
-            href="https://wa.me/+201551729506" 
-            target="_blank" 
+          <a
+            href="https://wa.me/+201551729506"
+            target="_blank"
             rel="noopener noreferrer"
             className="text-on-surface-variant hover:text-secondary transition-colors flex items-center gap-1 text-[11px]"
           >

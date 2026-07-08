@@ -2,7 +2,7 @@ import React from 'react';
 import Icon from '../../../shared/components/ui/Icon';
 import { formatStock, EGGS_PER_CARTON } from '../../../shared/utils/stockUtils';
 
-export default function ProductsTable({ products = [], loading = false, onEditProduct }) {
+export default function ProductsTable({ products = [], loading = false, onEditProduct, onDeleteProduct }) {
   if (loading) {
     return (
       <div className="xl:col-span-3 glass-panel rounded-xl overflow-hidden flex flex-col h-[600px] ambient-glow">
@@ -34,8 +34,8 @@ export default function ProductsTable({ products = [], loading = false, onEditPr
               <th className="p-4 font-label-caps text-label-caps text-on-surface-variant">المنتج</th>
               <th className="p-4 font-label-caps text-label-caps text-on-surface-variant">SKU</th>
               <th className="p-4 font-label-caps text-label-caps text-on-surface-variant">الفئة</th>
-              <th className="p-4 font-label-caps text-label-caps text-on-surface-variant">سعر القطاعي</th>
-              <th className="p-4 font-label-caps text-label-caps text-on-surface-variant">سعر الجملة</th>
+              <th className="p-4 font-label-caps text-label-caps text-on-surface-variant">سعر البيع</th>
+              <th className="p-4 font-label-caps text-label-caps text-on-surface-variant">سعر الشراء</th>
               <th className="p-4 font-label-caps text-label-caps text-on-surface-variant">المخزون الحالي</th>
               <th className="p-4 font-label-caps text-label-caps text-on-surface-variant text-center">الإجراءات</th>
             </tr>
@@ -73,12 +73,22 @@ export default function ProductsTable({ products = [], loading = false, onEditPr
                       )}
                     </td>
                     <td className="p-4 text-center">
-                      <button
-                        onClick={() => onEditProduct(product)}
-                        className="px-3 py-1.5 border border-primary/30 text-primary rounded hover:bg-primary/10 transition-colors text-sm"
-                      >
-                        تعديل
-                      </button>
+                      <div className="flex justify-center gap-2">
+                        <button
+                          onClick={() => onEditProduct(product)}
+                          className="px-3 py-1.5 border border-primary/30 text-primary rounded hover:bg-primary/10 transition-colors text-sm"
+                        >
+                          تعديل
+                        </button>
+                        {onDeleteProduct && (
+                          <button
+                            onClick={() => onDeleteProduct(product)}
+                            className="px-3 py-1.5 border border-error/30 text-error rounded hover:bg-error/10 transition-colors text-sm"
+                          >
+                            حذف
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 );

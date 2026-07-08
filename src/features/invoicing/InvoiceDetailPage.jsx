@@ -119,7 +119,7 @@ export default function InvoiceDetailPage() {
               <div className="flex justify-between items-start border-b border-white/10 print:border-gray-300 pb-8 mb-8">
                 <div>
                   <h1 className="font-headline-lg text-headline-lg font-bold text-primary print:text-black mb-1">
-                    Ahmed Fetoh
+                    بورصة الجعبيري
                   </h1>
                   <p className="font-body-sm text-body-sm text-on-surface-variant print:text-gray-600">
                     نظام الإدارة الفاخرة ونقاط البيع

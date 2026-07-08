@@ -44,7 +44,9 @@ export default function KPICard({ title, value, unit, icon, trend, loading, vari
       
       <div className="flex flex-col gap-1 relative z-10 mt-2">
         <h3 className="font-body-md text-body-md text-on-surface-variant">{title}</h3>
-        <div className="font-headline-lg text-headline-lg text-on-surface font-data-mono tracking-tight flex items-baseline gap-1">
+        <div className={`font-headline-lg text-headline-lg font-data-mono tracking-tight flex items-baseline gap-1 ${
+          variant === 'error' ? 'text-error' : 'text-on-surface'
+        }`}>
           {typeof value === 'number' ? value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) : value}
           {unit && <span className="text-sm text-on-surface-variant font-body-md">{unit}</span>}
         </div>

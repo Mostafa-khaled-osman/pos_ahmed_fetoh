@@ -7,11 +7,13 @@ import {
   fetchRecentTransactions,
   fetchLowStockProducts,
   fetchSessionSalesTotal,
+  fetchNetProfitMetrics,
 } from '../../../core/supabase/api';
 
 export function useDashboardMetrics() {
   const { data: treasury, loading: treasuryLoading } = useSupabaseQuery(fetchTreasuryBalance);
   const { data: session, loading: sessionLoading } = useSupabaseQuery(fetchActiveSession);
+  const { data: profitMetrics, loading: profitLoading } = useSupabaseQuery(fetchNetProfitMetrics);
   
   // Compute real sales from invoices table for the active session
   const fetchSalesCb = useCallback(
@@ -24,7 +26,8 @@ export function useDashboardMetrics() {
     treasury,
     session,
     salesData: salesData || { totalSales: 0, totalPurchases: 0, invoiceCount: 0 },
-    loading: treasuryLoading || sessionLoading || salesLoading,
+    netProfit: profitMetrics?.netProfit || 0,
+    loading: treasuryLoading || sessionLoading || salesLoading || profitLoading,
   };
 }
 
