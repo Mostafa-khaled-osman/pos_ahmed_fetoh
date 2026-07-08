@@ -36,13 +36,13 @@ export default function DashboardPage() {
           </div> */}
         </div>
         <div className="flex flex-row-reverse items-center gap-stack-md">
-          <button className="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high/50 transition-colors cursor-pointer active:scale-95 duration-200 relative group">
+          {/* <button className="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high/50 transition-colors cursor-pointer active:scale-95 duration-200 relative group">
             <Icon name="notifications" />
             <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full ring-2 ring-surface"></span>
-          </button>
-          <button className="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high/50 transition-colors cursor-pointer active:scale-95 duration-200">
+          </button> */}
+          {/* <button className="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high/50 transition-colors cursor-pointer active:scale-95 duration-200">
             <Icon name="settings" />
-          </button>
+          </button> */}
           <div className="w-px h-6 bg-surface-variant mx-2"></div>
           <div className="flex items-center gap-3 cursor-pointer">
             <div className="text-right hidden sm:block">
