@@ -19,6 +19,22 @@ export default function CustomersPage() {
   const [finEntity, setFinEntity] = useState(null);
   const [finType, setFinType] = useState('receipt'); // 'receipt' or 'payment'
 
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterType, setFilterType] = useState('all'); // 'all', 'customer', 'supplier'
+
+  const filteredEntities = (entities || []).filter(entity => {
+    if (filterType !== 'all' && entity.type !== filterType) {
+      return false;
+    }
+    if (searchQuery.trim() !== '') {
+      const q = searchQuery.toLowerCase();
+      const nameMatch = entity.name?.toLowerCase().includes(q);
+      const phoneMatch = entity.phone?.includes(q);
+      return nameMatch || phoneMatch;
+    }
+    return true;
+  });
+
   // Profile Management
   const handleOpenAddForm = () => {
     setEditingEntity(null);
@@ -63,6 +79,8 @@ export default function CustomersPage() {
           <div className="relative w-full">
             <Icon name="search" className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]" />
             <input
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-surface-container-lowest border border-surface-variant rounded-full py-2 pr-10 pl-4 text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all placeholder:text-on-surface-variant/50"
               placeholder="بحث في جهات الاتصال (الاسم أو رقم الهاتف)..."
               type="text"
@@ -87,9 +105,42 @@ export default function CustomersPage() {
             </button>
           </div>
 
+          <div className="flex items-center gap-2 bg-surface-container-low/50 p-1 rounded-xl w-fit border border-white/5">
+            <button
+              onClick={() => setFilterType('all')}
+              className={`px-6 py-2 rounded-lg text-body-md font-medium transition-all ${
+                filterType === 'all'
+                  ? 'bg-primary text-on-primary shadow-sm font-semibold'
+                  : 'text-on-surface-variant hover:text-on-surface hover:bg-white/5'
+              }`}
+            >
+              الكل
+            </button>
+            <button
+              onClick={() => setFilterType('customer')}
+              className={`px-6 py-2 rounded-lg text-body-md font-medium transition-all ${
+                filterType === 'customer'
+                  ? 'bg-primary-container text-on-primary-container shadow-sm font-semibold'
+                  : 'text-on-surface-variant hover:text-on-surface hover:bg-white/5'
+              }`}
+            >
+              العملاء
+            </button>
+            <button
+              onClick={() => setFilterType('supplier')}
+              className={`px-6 py-2 rounded-lg text-body-md font-medium transition-all ${
+                filterType === 'supplier'
+                  ? 'bg-secondary-container text-on-secondary-container shadow-sm font-semibold'
+                  : 'text-on-surface-variant hover:text-on-surface hover:bg-white/5'
+              }`}
+            >
+              الموردين
+            </button>
+          </div>
+
           <div className="grid grid-cols-1 gap-gutter">
             <EntityTable 
-              entities={entities} 
+              entities={filteredEntities} 
               loading={entitiesLoading} 
               onEdit={handleOpenEditForm}
               onTransaction={handleOpenTransaction}

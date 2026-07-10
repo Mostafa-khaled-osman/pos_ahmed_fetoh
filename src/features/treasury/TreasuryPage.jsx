@@ -3,7 +3,7 @@
  * Fetches data via hooks and delegates rendering to pure components.
  */
 import TreasuryLayout from './components/TreasuryLayout';
-import MasterTreasuryCard from './components/MasterTreasuryCard';
+// import MasterTreasuryCard from './components/MasterTreasuryCard';
 import DailySessionCard from './components/DailySessionCard';
 import ExpensesCard from './components/ExpensesCard';
 import { useTreasuryBalance, useActiveSession, useTodayExpenses } from './hooks/useTreasury';
@@ -15,10 +15,10 @@ export default function TreasuryPage() {
 
   return (
     <TreasuryLayout>
-      <MasterTreasuryCard
+      {/* <MasterTreasuryCard
         balance={treasury?.total_balance || 0}
         loading={treasuryLoading}
-      />
+      /> */}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
         <DailySessionCard

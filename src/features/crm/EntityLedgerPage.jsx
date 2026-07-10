@@ -95,9 +95,16 @@ export default function EntityLedgerPage() {
                         {entity?.type === 'supplier' ? 'مورد' : 'عميل'}
                       </span>
                     </div>
-                    <p className="text-on-surface-variant text-sm mt-1 font-data-mono">
-                      {entity?.phone ? `رقم الهاتف: ${entity.phone}` : 'بدون رقم هاتف'}
-                    </p>
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-on-surface-variant text-sm mt-1">
+                      <p className="font-data-mono">
+                        {entity?.phone ? `رقم الهاتف: ${entity.phone}` : 'بدون رقم هاتف'}
+                      </p>
+                      <span className="text-white/20 hidden sm:inline">|</span>
+                      <p className="font-body-md flex items-center gap-1">
+                        <Icon name="public" className="text-[16px] text-primary" />
+                        <span>البلد: {entity?.country || 'مصر'}</span>
+                      </p>
+                    </div>
                   </div>
                 </div>
 

@@ -38,6 +38,7 @@ export default function EntityTable({ entities = [], loading = false, onEdit, on
               <th className="p-4 font-label-caps text-label-caps text-on-surface-variant">الاسم</th>
               <th className="p-4 font-label-caps text-label-caps text-on-surface-variant">النوع</th>
               <th className="p-4 font-label-caps text-label-caps text-on-surface-variant">رقم الهاتف</th>
+              <th className="p-4 font-label-caps text-label-caps text-on-surface-variant">البلد</th>
               <th className="p-4 font-label-caps text-label-caps text-on-surface-variant">الرصيد الحالي</th>
               <th className="p-4 font-label-caps text-label-caps text-on-surface-variant text-center">الإجراءات</th>
             </tr>
@@ -45,7 +46,7 @@ export default function EntityTable({ entities = [], loading = false, onEdit, on
           <tbody className="font-body-md text-body-md">
             {safeEntities.length === 0 ? (
               <tr>
-                <td colSpan="5" className="p-8 text-center text-on-surface-variant">لا توجد سجلات</td>
+                <td colSpan="6" className="p-8 text-center text-on-surface-variant">لا توجد سجلات</td>
               </tr>
             ) : (
               safeEntities.map((entity) => {
@@ -54,7 +55,14 @@ export default function EntityTable({ entities = [], loading = false, onEdit, on
                 
                 return (
                   <tr key={entity.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                    <td className="p-4 font-medium text-on-surface">{entity.name}</td>
+                    <td className="p-4">
+                      <Link 
+                        to={`/customers/${entity.id}`}
+                        className="font-medium text-on-surface hover:text-primary transition-colors cursor-pointer"
+                      >
+                        {entity.name}
+                      </Link>
+                    </td>
                     <td className="p-4">
                       <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                         entity.type === 'supplier' 
@@ -65,6 +73,7 @@ export default function EntityTable({ entities = [], loading = false, onEdit, on
                       </span>
                     </td>
                     <td className="p-4 font-data-mono text-data-mono text-on-surface-variant">{entity.phone || '—'}</td>
+                    <td className="p-4 font-body-md text-on-surface-variant">{entity.country || 'مصر'}</td>
                     <td className="p-4 font-data-mono text-data-mono">
                       <span className={isDebt ? 'text-error' : 'text-primary'}>
                         {Math.abs(balance).toFixed(2)} ج.م

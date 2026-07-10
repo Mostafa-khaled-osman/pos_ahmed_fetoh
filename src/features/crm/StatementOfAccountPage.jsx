@@ -133,8 +133,10 @@ export default function StatementOfAccountPage() {
                   <div className="font-body-lg text-body-lg font-bold text-on-surface print:text-black">
                     {entity.name}
                   </div>
-                  <div className="font-data-mono text-data-mono text-on-surface-variant print:text-gray-600 mt-1">
-                    {entity.phone || 'لا يوجد هاتف'}
+                  <div className="font-data-mono text-data-mono text-on-surface-variant print:text-gray-600 mt-1 flex flex-wrap gap-2">
+                    <span>{entity.phone || 'لا يوجد هاتف'}</span>
+                    <span className="opacity-30">|</span>
+                    <span>البلد: {entity.country || 'مصر'}</span>
                   </div>
                 </div>
                 <div className="text-left">

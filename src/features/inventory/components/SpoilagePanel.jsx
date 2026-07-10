@@ -79,7 +79,7 @@ export default function SpoilagePanel({ products = [], onLogSpoilage, loading = 
                   onChange={(e) => handleUpdateQty(e.target.value, eggs)}
                   min="0"
                   type="number"
-                  className="w-full bg-surface-container-lowest border border-surface-variant rounded-lg py-3 px-4 text-on-surface font-data-mono focus:outline-none focus:border-error focus:ring-1 focus:ring-error/30 transition-all text-center"
+                  className="w-full bg-surface-container-lowest border border-surface-variant rounded-lg text-on-surface font-data-mono focus:outline-none focus:border-error focus:ring-1 focus:ring-error/30 transition-all text-center"
                   placeholder="0"
                 />
               </div>
@@ -90,7 +90,7 @@ export default function SpoilagePanel({ products = [], onLogSpoilage, loading = 
                   onChange={(e) => handleUpdateQty(cartons, e.target.value)}
                   min="0"
                   type="number"
-                  className="w-full bg-surface-container-lowest border border-surface-variant rounded-lg py-3 px-4 text-on-surface font-data-mono focus:outline-none focus:border-error focus:ring-1 focus:ring-error/30 transition-all text-center"
+                  className="w-full bg-surface-container-lowest border border-surface-variant rounded-lg text-on-surface font-data-mono focus:outline-none focus:border-error focus:ring-1 focus:ring-error/30 transition-all text-center"
                   placeholder="0"
                 />
               </div>

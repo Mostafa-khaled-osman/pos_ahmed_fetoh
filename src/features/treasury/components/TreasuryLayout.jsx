@@ -27,14 +27,14 @@ export default function TreasuryLayout({ children }) {
         </div>
 
         <div className="flex items-center gap-6">
-          <div className="relative hidden lg:block">
+          {/* <div className="relative hidden lg:block">
             <Icon name="search" className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant" />
             <input
               type="text"
               className="w-64 bg-surface-container rounded-full border-none text-body-md font-body-md py-2 pr-10 pl-4 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-1 focus:ring-primary focus:bg-surface-container-high transition-all outline-none"
               placeholder="بحث في الخزينة..."
             />
-          </div>
+          </div> */}
 
           <div className="h-8 w-px bg-white/10" />
 

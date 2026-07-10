@@ -17,15 +17,9 @@ export default function InvoiceCartPanel({
   paidAmount,
   setPaidAmount
 }) {
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const filteredProducts = products?.filter(p =>
-    p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    p.sku?.toLowerCase().includes(searchQuery.toLowerCase())
-  ).slice(0, 5) || []; // limit to 5 suggestions
-
   const handleAddProduct = (product) => {
     const existingIndex = cart.findIndex(item => item.product_id === product.id);
+    const defaultPrice = Number(invoiceType === 'purchase' ? product.cost_price : product.sale_price) || 0;
     if (existingIndex >= 0) {
       const newCart = [...cart];
       newCart[existingIndex].quantity += 1;
@@ -40,12 +34,11 @@ export default function InvoiceCartPanel({
           sku: product.sku,
           stock_quantity: Number(product.stock_quantity) || 0,
           quantity: EGGS_PER_CARTON, // Default to 1 Carton
-          unit_price: Number(product.sale_price) || 0,
-          total_price: Number(product.sale_price) || 0
+          unit_price: defaultPrice,
+          total_price: defaultPrice
         }
       ]);
     }
-    setSearchQuery('');
   };
 
   const handleUpdateUnits = (index, deltaCartons, deltaEggs) => {
@@ -113,45 +106,36 @@ export default function InvoiceCartPanel({
   return (
     <div className="w-full flex flex-col gap-stack-md h-full relative z-10">
 
-      {/* Search & Quick Add */}
-      <div className="relative z-20">
-        <div className="relative">
-          <Icon name="search" className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="البحث عن صنف لإضافته (الاسم أو SKU)..."
-            className="w-full bg-surface-glass border border-white/5 shadow-inner rounded-xl py-3 pr-10 pl-4 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all font-body-md text-body-md backdrop-blur-md"
-          />
-        </div>
-
-        {searchQuery && (
-          <div className="absolute top-full mt-2 w-full bg-surface-container-high border border-white/10 rounded-xl shadow-2xl overflow-hidden">
-            {productsLoading ? (
-              <div className="p-4 text-center text-on-surface-variant">جاري التحميل...</div>
-            ) : filteredProducts.length === 0 ? (
-              <div className="p-4 text-center text-on-surface-variant">لا توجد نتائج مطابقة</div>
-            ) : (
-              <ul className="divide-y divide-white/5">
-                {filteredProducts.map(product => (
-                  <li key={product.id}>
-                    <button
-                      onClick={() => handleAddProduct(product)}
-                      className="w-full text-right p-3 hover:bg-white/5 transition-colors flex justify-between items-center group"
-                    >
-                      <div>
-                        <div className="font-body-md text-body-md font-bold text-on-surface group-hover:text-primary transition-colors">{product.name}</div>
-                        <div className="font-data-mono text-data-mono text-xs text-on-surface-variant">SKU: {product.sku}</div>
-                      </div>
-                      <div className="font-data-mono text-data-mono text-secondary font-bold">
-                        {Number(product.sale_price).toFixed(2)} ج.م
-                      </div>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
+      {/* Product Choices */}
+      <div className="space-y-2 mb-2">
+        <label className="block font-label-caps text-label-caps text-on-surface-variant">اختر الأصناف للإضافة</label>
+        {productsLoading ? (
+          <div className="text-on-surface-variant text-body-md">جاري تحميل الأصناف...</div>
+        ) : (
+          <div className="flex flex-wrap gap-2 max-h-[140px] overflow-y-auto custom-scrollbar p-1">
+            {(products || []).map(product => {
+              const inCart = cart.some(item => item.product_id === product.id);
+              return (
+                <button
+                  key={product.id}
+                  type="button"
+                  onClick={() => handleAddProduct(product)}
+                  className={`px-4 py-2.5 rounded-xl border text-right transition-all duration-200 flex flex-col justify-between min-w-[130px] flex-1 sm:flex-none ${
+                    inCart
+                      ? 'bg-primary-container/20 border-primary text-primary shadow-[0_0_12px_rgba(212,175,55,0.15)] font-bold'
+                      : 'bg-surface-container-low hover:bg-surface-container border-white/5 text-on-surface hover:border-white/10'
+                  }`}
+                >
+                  <span className="font-body-md text-sm leading-snug">{product.name}</span>
+                  <div className="flex justify-between items-center mt-1.5 w-full gap-2">
+                    <span className="text-[10px] text-on-surface-variant font-data-mono">SKU: {product.sku}</span>
+                    <span className="text-xs font-data-mono font-bold text-secondary">
+                      {Number(invoiceType === 'purchase' ? product.cost_price : product.sale_price).toFixed(2)} ج.م
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
           </div>
         )}
       </div>
@@ -172,7 +156,7 @@ export default function InvoiceCartPanel({
           <tbody>
             {cart.length === 0 ? (
               <tr>
-                <td colSpan="6" className="py-12 text-center text-on-surface-variant">السلة فارغة. ابحث عن أصناف لإضافتها.</td>
+                <td colSpan="6" className="py-12 text-center text-on-surface-variant">السلة فارغة. اختر أصنافاً لإضافتها.</td>
               </tr>
             ) : (
               cart.map((item, index) => {

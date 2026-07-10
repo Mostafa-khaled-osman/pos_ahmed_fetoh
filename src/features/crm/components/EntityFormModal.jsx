@@ -6,6 +6,7 @@ export default function EntityFormModal({ isOpen, onClose, onSubmit, initialData
     name: '',
     type: 'customer',
     phone: '',
+    country: 'مصر',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -15,9 +16,10 @@ export default function EntityFormModal({ isOpen, onClose, onSubmit, initialData
         name: initialData.name || '',
         type: initialData.type || 'customer',
         phone: initialData.phone || '',
+        country: initialData.country || 'مصر',
       });
     } else {
-      setFormData({ name: '', type: 'customer', phone: '' });
+      setFormData({ name: '', type: 'customer', phone: '', country: 'مصر' });
     }
   }, [initialData, isOpen]);
 
@@ -94,6 +96,18 @@ export default function EntityFormModal({ isOpen, onClose, onSubmit, initialData
               type="text" 
               className="w-full bg-surface-container-lowest border border-surface-variant rounded-md px-3 py-2 text-on-surface font-data-mono focus:border-primary focus:ring-1 focus:ring-primary transition-all" 
               placeholder="01xxxxxxxxx"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="block font-label-caps text-label-caps text-on-surface-variant">البلد</label>
+            <input 
+              name="country" 
+              value={formData.country} 
+              onChange={handleChange} 
+              type="text" 
+              className="w-full bg-surface-container-lowest border border-surface-variant rounded-md px-3 py-2 text-on-surface font-body-md focus:border-primary focus:ring-1 focus:ring-primary transition-all" 
+              placeholder="مصر"
             />
           </div>
 

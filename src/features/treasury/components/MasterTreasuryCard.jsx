@@ -10,6 +10,7 @@ export default function MasterTreasuryCard({ balance = 0, loading = false }) {
   });
 
   return (
+    
     <section className="glass-panel-deep rounded-xl p-stack-lg relative overflow-hidden group">
       {/* Decorative background */}
       <div className="absolute top-0 right-0 p-8 opacity-5">
@@ -39,5 +40,6 @@ export default function MasterTreasuryCard({ balance = 0, loading = false }) {
 
       </div>
     </section>
+    
   );
 }

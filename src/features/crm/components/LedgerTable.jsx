@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Icon from '../../../shared/components/ui/Icon';
 import TransactionEditModal from './TransactionEditModal';
 
@@ -108,9 +108,18 @@ export default function LedgerTable({ ledger = [], loading = false, refetch }) {
                       {rowDate}
                     </td>
                     <td className="py-3 px-3">
-                      <div className="font-body-md font-medium text-on-surface print:text-black">
-                        {item.description}
-                      </div>
+                      {item.type === 'invoice' ? (
+                        <Link
+                          to={`/invoices/${item.originalData?.id || item.id}`}
+                          className="font-body-md font-medium text-primary hover:text-primary-fixed-dim hover:underline transition-colors print:text-black cursor-pointer"
+                        >
+                          {item.description}
+                        </Link>
+                      ) : (
+                        <div className="font-body-md font-medium text-on-surface print:text-black">
+                          {item.description}
+                        </div>
+                      )}
                       {item.notes && (
                         <div className="font-body-sm text-on-surface-variant print:text-gray-500 mt-0.5">
                           {item.notes}
