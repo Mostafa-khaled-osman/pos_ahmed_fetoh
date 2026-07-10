@@ -70,29 +70,29 @@ export default function SpoilagePanel({ products = [], onLogSpoilage, loading = 
             </div>
           </div>
           <div className="space-y-2">
-            <label className="block font-label-caps text-label-caps text-on-surface-variant">الكمية المهلكة (كرتونة / بيضة)</label>
+            <label className="block font-label-caps text-label-caps text-on-surface-variant">الكمية المهلكة</label>
             <div className="flex gap-4">
-              <div className="relative flex-1">
+              <div className="flex-1 flex flex-col gap-1.5">
+                <span className="font-label-caps text-label-caps text-on-surface-variant">الكرتون:</span>
                 <input
                   value={cartons}
                   onChange={(e) => handleUpdateQty(e.target.value, eggs)}
                   min="0"
                   type="number"
-                  className="w-full bg-surface-container-lowest border border-surface-variant rounded-lg py-3 px-4 text-on-surface font-data-mono focus:outline-none focus:border-error focus:ring-1 focus:ring-error/30 transition-all text-center pr-16"
+                  className="w-full bg-surface-container-lowest border border-surface-variant rounded-lg py-3 px-4 text-on-surface font-data-mono focus:outline-none focus:border-error focus:ring-1 focus:ring-error/30 transition-all text-center"
                   placeholder="0"
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm pointer-events-none">كرتونة:</span>
               </div>
-              <div className="relative flex-1">
+              <div className="flex-1 flex flex-col gap-1.5">
+                <span className="font-label-caps text-label-caps text-on-surface-variant">البيضة:</span>
                 <input
                   value={eggs}
                   onChange={(e) => handleUpdateQty(cartons, e.target.value)}
                   min="0"
                   type="number"
-                  className="w-full bg-surface-container-lowest border border-surface-variant rounded-lg py-3 px-4 text-on-surface font-data-mono focus:outline-none focus:border-error focus:ring-1 focus:ring-error/30 transition-all text-center pr-12"
+                  className="w-full bg-surface-container-lowest border border-surface-variant rounded-lg py-3 px-4 text-on-surface font-data-mono focus:outline-none focus:border-error focus:ring-1 focus:ring-error/30 transition-all text-center"
                   placeholder="0"
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm pointer-events-none">بيضة:</span>
               </div>
             </div>
           </div>

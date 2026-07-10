@@ -480,16 +480,23 @@ export async function deleteInvoice(invoiceId) {
 }
 
 export async function fetchNetProfitMetrics() {
+  const startOfMonth = new Date();
+  startOfMonth.setDate(1);
+  startOfMonth.setHours(0, 0, 0, 0);
+  const startOfMonthISO = startOfMonth.toISOString();
+
   const { data: invoices, error: invoiceError } = await supabase
     .from('invoices')
-    .select('total_amount, invoice_type');
+    .select('total_amount, invoice_type')
+    .gte('created_at', startOfMonthISO);
 
   if (invoiceError) throw invoiceError;
 
   const { data: transactions, error: transactionError } = await supabase
     .from('financial_transactions')
     .select('amount')
-    .eq('type', 'expense');
+    .eq('type', 'expense')
+    .gte('created_at', startOfMonthISO);
 
   if (transactionError) throw transactionError;
 
