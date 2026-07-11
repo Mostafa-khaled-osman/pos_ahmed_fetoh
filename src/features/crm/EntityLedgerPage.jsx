@@ -139,7 +139,7 @@ export default function EntityLedgerPage() {
                         <span className={`text-xs font-bold ${balance < 0 ? 'text-error/80' : 'text-primary/80'}`}>ج.م</span>
                         {balance !== 0 && (
                           <span className="text-xs text-on-surface-variant mr-2">
-                            {balance < 0 ? '(مدين لك)' : '(دائن لك)'}
+                            {balance < 0 ? '(دائن)' : '(مدين)'}  
                           </span>
                         )}
                       </div>

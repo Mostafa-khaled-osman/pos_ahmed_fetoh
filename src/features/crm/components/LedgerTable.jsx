@@ -86,8 +86,8 @@ export default function LedgerTable({ ledger = [], loading = false, refetch }) {
             <tr className="border-b-2 border-white/20 print:border-gray-400 bg-surface-container-low/50 print:bg-gray-100">
               <th className="py-3 px-3 font-label-caps text-label-caps text-on-surface-variant print:text-gray-700 w-32">التاريخ</th>
               <th className="py-3 px-3 font-label-caps text-label-caps text-on-surface-variant print:text-gray-700">البيان</th>
-              <th className="py-3 px-3 font-label-caps text-label-caps text-on-surface-variant print:text-gray-700 text-left w-24">مدين (له)</th>
-              <th className="py-3 px-3 font-label-caps text-label-caps text-on-surface-variant print:text-gray-700 text-left w-24">دائن (عليه)</th>
+              <th className="py-3 px-3 font-label-caps text-label-caps text-on-surface-variant print:text-gray-700 text-left w-24">مدين</th>
+              <th className="py-3 px-3 font-label-caps text-label-caps text-on-surface-variant print:text-gray-700 text-left w-24">دائن</th>
               <th className="py-3 px-3 font-label-caps text-label-caps text-on-surface-variant print:text-gray-700 text-left w-28">الرصيد</th>
               <th className="py-3 px-3 font-label-caps text-label-caps text-on-surface-variant text-center w-16 print:hidden">إجراءات</th>
             </tr>

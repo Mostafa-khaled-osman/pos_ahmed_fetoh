@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { formatStock } from '../../shared/utils/stockUtils';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useReactToPrint } from 'react-to-print';
@@ -177,7 +178,7 @@ export default function InvoiceDetailPage() {
                           <div className="font-data-mono text-xs text-on-surface-variant print:text-gray-500">SKU: {item.products?.sku || '---'}</div>
                         </td>
                         <td className="py-4 px-2 font-data-mono text-data-mono text-on-surface print:text-black text-center">
-                          {item.quantity}
+                          {formatStock(item.quantity)}
                         </td>
                         <td className="py-4 px-2 font-data-mono text-data-mono text-on-surface print:text-black text-left">
                           {Number(item.unit_price).toFixed(2)}
@@ -197,10 +198,6 @@ export default function InvoiceDetailPage() {
                   <div className="flex justify-between items-center py-2 border-b border-white/5 print:border-gray-200">
                     <span className="font-body-md text-body-md text-on-surface-variant print:text-gray-600">المجموع الفرعي:</span>
                     <span className="font-data-mono text-data-mono text-on-surface print:text-black">{Number(invoiceData.total_amount).toFixed(2)} ج.م</span>
-                  </div>
-                  <div className="flex justify-between items-center py-2 border-b border-white/5 print:border-gray-200">
-                    <span className="font-body-md text-body-md text-on-surface-variant print:text-gray-600">الضريبة المضافة:</span>
-                    <span className="font-data-mono text-data-mono text-on-surface print:text-black">0.00 ج.م</span>
                   </div>
                   <div className="flex justify-between items-center py-4 mt-2">
                     <span className="font-headline-md text-headline-md font-bold text-on-surface print:text-black">الإجمالي الكلي:</span>
