@@ -15,6 +15,8 @@ export default function InvoicesListPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('all'); // 'all' | 'sale' | 'purchase'
   const [filterPayment, setFilterPayment] = useState('all'); // 'all' | 'cash' | 'credit'
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   // Delete modal state
   const [deleteTarget, setDeleteTarget] = useState(null);
@@ -43,9 +45,17 @@ export default function InvoicesListPage() {
       const paymentType = inv.payment_type || 'cash';
       const matchesPayment = filterPayment === 'all' || paymentType === filterPayment;
 
-      return matchesSearch && matchesType && matchesPayment;
+      // Date range filtering
+      let matchesDate = true;
+      if (startDate || endDate) {
+        const invDate = new Date(inv.created_at).toISOString().split('T')[0]; // 'YYYY-MM-DD'
+        if (startDate && invDate < startDate) matchesDate = false;
+        if (endDate && invDate > endDate) matchesDate = false;
+      }
+
+      return matchesSearch && matchesType && matchesPayment && matchesDate;
     });
-  }, [invoices, searchQuery, filterType, filterPayment]);
+  }, [invoices, searchQuery, filterType, filterPayment, startDate, endDate]);
 
   const handleViewInvoice = (id) => {
     navigate(`/invoices/${id}`);
@@ -99,7 +109,7 @@ export default function InvoicesListPage() {
         <div className="max-w-[1440px] mx-auto flex flex-col gap-stack-lg">
           
           {/* Header & Filters */}
-          <header className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-4">
+          <header className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-1">
             <div>
               <h1 className="font-headline-lg text-headline-lg text-on-surface mb-2 font-bold flex items-center gap-3">
                 <Icon name="receipt_long" className="text-primary text-3xl" />
@@ -111,7 +121,7 @@ export default function InvoicesListPage() {
             </div>
 
             <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
-              <div className="relative flex-1 lg:flex-none min-w-[250px]">
+              <div className="relative flex-1 lg:flex-none max-w-[150px]">
                 <Icon name="search" className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant" />
                 <input
                   type="text"
@@ -125,7 +135,7 @@ export default function InvoicesListPage() {
               <select 
                 value={filterType}
                 onChange={(e) => setFilterType(e.target.value)}
-                className="bg-surface-container border border-white/10 rounded-xl py-2.5 px-4 text-on-surface focus:outline-none focus:border-primary transition-colors font-body-md cursor-pointer"
+                className="bg-surface-container border border-white/10 rounded-xl py-2.5 px-1 text-on-surface focus:outline-none focus:border-primary transition-colors font-body-md cursor-pointer w-[100px]"
               >
                 <option value="all">كل الفواتير</option>
                 <option value="sale">المبيعات فقط</option>
@@ -135,12 +145,31 @@ export default function InvoicesListPage() {
               <select 
                 value={filterPayment}
                 onChange={(e) => setFilterPayment(e.target.value)}
-                className="bg-surface-container border border-white/10 rounded-xl py-2.5 px-4 text-on-surface focus:outline-none focus:border-primary transition-colors font-body-md cursor-pointer"
+                className="bg-surface-container border border-white/10 rounded-xl py-2.5 px-1 text-on-surface focus:outline-none focus:border-primary transition-colors font-body-md cursor-pointer"
               >
                 <option value="all">طرق الدفع</option>
                 <option value="cash">فوري (نقدي)</option>
                 <option value="credit">آجل</option>
               </select>
+
+              <div className="flex items-center gap-2">
+                <label className="text-on-surface-variant font-body-md text-sm whitespace-nowrap">من:</label>
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="bg-surface-container border border-white/10 rounded-xl py-2.5 px-1 text-on-surface focus:outline-none focus:border-primary transition-colors font-data-mono text-sm cursor-pointer"
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <label className="text-on-surface-variant font-body-md text-sm whitespace-nowrap">إلى:</label>
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  className="bg-surface-container border border-white/10 rounded-xl py-2.5 px-1 text-on-surface focus:outline-none focus:border-primary transition-colors font-data-mono text-sm cursor-pointer"
+                />
+              </div>
             </div>
           </header>
 
