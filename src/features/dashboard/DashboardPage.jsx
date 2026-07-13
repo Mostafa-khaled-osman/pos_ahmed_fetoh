@@ -104,7 +104,7 @@ export default function DashboardPage() {
               loading={metricsLoading}
             />
             <KPICard
-              title="صافي ربح الشهر"
+              title="صافي ربح اليوم"
               value={netProfit}
               unit="ج.م"
               icon={netProfit >= 0 ? "trending_up" : "trending_down"}
