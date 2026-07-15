@@ -519,3 +519,32 @@ export async function fetchNetProfitMetrics() {
     netProfit
   };
 }
+
+export async function fetchProductsSoldQuantity() {
+  const { data: invoiceItems, error } = await supabase
+    .from('invoice_items')
+    .select(`
+      quantity,
+      products ( id, name ),
+      invoices!inner ( invoice_type )
+    `)
+    .eq('invoices.invoice_type', 'sale');
+
+  if (error) throw error;
+
+  const productSales = {};
+  for (const item of invoiceItems || []) {
+    if (!item.products) continue;
+    const pid = item.products.id;
+    if (!productSales[pid]) {
+      productSales[pid] = {
+        id: pid,
+        name: item.products.name,
+        total_quantity: 0
+      };
+    }
+    productSales[pid].total_quantity += Number(item.quantity || 0);
+  }
+
+  return Object.values(productSales).sort((a, b) => b.total_quantity - a.total_quantity);
+}

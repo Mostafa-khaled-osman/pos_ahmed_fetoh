@@ -5,12 +5,14 @@ import Icon from '../../shared/components/ui/Icon';
 import KPICard from './components/KPICard';
 import RecentActivityTable from './components/RecentActivityTable';
 import LowStockAlerts from './components/LowStockAlerts';
-import { useDashboardMetrics, useRecentActivity, useLowStockProducts } from './hooks/useDashboard';
+import TopSellingProducts from './components/TopSellingProducts';
+import { useDashboardMetrics, useRecentActivity, useLowStockProducts, useTopSellingProducts } from './hooks/useDashboard';
 
 export default function DashboardPage() {
   const { treasury, session, salesData, netProfit, loading: metricsLoading } = useDashboardMetrics();
   const { invoices, transactions, loading: activityLoading } = useRecentActivity(8);
   const { products: lowStockProducts, loading: stockLoading } = useLowStockProducts(20, 5);
+  const { products: topProducts, loading: topLoading } = useTopSellingProducts();
 
   const treasuryBalance = treasury?.total_balance || 0;
   const openingBalance = session?.opening_balance || 0;
@@ -124,26 +126,7 @@ export default function DashboardPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-gutter mt-4">
             <LowStockAlerts products={lowStockProducts} loading={stockLoading} />
 
-            {/* Monthly Profit Trends Chart Placeholder */}
-            <div className="glass-panel rounded-2xl p-6 flex flex-col h-[400px]">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="font-headline-md text-headline-md text-on-surface">اتجاهات المبيعات الشهرية</h3>
-                <button className="text-on-surface-variant hover:text-on-surface transition-colors">
-                  <Icon name="more_vert" />
-                </button>
-              </div>
-              <div className="flex-1 flex items-center justify-center relative">
-                <svg className="w-full h-full overflow-visible" viewBox="0 0 500 200" preserveAspectRatio="none">
-                  <path d="M 0 150 L 100 80 L 200 120 L 300 40 L 400 60 L 500 0" fill="none" className="chart-glow-line" />
-                  <circle cx="0" cy="150" r="4" fill="#d4af37" />
-                  <circle cx="100" cy="80" r="4" fill="#d4af37" />
-                  <circle cx="200" cy="120" r="4" fill="#d4af37" />
-                  <circle cx="300" cy="40" r="4" fill="#d4af37" />
-                  <circle cx="400" cy="60" r="4" fill="#d4af37" />
-                  <circle cx="500" cy="0" r="4" fill="#d4af37" />
-                </svg>
-              </div>
-            </div>
+            <TopSellingProducts products={topProducts} loading={topLoading} />
           </div>
 
           {/* Bottom Row: Recent Activity */}

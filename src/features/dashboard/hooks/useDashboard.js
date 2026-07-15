@@ -8,6 +8,7 @@ import {
   fetchLowStockProducts,
   fetchSessionSalesTotal,
   fetchNetProfitMetrics,
+  fetchProductsSoldQuantity,
 } from '../../../core/supabase/api';
 
 export function useDashboardMetrics() {
@@ -48,6 +49,16 @@ export function useRecentActivity(limit = 5) {
 export function useLowStockProducts(threshold = 10, limit = 5) {
   const fetchLowStockCb = useCallback(() => fetchLowStockProducts(threshold, limit), [threshold, limit]);
   const { data: products, loading } = useSupabaseQuery(fetchLowStockCb);
+  
+  return {
+    products: products || [],
+    loading,
+  };
+}
+
+export function useTopSellingProducts() {
+  const fetchTopCb = useCallback(() => fetchProductsSoldQuantity(), []);
+  const { data: products, loading } = useSupabaseQuery(fetchTopCb);
   
   return {
     products: products || [],
