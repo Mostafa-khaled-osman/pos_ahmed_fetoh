@@ -9,7 +9,7 @@ import TopSellingProducts from './components/TopSellingProducts';
 import { useDashboardMetrics, useRecentActivity, useLowStockProducts, useTopSellingProducts } from './hooks/useDashboard';
 
 export default function DashboardPage() {
-  const { treasury, session, salesData, netProfit, loading: metricsLoading } = useDashboardMetrics();
+  const { treasury, session, salesData, netProfit, grossProfit, grossProfitLoading, loading: metricsLoading } = useDashboardMetrics();
   const { invoices, transactions, loading: activityLoading } = useRecentActivity(8);
   const { products: lowStockProducts, loading: stockLoading } = useLowStockProducts(20, 5);
   const { products: topProducts, loading: topLoading } = useTopSellingProducts();
@@ -106,12 +106,12 @@ export default function DashboardPage() {
               loading={metricsLoading}
             />
             <KPICard
-              title="صافي ربح اليوم"
-              value={netProfit}
+              title="إجمالي ربح اليوم"
+              value={grossProfit}
               unit="ج.م"
-              icon={netProfit >= 0 ? "trending_up" : "trending_down"}
-              variant={netProfit >= 0 ? "glow" : "error"}
-              loading={metricsLoading}
+              icon={grossProfit >= 0 ? "trending_up" : "trending_down"}
+              variant={grossProfit >= 0 ? "glow" : "error"}
+              loading={grossProfitLoading || metricsLoading}
             />
             <KPICard
               title="حالة الجلسة الحالية"

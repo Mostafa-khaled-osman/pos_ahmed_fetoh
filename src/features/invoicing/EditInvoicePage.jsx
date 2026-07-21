@@ -82,13 +82,21 @@ export default function EditInvoicePage() {
         invoice_type: invoiceType,
       };
 
-      const newItems = cart.map(item => ({
-        id: item.id, // Might be undefined for newly added items, which is what we want!
-        product_id: item.product_id,
-        quantity: item.quantity,
-        unit_price: item.unit_price,
-        total_price: item.total_price
-      }));
+      const newItems = cart.map(item => {
+        const product = (products || []).find(p => p.id === item.product_id);
+        const itemCostPrice = item.cost_price !== undefined
+          ? item.cost_price
+          : (invoiceType === 'purchase' ? Number(item.unit_price) : Number(product?.cost_price || 0));
+
+        return {
+          id: item.id,
+          product_id: item.product_id,
+          quantity: item.quantity,
+          unit_price: item.unit_price,
+          total_price: item.total_price,
+          cost_price: itemCostPrice
+        };
+      });
 
       await updateInvoice(id, updatedData, originalItems, newItems);
       

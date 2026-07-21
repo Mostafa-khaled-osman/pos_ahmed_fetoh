@@ -39,7 +39,12 @@ export default function EntityTable({ entities = [], loading = false, onEdit, on
               <th className="p-4 font-label-caps text-label-caps text-on-surface-variant">النوع</th>
               <th className="p-4 font-label-caps text-label-caps text-on-surface-variant">رقم الهاتف</th>
               <th className="p-4 font-label-caps text-label-caps text-on-surface-variant">البلد</th>
-              <th className="p-4 font-label-caps text-label-caps text-on-surface-variant">الرصيد الحالي</th>
+              <th className="p-4 font-label-caps text-label-caps text-on-surface-variant">
+                <div className="flex items-center gap-1">
+                  <span>الرصيد الحالي</span>
+                  <span className="text-[10px] text-primary bg-primary/10 px-1.5 py-0.5 rounded font-normal">الأعلى للأقل ⬇</span>
+                </div>
+              </th>
               <th className="p-4 font-label-caps text-label-caps text-on-surface-variant text-center">الإجراءات</th>
             </tr>
           </thead>

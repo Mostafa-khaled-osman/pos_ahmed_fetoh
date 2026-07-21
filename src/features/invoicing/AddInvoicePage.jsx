@@ -78,12 +78,20 @@ export default function AddInvoicePage() {
         invoice_type: invoiceType,
       };
 
-      const invoiceItems = cart.map(item => ({
-        product_id: item.product_id,
-        quantity: item.quantity,
-        unit_price: item.unit_price,
-        total_price: item.total_price
-      }));
+      const invoiceItems = cart.map(item => {
+        const product = (products || []).find(p => p.id === item.product_id);
+        const itemCostPrice = invoiceType === 'purchase'
+          ? Number(item.unit_price)
+          : Number(product?.cost_price || 0);
+
+        return {
+          product_id: item.product_id,
+          quantity: item.quantity,
+          unit_price: item.unit_price,
+          total_price: item.total_price,
+          cost_price: itemCostPrice
+        };
+      });
 
       const invoice = await insertInvoice(invoiceData, invoiceItems);
 

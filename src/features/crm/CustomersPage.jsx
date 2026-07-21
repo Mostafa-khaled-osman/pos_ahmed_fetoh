@@ -21,19 +21,38 @@ export default function CustomersPage() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('all'); // 'all', 'customer', 'supplier'
+  const [balanceFilter, setBalanceFilter] = useState('all'); // 'all', 'debtor', 'creditor'
+  const [sortBy, setSortBy] = useState('highest_balance'); // 'highest_balance', 'name'
 
-  const filteredEntities = (entities || []).filter(entity => {
-    if (filterType !== 'all' && entity.type !== filterType) {
-      return false;
-    }
-    if (searchQuery.trim() !== '') {
-      const q = searchQuery.toLowerCase();
-      const nameMatch = entity.name?.toLowerCase().includes(q);
-      const phoneMatch = entity.phone?.includes(q);
-      return nameMatch || phoneMatch;
-    }
-    return true;
-  });
+  const filteredEntities = (entities || [])
+    .filter(entity => {
+      // Type filter (customer/supplier)
+      if (filterType !== 'all' && entity.type !== filterType) {
+        return false;
+      }
+      
+      // Balance filter (debtor < 0 / creditor > 0)
+      const balance = Number(entity.current_balance || 0);
+      if (balanceFilter === 'debtor' && balance >= 0) return false;
+      if (balanceFilter === 'creditor' && balance <= 0) return false;
+
+      // Search query
+      if (searchQuery.trim() !== '') {
+        const q = searchQuery.toLowerCase();
+        const nameMatch = entity.name?.toLowerCase().includes(q);
+        const phoneMatch = entity.phone?.includes(q);
+        return nameMatch || phoneMatch;
+      }
+      return true;
+    })
+    .sort((a, b) => {
+      const balA = Math.abs(Number(a.current_balance || 0));
+      const balB = Math.abs(Number(b.current_balance || 0));
+      if (sortBy === 'highest_balance') {
+        return balB - balA; // Descending order: highest balance/debt first
+      }
+      return a.name?.localeCompare(b.name || '') || 0;
+    });
 
   // Profile Management
   const handleOpenAddForm = () => {
@@ -105,37 +124,75 @@ export default function CustomersPage() {
             </button>
           </div>
 
-          <div className="flex items-center gap-2 bg-surface-container-low/50 p-1 rounded-xl w-fit border border-white/5">
-            <button
-              onClick={() => setFilterType('all')}
-              className={`px-6 py-2 rounded-lg text-body-md font-medium transition-all ${
-                filterType === 'all'
-                  ? 'bg-primary text-on-primary shadow-sm font-semibold'
-                  : 'text-on-surface-variant hover:text-on-surface hover:bg-white/5'
-              }`}
-            >
-              الكل
-            </button>
-            <button
-              onClick={() => setFilterType('customer')}
-              className={`px-6 py-2 rounded-lg text-body-md font-medium transition-all ${
-                filterType === 'customer'
-                  ? 'bg-primary-container text-on-primary-container shadow-sm font-semibold'
-                  : 'text-on-surface-variant hover:text-on-surface hover:bg-white/5'
-              }`}
-            >
-              العملاء
-            </button>
-            <button
-              onClick={() => setFilterType('supplier')}
-              className={`px-6 py-2 rounded-lg text-body-md font-medium transition-all ${
-                filterType === 'supplier'
-                  ? 'bg-secondary-container text-on-secondary-container shadow-sm font-semibold'
-                  : 'text-on-surface-variant hover:text-on-surface hover:bg-white/5'
-              }`}
-            >
-              الموردين
-            </button>
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            {/* Type Filter */}
+            <div className="flex items-center gap-2 bg-surface-container-low/50 p-1 rounded-xl w-fit border border-white/5">
+              <button
+                onClick={() => setFilterType('all')}
+                className={`px-5 py-2 rounded-lg text-body-md font-medium transition-all ${
+                  filterType === 'all'
+                    ? 'bg-primary text-on-primary shadow-sm font-semibold'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-white/5'
+                }`}
+              >
+                الكل
+              </button>
+              <button
+                onClick={() => setFilterType('customer')}
+                className={`px-5 py-2 rounded-lg text-body-md font-medium transition-all ${
+                  filterType === 'customer'
+                    ? 'bg-primary-container text-on-primary-container shadow-sm font-semibold'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-white/5'
+                }`}
+              >
+                العملاء
+              </button>
+              <button
+                onClick={() => setFilterType('supplier')}
+                className={`px-5 py-2 rounded-lg text-body-md font-medium transition-all ${
+                  filterType === 'supplier'
+                    ? 'bg-secondary-container text-on-secondary-container shadow-sm font-semibold'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-white/5'
+                }`}
+              >
+                الموردين
+              </button>
+            </div>
+
+            {/* Balance Filter & Sorting */}
+            <div className="flex items-center gap-2 bg-surface-container-low/50 p-1 rounded-xl w-fit border border-white/5">
+              <span className="text-xs text-on-surface-variant px-2 font-medium">الرصيد:</span>
+              <button
+                onClick={() => setBalanceFilter('all')}
+                className={`px-4 py-1.5 rounded-lg text-body-sm transition-all ${
+                  balanceFilter === 'all'
+                    ? 'bg-surface-variant text-on-surface font-semibold'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-white/5'
+                }`}
+              >
+                الجميع
+              </button>
+              <button
+                onClick={() => setBalanceFilter('debtor')}
+                className={`px-4 py-1.5 rounded-lg text-body-sm transition-all ${
+                  balanceFilter === 'debtor'
+                    ? 'bg-error/20 text-error font-semibold border border-error/30'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-white/5'
+                }`}
+              >
+                مدينون 
+              </button>
+              <button
+                onClick={() => setBalanceFilter('creditor')}
+                className={`px-4 py-1.5 rounded-lg text-body-sm transition-all ${
+                  balanceFilter === 'creditor'
+                    ? 'bg-primary/20 text-primary font-semibold border border-primary/30'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-white/5'
+                }`}
+              >
+                دائنون
+              </button>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 gap-gutter">
