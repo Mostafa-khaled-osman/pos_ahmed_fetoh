@@ -62,8 +62,8 @@ export function useLowStockProducts(threshold = 10, limit = 5) {
   };
 }
 
-export function useTopSellingProducts() {
-  const fetchTopCb = useCallback(() => fetchProductsSoldQuantity(), []);
+export function useTopSellingProducts(period = 'day') {
+  const fetchTopCb = useCallback(() => fetchProductsSoldQuantity(period), [period]);
   const { data: products, loading } = useSupabaseQuery(fetchTopCb);
 
   return {

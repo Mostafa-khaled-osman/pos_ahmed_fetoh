@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Sidebar from '../../shared/components/layout/Sidebar';
 import Icon from '../../shared/components/ui/Icon';
@@ -12,7 +12,8 @@ export default function DashboardPage() {
   const { treasury, session, salesData, netProfit, grossProfit, grossProfitLoading, loading: metricsLoading } = useDashboardMetrics();
   const { invoices, transactions, loading: activityLoading } = useRecentActivity(8);
   const { products: lowStockProducts, loading: stockLoading } = useLowStockProducts(20, 5);
-  const { products: topProducts, loading: topLoading } = useTopSellingProducts();
+  const [topSellingPeriod, setTopSellingPeriod] = useState('day');
+  const { products: topProducts, loading: topLoading } = useTopSellingProducts(topSellingPeriod);
 
   const treasuryBalance = treasury?.total_balance || 0;
   const openingBalance = session?.opening_balance || 0;
@@ -126,7 +127,12 @@ export default function DashboardPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-gutter mt-4">
             <LowStockAlerts products={lowStockProducts} loading={stockLoading} />
 
-            <TopSellingProducts products={topProducts} loading={topLoading} />
+            <TopSellingProducts
+              products={topProducts}
+              loading={topLoading}
+              period={topSellingPeriod}
+              onPeriodChange={setTopSellingPeriod}
+            />
           </div>
 
           {/* Bottom Row: Recent Activity */}

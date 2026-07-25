@@ -566,10 +566,19 @@ export async function fetchNetProfitMetrics() {
   };
 }
 
-export async function fetchProductsSoldQuantity() {
-  const startOfDay = new Date();
-  startOfDay.setHours(0, 0, 0, 0);
-  const startOfDayISO = startOfDay.toISOString();
+export async function fetchProductsSoldQuantity(period = 'day') {
+  const startDate = new Date();
+  if (period === 'month') {
+    startDate.setDate(1);
+    startDate.setHours(0, 0, 0, 0);
+  } else if (period === 'year') {
+    startDate.setMonth(0, 1);
+    startDate.setHours(0, 0, 0, 0);
+  } else {
+    // default to 'day'
+    startDate.setHours(0, 0, 0, 0);
+  }
+  const startDateISO = startDate.toISOString();
 
   const { data: invoiceItems, error } = await supabase
     .from('invoice_items')
@@ -579,7 +588,7 @@ export async function fetchProductsSoldQuantity() {
       invoices!inner ( invoice_type, created_at )
     `)
     .eq('invoices.invoice_type', 'sale')
-    .gte('invoices.created_at', startOfDayISO);
+    .gte('invoices.created_at', startDateISO);
 
   if (error) throw error;
 
