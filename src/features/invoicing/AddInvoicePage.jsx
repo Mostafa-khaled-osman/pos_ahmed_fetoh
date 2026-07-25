@@ -106,34 +106,16 @@ export default function AddInvoicePage() {
         });
       }
 
-      // -------------------------------------------------------------
-      // FRONTEND STOCK UPDATE (Fallback or Alternative to DB Trigger)
-      // -------------------------------------------------------------
-      const stockUpdatePromises = cart.map(async (item) => {
-        const originalProduct = products.find(p => p.id === item.product_id);
-        if (!originalProduct) return null;
-
-        const currentStock = Number(originalProduct.stock_quantity || 0);
-        const quantity = Number(item.quantity || 0);
-        
-        let newStock = currentStock;
-        let updates = {};
-
-        if (invoiceType === 'purchase') {
-          newStock = currentStock + quantity;
-          // Update cost price only if it changed during purchase
-          if (Number(originalProduct.cost_price) !== Number(item.unit_price)) {
-            updates.cost_price = Number(item.unit_price);
+      // Update cost_price for products on purchase invoices if unit price changed (stock is handled by DB trigger)
+      if (invoiceType === 'purchase') {
+        const costPricePromises = cart.map(async (item) => {
+          const originalProduct = products.find(p => p.id === item.product_id);
+          if (originalProduct && Number(originalProduct.cost_price) !== Number(item.unit_price)) {
+            return updateProduct(item.product_id, { cost_price: Number(item.unit_price) });
           }
-        } else if (invoiceType === 'sale') {
-          newStock = currentStock - quantity;
-        }
-
-        updates.stock_quantity = newStock;
-        return updateProduct(item.product_id, updates);
-      });
-
-      await Promise.all(stockUpdatePromises.filter(Boolean));
+        });
+        await Promise.all(costPricePromises.filter(Boolean));
+      }
 
       alert("تم حفظ الفاتورة بنجاح!");
       navigate('/'); // Redirect to POS or Dashboard after success
