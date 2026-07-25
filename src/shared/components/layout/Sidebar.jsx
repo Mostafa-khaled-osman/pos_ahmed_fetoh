@@ -5,23 +5,48 @@
  * - "pos"       → Narrow (w-24), icon-only sidebar for the sales workflow.
  * - "dashboard" → Wide (w-64), icon+text sidebar for management pages.
  */
+import { useNavigate } from 'react-router-dom';
 import Icon from '../ui/Icon';
 import { POS_NAV_ITEMS, DASHBOARD_NAV_ITEMS } from '../../constants/navigation';
+import { useAuthStore } from '../../../core/store/useAuthStore';
 
 const PROFILE_IMG = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDPrB1RImqQfawvE9iYeUXPOFwIkNEw2XBrzMpi9bPD3cylJOkR9xsbymz8HOsNzjpmGUnPuybzAQdbSEZBjaQ3ZdhHsDnhsE3nwnuWRb6EgvNEFAujA6ofeMJmvJxDKqrZbL-inAyBu5R3u3ONmNVqyT9gJ2mZTjejwroRZufLWMoOmpDbTglRH5c0inC_XO7G-B3bYaMZechYSYIPhf22IT7VYruV63X96sk7oInFczSu6t4-cx3h';
 
 export default function Sidebar({ activePath = '/treasury' }) {
+  const navigate = useNavigate();
+  const { employee, logout } = useAuthStore();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
   return (
     <aside className="h-screen w-64 fixed right-0 top-0 flex flex-col bg-surface-container-high/40 backdrop-blur-3xl shadow-[0_0_20px_rgba(212,175,55,0.05)] z-40 border-l border-white/5 rtl py-stack-lg">
       {/* Brand / Profile Header */}
-      <div className="px-gutter mb-stack-lg flex items-center gap-4">
-        <div className="w-12 h-12 rounded-full overflow-hidden border border-primary/30 shrink-0">
-          <img alt="Profile" className="w-full h-full object-cover" src={PROFILE_IMG} />
+      <div className="px-gutter mb-stack-lg flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full overflow-hidden border border-primary/30 shrink-0">
+            <img alt="Profile" className="w-full h-full object-cover" src={PROFILE_IMG} />
+          </div>
+          <div>
+            <h1 className="font-headline-md text-headline-md font-bold text-primary truncate max-w-[110px]">
+              {employee?.username || 'الكاشير'}
+            </h1>
+            <p className="font-label-caps text-label-caps text-on-surface-variant">
+              {employee?.role === 'admin' ? 'مدير النظام' : 'كاشير'}
+            </p>
+          </div>
         </div>
-        <div>
-          <h1 className="font-headline-md text-headline-md font-bold text-primary">بورصة الجعبيري</h1>
-          <p className="font-label-caps text-label-caps text-on-surface-variant">إدارة التوزيع الفاخرة</p>
-        </div>
+
+        <button
+          onClick={handleLogout}
+          className="text-on-surface-variant hover:text-error p-2 rounded-lg hover:bg-error/10 transition-colors"
+          title="تسجيل الخروج"
+          type="button"
+        >
+          <Icon name="logout" className="text-xl" />
+        </button>
       </div>
 
 

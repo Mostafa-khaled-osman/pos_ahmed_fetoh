@@ -11,6 +11,8 @@ import InvoicesListPage from './features/invoicing/InvoicesListPage';
 import InvoiceDetailPage from './features/invoicing/InvoiceDetailPage';
 import StatementOfAccountPage from './features/crm/StatementOfAccountPage';
 import DashboardPage from './features/dashboard/DashboardPage';
+import LoginPage from './features/auth/LoginPage';
+import ProtectedRoute from './features/auth/components/ProtectedRoute';
 import NotFound from './shared/components/layout/NotFound';
 import { HelmetProvider } from 'react-helmet-async';
 
@@ -20,17 +22,22 @@ export default function App() {
       <Router>
         <div className="w-full h-full">
           <Routes>
-            <Route path="/" element={<POSPage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/treasury" element={<TreasuryPage />} />
-            <Route path="/inventory" element={<InventoryPage />} />
-            <Route path="/customers" element={<CustomersPage />} />
-            <Route path="/customers/:id" element={<EntityLedgerPage />} />
-            <Route path="/customers/:id/statement" element={<StatementOfAccountPage />} />
-            <Route path="/add-invoice" element={<AddInvoicePage />} />
-            <Route path="/invoices" element={<InvoicesListPage />} />
-            <Route path="/invoices/:id" element={<InvoiceDetailPage />} />
-            <Route path="/invoices/:id/edit" element={<EditInvoicePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            
+            <Route element={<ProtectedRoute />}>
+              <Route path="/" element={<POSPage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/treasury" element={<TreasuryPage />} />
+              <Route path="/inventory" element={<InventoryPage />} />
+              <Route path="/customers" element={<CustomersPage />} />
+              <Route path="/customers/:id" element={<EntityLedgerPage />} />
+              <Route path="/customers/:id/statement" element={<StatementOfAccountPage />} />
+              <Route path="/add-invoice" element={<AddInvoicePage />} />
+              <Route path="/invoices" element={<InvoicesListPage />} />
+              <Route path="/invoices/:id" element={<InvoiceDetailPage />} />
+              <Route path="/invoices/:id/edit" element={<EditInvoicePage />} />
+            </Route>
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
