@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useGetStatement } from './hooks/useStatement';
 import Sidebar from '../../shared/components/layout/Sidebar';
@@ -11,19 +11,36 @@ export default function EntityLedgerPage() {
   const { entity, ledger, loading, error, refetch, finalBalance } = useGetStatement(id);
   const componentRef = useRef();
 
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+
   const handlePrint = useReactToPrint({
     contentRef: componentRef,
     documentTitle: `كشف_الجهات_${entity?.name || id}`,
   });
 
+  const filteredLedgerForStats = useMemo(() => {
+    if (!ledger) return [];
+    let list = ledger;
+    if (startDate) {
+      const start = new Date(startDate + 'T00:00:00');
+      list = list.filter(item => item.date >= start);
+    }
+    if (endDate) {
+      const end = new Date(endDate + 'T23:59:59.999');
+      list = list.filter(item => item.date <= end);
+    }
+    return list;
+  }, [ledger, startDate, endDate]);
+
   const stats = useMemo(() => {
-    if (!ledger) return { payments: 0, receipts: 0 };
-    return ledger.reduce((acc, item) => {
+    if (!filteredLedgerForStats) return { payments: 0, receipts: 0 };
+    return filteredLedgerForStats.reduce((acc, item) => {
       if (item.type === 'transaction' && item.originalData.type === 'payment') acc.payments += item.debit;
       if (item.type === 'transaction' && item.originalData.type === 'receipt') acc.receipts += item.credit;
       return acc;
     }, { payments: 0, receipts: 0 });
-  }, [ledger]);
+  }, [filteredLedgerForStats]);
 
   if (error) {
     return (
@@ -155,7 +172,15 @@ export default function EntityLedgerPage() {
               </div>
 
               {/* Ledger Table (Unified) */}
-              <LedgerTable ledger={ledger} loading={loading} refetch={refetch} />
+              <LedgerTable
+                ledger={ledger}
+                loading={loading}
+                refetch={refetch}
+                startDate={startDate}
+                endDate={endDate}
+                onStartDateChange={setStartDate}
+                onEndDateChange={setEndDate}
+              />
             </div>
           )}
         </div>
