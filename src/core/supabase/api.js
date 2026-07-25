@@ -568,11 +568,11 @@ export async function fetchNetProfitMetrics() {
 
 export async function fetchProductsSoldQuantity(period = 'day') {
   const startDate = new Date();
-  if (period === 'month') {
-    startDate.setDate(1);
+  if (period === 'week') {
+    startDate.setDate(startDate.getDate() - 7);
     startDate.setHours(0, 0, 0, 0);
-  } else if (period === 'year') {
-    startDate.setMonth(0, 1);
+  } else if (period === 'month') {
+    startDate.setDate(1);
     startDate.setHours(0, 0, 0, 0);
   } else {
     // default to 'day'

@@ -3,8 +3,8 @@ import Icon from '../../../shared/components/ui/Icon';
 
 const PERIOD_OPTIONS = [
   { key: 'day', label: 'اليوم' },
+  { key: 'week', label: 'الأسبوع' },
   { key: 'month', label: 'الشهر' },
-  { key: 'year', label: 'السنة' },
 ];
 
 export default function TopSellingProducts({ products, loading, period = 'day', onPeriodChange }) {
