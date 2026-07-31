@@ -70,12 +70,19 @@ export default function AddInvoicePage() {
     try {
       setIsSubmitting(true);
 
+      let newCreatedAt = undefined;
+      if (invoiceDate) {
+        const timePart = new Date().toISOString().split('T')[1];
+        newCreatedAt = `${invoiceDate}T${timePart}`;
+      }
+
       const invoiceData = {
         session_id: session.id,
         customer_id: selectedEntityId || null,
         total_amount: grandTotal,
         payment_type: paymentType,
         invoice_type: invoiceType,
+        ...(newCreatedAt ? { created_at: newCreatedAt } : {}),
       };
 
       const invoiceItems = cart.map(item => {

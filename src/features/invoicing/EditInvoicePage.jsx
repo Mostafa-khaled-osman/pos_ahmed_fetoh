@@ -75,11 +75,20 @@ export default function EditInvoicePage() {
     try {
       setIsSubmitting(true);
       
+      let updatedCreatedAt = undefined;
+      if (invoiceDate) {
+        const timePart = invoiceData?.created_at
+          ? new Date(invoiceData.created_at).toISOString().split('T')[1]
+          : new Date().toISOString().split('T')[1];
+        updatedCreatedAt = `${invoiceDate}T${timePart}`;
+      }
+
       const updatedData = {
         customer_id: selectedEntityId || null,
         total_amount: grandTotal,
         payment_type: paymentType,
         invoice_type: invoiceType,
+        ...(updatedCreatedAt ? { created_at: updatedCreatedAt } : {}),
       };
 
       const newItems = cart.map(item => {

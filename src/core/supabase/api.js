@@ -313,13 +313,48 @@ export async function insertSpoilageLog(spoilageData) {
 // ==========================================
 
 export async function fetchEntities() {
-  const { data, error } = await supabase
+  const { data: entities, error } = await supabase
     .from('customers_suppliers')
     .select('*')
     .order('name', { ascending: true });
 
   if (error) throw error;
-  return data;
+  if (!entities || entities.length === 0) return [];
+
+  try {
+    const [{ data: invoices }, { data: transactions }] = await Promise.all([
+      supabase.from('invoices').select('customer_id, total_amount, invoice_type'),
+      supabase.from('financial_transactions').select('entity_id, amount, type')
+    ]);
+
+    const balanceMap = {};
+
+    (invoices || []).forEach(inv => {
+      if (!inv.customer_id) return;
+      if (!balanceMap[inv.customer_id]) balanceMap[inv.customer_id] = 0;
+      const isSale = inv.invoice_type === 'sale';
+      const debit = isSale ? Number(inv.total_amount || 0) : 0;
+      const credit = !isSale ? Number(inv.total_amount || 0) : 0;
+      balanceMap[inv.customer_id] += (debit - credit);
+    });
+
+    (transactions || []).forEach(trx => {
+      if (!trx.entity_id) return;
+      if (!balanceMap[trx.entity_id]) balanceMap[trx.entity_id] = 0;
+      const isReceipt = trx.type === 'receipt';
+      const debit = !isReceipt ? Number(trx.amount || 0) : 0;
+      const credit = isReceipt ? Number(trx.amount || 0) : 0;
+      balanceMap[trx.entity_id] += (debit - credit);
+    });
+
+    return entities.map(entity => ({
+      ...entity,
+      current_balance: balanceMap[entity.id] !== undefined ? balanceMap[entity.id] : Number(entity.current_balance || 0)
+    }));
+  } catch (err) {
+    console.error('Failed to calculate dynamic entity balances:', err);
+    return entities;
+  }
 }
 
 export async function insertEntity(entityData) {
