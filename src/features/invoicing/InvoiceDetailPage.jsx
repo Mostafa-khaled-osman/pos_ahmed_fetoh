@@ -205,6 +205,28 @@ export default function InvoiceDetailPage() {
                       {Number(invoiceData.total_amount).toFixed(2)} <span className="text-sm">ج.م</span>
                     </span>
                   </div>
+
+                  {/* Paid Amount & Remaining - Only for credit invoices */}
+                  {invoiceData.payment_type === 'credit' && (
+                    <>
+                      <div className="flex justify-between items-center py-2 border-t border-white/10 print:border-gray-200 mt-2">
+                        <span className="font-body-md text-body-md text-on-surface-variant print:text-gray-600">المبلغ المدفوع:</span>
+                        <span className="font-data-mono text-data-mono font-bold text-emerald-400 print:text-green-700">
+                          {Number(invoiceData.paid_amount || 0).toFixed(2)} ج.م
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center py-3 border-t-2 border-white/20 print:border-gray-400 mt-1">
+                        <span className="font-headline-md text-headline-md font-bold text-on-surface print:text-black">المتبقي:</span>
+                        <span className={`font-headline-lg-mobile text-headline-lg-mobile font-bold font-data-mono print:text-black ${
+                          (Number(invoiceData.total_amount) - Number(invoiceData.paid_amount || 0)) > 0 
+                            ? 'text-red-400 print:text-red-700' 
+                            : 'text-emerald-400 print:text-green-700'
+                        }`}>
+                          {(Number(invoiceData.total_amount) - Number(invoiceData.paid_amount || 0)).toFixed(2)} <span className="text-sm">ج.م</span>
+                        </span>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
 

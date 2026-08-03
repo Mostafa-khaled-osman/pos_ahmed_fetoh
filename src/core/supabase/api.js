@@ -517,7 +517,24 @@ export async function fetchInvoiceDetails(invoiceId) {
 
   if (itemsError) throw itemsError;
 
-  return { ...invoice, items };
+  // Fetch payments linked to this invoice (for credit invoices)
+  let payments = [];
+  if (invoice.payment_type === 'credit') {
+    const { data: paymentData, error: paymentError } = await supabase
+      .from('financial_transactions')
+      .select('*')
+      .ilike('notes', `%${invoiceId}%`)
+      .in('type', ['receipt', 'payment'])
+      .order('created_at', { ascending: true });
+
+    if (!paymentError) {
+      payments = paymentData || [];
+    }
+  }
+
+  const paidAmount = payments.reduce((sum, p) => sum + Number(p.amount || 0), 0);
+
+  return { ...invoice, items, payments, paid_amount: paidAmount };
 }
 
 export async function fetchEntityInvoices(entityId) {

@@ -52,7 +52,7 @@ export default function EntityLedgerPage() {
     );
   }
 
-  const balance = finalBalance;
+const balance = finalBalance;
 
   return (
     <div className="flex-1 flex flex-col min-w-0 mr-0 md:mr-64 h-screen bg-background text-on-background relative overflow-hidden font-body-md antialiased rtl">
