@@ -323,8 +323,8 @@ export async function fetchEntities() {
 
   try {
     const [{ data: invoices }, { data: transactions }] = await Promise.all([
-      supabase.from('invoices').select('customer_id, total_amount, invoice_type'),
-      supabase.from('financial_transactions').select('entity_id, amount, type')
+      supabase.from('invoices').select('id, customer_id, total_amount, invoice_type, payment_type'),
+      supabase.from('financial_transactions').select('entity_id, amount, type, notes')
     ]);
 
     const balanceMap = {};
@@ -336,6 +336,16 @@ export async function fetchEntities() {
       const debit = isSale ? Number(inv.total_amount || 0) : 0;
       const credit = !isSale ? Number(inv.total_amount || 0) : 0;
       balanceMap[inv.customer_id] += (debit - credit);
+
+      // Cash invoices are settled immediately, so offset balance if no explicit transaction was recorded
+      if (inv.payment_type === 'cash') {
+        const hasTrx = (transactions || []).some(trx => trx.notes && trx.notes.includes(inv.id));
+        if (!hasTrx) {
+          const payDebit = !isSale ? Number(inv.total_amount || 0) : 0;
+          const payCredit = isSale ? Number(inv.total_amount || 0) : 0;
+          balanceMap[inv.customer_id] += (payDebit - payCredit);
+        }
+      }
     });
 
     (transactions || []).forEach(trx => {

@@ -36,19 +36,40 @@ export function useGetStatement(entityId) {
         // For a customer: 
         // - A sale means they OWE us money (Debit)
         // - A purchase (e.g. from a supplier) means WE OWE them (Credit)
-        // Assuming general entity logic:
         const debit = isSale ? Number(inv.total_amount) : 0;
         const credit = !isSale ? Number(inv.total_amount) : 0;
 
         unifiedList.push({
-          id: inv.id,
+          id: `inv-${inv.id}`,
           date: new Date(inv.created_at),
           type: 'invoice',
-          description: isSale ? `فاتورة مبيعات رقم #${inv.id.split('-')[0]}` : `فاتورة مشتريات رقم #${inv.id.split('-')[0]}`,
+          description: isSale 
+            ? `فاتورة مبيعات ${inv.payment_type === 'cash' ? '(نقدية) ' : ''}رقم #${inv.id.split('-')[0]}` 
+            : `فاتورة مشتريات ${inv.payment_type === 'cash' ? '(نقدية) ' : ''}رقم #${inv.id.split('-')[0]}`,
           debit,
           credit,
           originalData: inv
         });
+
+        // If it's a cash invoice and no explicit transaction was recorded, add synthetic cash settlement
+        if (inv.payment_type === 'cash') {
+          const hasTrx = (transactions || []).some(trx => trx.notes && trx.notes.includes(inv.id));
+          if (!hasTrx) {
+            const payDebit = !isSale ? Number(inv.total_amount) : 0;
+            const payCredit = isSale ? Number(inv.total_amount) : 0;
+
+            unifiedList.push({
+              id: `cash-settle-${inv.id}`,
+              date: new Date(inv.created_at),
+              type: 'transaction',
+              description: isSale ? `سداد نقدي فوري` : `صرف نقدي فوري`,
+              notes: `سداد آلي للفاتورة النقدية رقم #${inv.id.split('-')[0]}`,
+              debit: payDebit,
+              credit: payCredit,
+              originalData: { type: isSale ? 'receipt' : 'payment', amount: inv.total_amount }
+            });
+          }
+        }
       });
     }
 

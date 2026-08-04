@@ -102,8 +102,16 @@ export default function AddInvoicePage() {
 
       const invoice = await insertInvoice(invoiceData, invoiceItems);
 
-      // Handle upfront partial payment for credit invoices
-      if (paymentType === 'credit' && Number(paidAmount) > 0 && selectedEntityId) {
+      // Handle financial transactions for cash or credit upfront payments
+      if (paymentType === 'cash' && selectedEntityId) {
+        await insertFinancialTransaction({
+          session_id: session.id,
+          entity_id: selectedEntityId,
+          type: invoiceType === 'sale' ? 'receipt' : 'payment',
+          amount: grandTotal,
+          notes: `سداد نقدي فوري للفاتورة رقم ${invoice.id}`
+        });
+      } else if (paymentType === 'credit' && Number(paidAmount) > 0 && selectedEntityId) {
         await insertFinancialTransaction({
           session_id: session.id,
           entity_id: selectedEntityId,
